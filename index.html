@@ -7,7 +7,6 @@
   <meta name="description" content="Julian Shively — musician portfolio">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* --- Original styles kept exactly --- */
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
@@ -19,15 +18,11 @@
     .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
 
     main{padding-top:96px}
-    .hero{max-width:1100px;margin:56px auto 40px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center;padding:28px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));transition:transform 0.3s, opacity 0.3s;}
-    .hero .portrait{width:100%;height:420px;border-radius:12px;object-fit:cover;background:#122429;transition:transform 0.3s, opacity 0.3s;}
-    .hero .hero-text{padding:6px 10px;transition:transform 0.3s, opacity 0.3s;}
-    .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
-    .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
-    .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
-    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
-    .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
+
+    /* --- HERO MODIFICATIONS --- */
+    .hero{max-width:1200px;margin:56px auto 40px;display:block;padding:0;}
+    .hero .portrait{width:100%;height:700px;border-radius:0;object-fit:cover;transition:transform 0.3s, opacity 0.3s;}
+    .hero-text{display:none;}
 
     .section{max-width:1100px;margin:36px auto;padding:32px}
     .section.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:28px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
@@ -49,6 +44,13 @@
     .gallery-section{width:100%;margin:40px 0;padding:40px 0;background:transparent}
     .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
     .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
+
+    /* --- CONTACT FORM --- */
+    .contact-section{max-width:800px;margin:40px auto;padding:32px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));}
+    .contact-section h2{text-align:center;margin-top:0}
+    .contact-section form{display:flex;flex-direction:column;gap:16px}
+    .contact-section input, .contact-section textarea{padding:12px;border-radius:8px;border:none;background:rgba(255,255,255,0.05);color:#fff;resize:none;font-size:16px}
+    .contact-section button{padding:12px;background:linear-gradient(90deg,var(--teal),#08b39e);border:none;color:#021615;font-weight:700;border-radius:8px;cursor:pointer}
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
@@ -72,34 +74,9 @@
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
-      <div class="hero-text">
-        <h1>Julian Shively</h1>
-        <p class="lead">Pianist • Cellist • Composer/Arranger</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#shows">Upcoming Performances</a>
-          <a class="btn btn-ghost" href="media.html">Listen & Watch</a>
-          <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
-        </div>
-      </div>
     </section>
 
-    <!-- MUSIC -->
-    <section class="section card" id="music">
-      <h2 style="text-align:center;margin-top:0">Music</h2>
-      <div class="tracks">
-        <div class="track">
-          <img src="./images/cover1.jpg" alt="cover1">
-          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
-        </div>
-        <div class="track">
-          <img src="./images/cover2.jpg" alt="cover2">
-          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
-        </div>
-      </div>
-      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-    </section>
-
-    <!-- Upcoming performances (no sidebar) -->
+    <!-- Upcoming performances -->
     <div class="shows-wrap" id="shows">
       <div class="shows-list">
         <h2 style="margin-top:0">Upcoming Performances</h2>
@@ -123,84 +100,81 @@
       </div>
     </div>
 
+    <!-- MUSIC (moved to bottom) -->
+    <section class="section card" id="music">
+      <h2 style="text-align:center;margin-top:0">Music</h2>
+      <div class="tracks">
+        <div class="track">
+          <img src="./images/cover1.jpg" alt="cover1">
+          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
+        </div>
+        <div class="track">
+          <img src="./images/cover2.jpg" alt="cover2">
+          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
+        </div>
+      </div>
+      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </section>
+
+    <!-- CONTACT FORM -->
+    <section class="contact-section">
+      <h2>Contact / Inquiries</h2>
+      <form action="mailto:youremail@example.com" method="post" enctype="text/plain">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" rows="6" placeholder="I am inquiring about lessons, events, or need a musician..." required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
     <footer>
       © <span id="year"></span> Julian Shively • All rights reserved.
     </footer>
   </main>
 
   <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-// Smooth scroll for internal anchors
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    const t = document.querySelector(a.getAttribute('href'));
-    if(!t) return;
-    const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
-    window.scrollTo({top:y, behavior:'smooth'});
-  });
-});
+    // Smooth scroll for internal anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if(!t) return;
+        const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({top:y, behavior:'smooth'});
+      });
+    });
 
-// --- Hero scroll effect with scaling, parallax, fade, and horizontal slide-in ---
-const hero = document.querySelector('.hero');
-const heroImg = document.querySelector('.hero .portrait');
-const heroText = document.querySelector('.hero .hero-text');
+    // Staggered animations on scroll
+    const tracks = document.querySelectorAll('.track');
+    const shows = document.querySelectorAll('.show-item');
+    const sections = document.querySelectorAll('.section.card, .shows-list');
 
-window.addEventListener('scroll', () => {
-  const scroll = window.scrollY;
+    const animateElements = (elements, offset = 100) => {
+      elements.forEach((el, index) => {
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - offset){
+          el.style.transition = `all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) ${index * 0.1}s`;
+          el.style.opacity = 1;
+          el.style.transform = 'translateX(0) translateY(0)';
+        }
+      });
+    };
 
-  // Easing function (easeOutQuad)
-  const easeOutQuad = t => 1 - (1 - t) * (1 - t);
+    window.addEventListener('scroll', () => {
+      animateElements(tracks, 100);
+      animateElements(shows, 100);
+      animateElements(sections, 50);
+    });
 
-  let progress = Math.min(scroll / 400, 1);
-  let eased = easeOutQuad(progress);
-
-  const scale = 1 - 0.2 * eased;      // scale down to 0.8
-  const opacity = 1 - eased;          // fade out
-  const textSlide = Math.min(scroll * 0.2, 50); // max horizontal shift
-
-  // Hero container
-  hero.style.transform = `scale(${scale})`;
-  hero.style.opacity = opacity;
-
-  // Hero image (slower parallax)
-  heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
-  heroImg.style.opacity = opacity;
-
-  // Hero text (faster parallax + horizontal slide-in)
-  heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
-  heroText.style.opacity = opacity;
-});
-
-// --- Staggered animations on scroll with easing ---
-const tracks = document.querySelectorAll('.track');
-const shows = document.querySelectorAll('.show-item');
-const sections = document.querySelectorAll('.section.card, .shows-list');
-
-const animateElements = (elements, offset = 100) => {
-  elements.forEach((el, index) => {
-    const rect = el.getBoundingClientRect();
-    if(rect.top < window.innerHeight - offset){
-      el.style.transition = `all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) ${index * 0.1}s`;
-      el.style.opacity = 1;
-      el.style.transform = 'translateX(0) translateY(0)';
-    }
-  });
-};
-
-window.addEventListener('scroll', () => {
-  animateElements(tracks, 100);
-  animateElements(shows, 100);
-  animateElements(sections, 50);
-});
-
-// Trigger animations on load
-animateElements(tracks, 100);
-animateElements(shows, 100);
-animateElements(sections, 50);
-</script>
+    // Trigger animations on load
+    animateElements(tracks, 100);
+    animateElements(shows, 100);
+    animateElements(sections, 50);
+  </script>
 
 </body>
 </html>
+
 
