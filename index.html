@@ -19,7 +19,7 @@
     .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
 
     main{padding-top:96px}
-    .hero{max-width:1100px;margin:56px auto 40px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center;padding:28px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));transition:transform 0.3s, opacity 0.3s;}
+    .hero{max-width:1100px;margin:56px auto 40px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center;padding:28px;/* Removed background box */transition:transform 0.3s, opacity 0.3s;}
     .hero .portrait{width:100%;height:420px;border-radius:12px;object-fit:cover;background:#122429;transition:transform 0.3s, opacity 0.3s;}
     .hero .hero-text{padding:6px 10px;transition:transform 0.3s, opacity 0.3s;}
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
@@ -49,6 +49,30 @@
     .gallery-section{width:100%;margin:40px 0;padding:40px 0;background:transparent}
     .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
     .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
+
+    /* Video slider section with smooth horizontal scroll and snapping */
+    .video-slider {
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 20px 0;
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+    .video-slider iframe {
+      flex: 0 0 300px;
+      height: 180px;
+      border-radius: 8px;
+      scroll-snap-align: center;
+      transition: transform 0.3s, opacity 0.3s;
+      opacity: 0.6;
+    }
+    .video-slider iframe.centered {
+      opacity: 1;
+      transform: scale(1.05);
+    }
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
@@ -83,20 +107,12 @@
       </div>
     </section>
 
-    <!-- MUSIC -->
-    <section class="section card" id="music">
-      <h2 style="text-align:center;margin-top:0">Music</h2>
-      <div class="tracks">
-        <div class="track">
-          <img src="./images/cover1.jpg" alt="cover1">
-          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
-        </div>
-        <div class="track">
-          <img src="./images/cover2.jpg" alt="cover2">
-          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
-        </div>
-      </div>
-      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    <!-- VIDEO SLIDER -->
+    <section class="video-slider" aria-label="Video Slider">
+      <iframe id="video1" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video2" src="https://www.youtube.com/embed/3JZ_D3ELwOQ?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video3" src="https://www.youtube.com/embed/V-_O7nl0Ii0?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video4" src="https://www.youtube.com/embed/oHg5SJYRHA0?enablejsapi=1" allowfullscreen></iframe>
     </section>
 
     <!-- Upcoming performances (no sidebar) -->
@@ -133,7 +149,7 @@
           <div class="show-cta"><a class="pill" href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA">Tickets</a></div>
         </div>
 
-         <div class="show-item">
+        <div class="show-item">
           <div class="show-date">Nov 17, 2025</div>
           <h3 class="show-title">Nick Baddelay Quartet</h3>
           <div class="show-location">Casa des Popolo, 4873 St Laurent Blvd, Montreal, QC</div>
@@ -147,6 +163,22 @@
         
       </div>
     </div>
+
+    <!-- MUSIC (moved below shows) -->
+    <section class="section card" id="music">
+      <h2 style="text-align:center;margin-top:0">Music</h2>
+      <div class="tracks">
+        <div class="track">
+          <img src="./images/cover1.jpg" alt="cover1">
+          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
+        </div>
+        <div class="track">
+          <img src="./images/cover2.jpg" alt="cover2">
+          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
+        </div>
+      </div>
+      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </section>
 
     <footer>
       © <span id="year"></span> Julian Shively • All rights reserved.
@@ -174,26 +206,16 @@ const heroText = document.querySelector('.hero .hero-text');
 
 window.addEventListener('scroll', () => {
   const scroll = window.scrollY;
-
-  // Easing function (easeOutQuad)
   const easeOutQuad = t => 1 - (1 - t) * (1 - t);
-
   let progress = Math.min(scroll / 400, 1);
   let eased = easeOutQuad(progress);
-
-  const scale = 1 - 0.2 * eased;      // scale down to 0.8
-  const opacity = 1 - eased;          // fade out
-  const textSlide = Math.min(scroll * 0.2, 50); // max horizontal shift
-
-  // Hero container
+  const scale = 1 - 0.2 * eased;
+  const opacity = 1 - eased;
+  const textSlide = Math.min(scroll * 0.2, 50);
   hero.style.transform = `scale(${scale})`;
   hero.style.opacity = opacity;
-
-  // Hero image (slower parallax)
   heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
   heroImg.style.opacity = opacity;
-
-  // Hero text (faster parallax + horizontal slide-in)
   heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
   heroText.style.opacity = opacity;
 });
@@ -219,14 +241,62 @@ window.addEventListener('scroll', () => {
   animateElements(shows, 100);
   animateElements(sections, 50);
 });
-
-// Trigger animations on load
 animateElements(tracks, 100);
 animateElements(shows, 100);
 animateElements(sections, 50);
-</script>
 
+// --- YouTube Slider Auto Play Centered Video with Fade ---
+let tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.body.appendChild(tag);
+let players = [];
+
+function onYouTubeIframeAPIReady() {
+  document.querySelectorAll('.video-slider iframe').forEach((iframe, i) => {
+    players[i] = new YT.Player(iframe.id);
+  });
+}
+
+const slider = document.querySelector('.video-slider');
+function playCenteredVideo() {
+  const sliderRect = slider.getBoundingClientRect();
+  const centerX = sliderRect.left + sliderRect.width / 2;
+
+  let closestIndex = 0;
+  let closestDistance = Infinity;
+
+  players.forEach((player, i) => {
+    const iframe = player.getIframe();
+    const rect = iframe.getBoundingClientRect();
+    const videoCenter = rect.left + rect.width / 2;
+    const distance = Math.abs(centerX - videoCenter);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestIndex = i;
+    }
+    iframe.classList.remove('centered');
+  });
+
+  players.forEach((player, i) => {
+    const iframe = player.getIframe();
+    if (i === closestIndex) {
+      player.playVideo();
+      iframe.classList.add('centered');
+    } else {
+      player.pauseVideo();
+    }
+  });
+}
+
+slider.addEventListener('scroll', () => {
+  requestAnimationFrame(playCenteredVideo);
+});
+window.addEventListener('load', () => {
+  setTimeout(playCenteredVideo, 1000);
+});
+  </script>
 </body>
 </html>
+
 
 
