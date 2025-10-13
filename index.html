@@ -1,246 +1,173 @@
-<!--
-Julian Shively musician portfolio — spaced layout and improved hero section.
--->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Julian Shively — Musician</title>
-  <meta name="description" content="Portfolio of Julian Shively — musician, producer, songwriter.">
+  <title>Julian Shively — Home</title>
+  <meta name="description" content="Julian Shively — musician portfolio">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0f1724;
-      --muted: #a5b0be;
-      --accent: #00c6a7;
-    }
+    :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
+    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
+    .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+    .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
+    .navlinks{display:flex;gap:8px;align-items:center}
+    .navlinks a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600}
+    .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
 
-    * { box-sizing: border-box; }
-    html, body {
-      margin: 0;
-      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-      color: #e6eef6;
-      background: linear-gradient(180deg, #071025 0%, #071025 60%, #051022 100%);
-      scroll-behavior: smooth;
-    }
+    main{padding-top:96px}
+    .hero{max-width:1100px;margin:56px auto 40px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center;padding:28px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),rgba(255,255,255,0.005));}
+    .hero .portrait{width:100%;height:420px;border-radius:12px;object-fit:cover;background:#122429}
+    .hero .hero-text{padding:6px 10px}
+    .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
+    .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
+    .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
 
-    /* Top Navigation */
-    nav.topnav {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background: rgba(10, 15, 30, 0.85);
-      backdrop-filter: blur(8px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 50px;
-      z-index: 1000;
-    }
-    .nav-links a {
-      margin: 0 20px;
-      color: #e6eef6;
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-contact a {
-      background: var(--accent);
-      color: #08121a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: background 0.3s, transform 0.3s;
-    }
-    .nav-contact a:hover { transform: scale(1.05); }
+    .section{max-width:1100px;margin:36px auto;padding:32px}
+    .section.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:28px}
+    .tracks{display:flex;flex-direction:column;gap:18px}
+    .track{display:flex;align-items:center;gap:20px;padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+    .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
+    .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* Hero Section */
-    .hero {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: center;
-      gap: 60px;
-      padding: 180px 60px 120px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .hero img {
-      width: 420px;
-      height: 420px;
-      border-radius: 20px;
-      object-fit: cover;
-      border: 5px solid rgba(255,255,255,0.1);
-    }
-    .hero-text {
-      max-width: 550px;
-    }
-    .hero-text h1 {
-      font-size: 54px;
-      margin-bottom: 16px;
-      line-height: 1.2;
-    }
-    .hero-text p {
-      font-size: 20px;
-      color: var(--muted);
-      margin-bottom: 32px;
-    }
-    .hero-buttons a {
-      background: linear-gradient(90deg, var(--accent), #00e6c6);
-      color: #08121a;
-      padding: 14px 26px;
-      border-radius: 12px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-right: 12px;
-      transition: transform 0.2s;
-    }
-    .hero-buttons a:hover { transform: scale(1.05); }
+    /* Upcoming performances layout simplified: no sidebar cards */
+    .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
+    .shows-list{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px}
+    .show-item{margin-bottom:20px;padding:18px;border-radius:10px;background:#071217;box-shadow:0 6px 18px rgba(2,6,10,0.6);border:1px solid rgba(255,255,255,0.02)}
+    .show-date{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .show-title{font-family:'Playfair Display',serif;font-size:22px;margin:0}
+    .show-location{color:var(--muted);margin-top:8px}
+    .show-desc{margin-top:12px;color:var(--muted)}
+    .show-cta{margin-top:12px}
+    .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
-    /* Upcoming Performances */
-    .performances {
-      max-width: 1200px;
-      margin: 100px auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      justify-content: center;
-      padding: 0 40px;
-    }
-    .perf-list {
-      flex: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .perf-card {
-      background: rgba(255,255,255,0.03);
-      padding: 24px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .perf-card h3 { margin: 10px 0 5px; }
-    .perf-card p { color: var(--muted); margin: 0 0 12px; }
-    .perf-card a {
-      background: var(--accent);
-      color: #08121a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .perf-side {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .side-card {
-      background: rgba(255,255,255,0.03);
-      padding: 20px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-    .side-card h4 { margin-top: 0; }
-    .side-card a {
-      display: inline-block;
-      background: var(--accent);
-      color: #08121a;
-      padding: 10px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 600;
-      margin-top: 10px;
-    }
+    .gallery-section{width:100%;margin:40px 0;padding:40px 0;background:transparent}
+    .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
+    .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
 
-    footer {
-      text-align: center;
-      padding: 80px 20px;
-      color: var(--muted);
-      font-size: 14px;
-    }
+    footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
+
+    @media (max-width:1000px){.hero{grid-template-columns:1fr;}.topnav .inner{width:calc(100% - 32px)} }
   </style>
 </head>
 <body>
-  <nav class="topnav">
-    <div class="nav-logo"><strong>Julian Shively</strong></div>
-    <div class="nav-links">
-      <a href="/index.html">Home</a>
-      <a href="/about.html">About</a>
-      <a href="/media.html">Media</a>
-    </div>
-    <div class="nav-contact">
-      <a href="/contact.html">Contact</a>
-    </div>
-  </nav>
-
-  <section class="hero">
-    <img src="./images/avatar.jpg" alt="Julian Shively">
-    <div class="hero-text">
-      <h1>Julian Shively</h1>
-      <p>Singer • Songwriter • Producer</p>
-      <div class="hero-buttons">
-        <a href="#performances">Performances</a>
-        <a href="/media.html">Media</a>
+  <div class="topnav">
+    <div class="inner">
+      <div class="brand">Julian Shively</div>
+      <div class="navlinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="media.html">Media</a>
+        <a class="contact" href="contact.html">Contact</a>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section id="performances">
-    <h2 style="text-align:center; font-size:32px; margin-bottom:40px;">Upcoming Performances</h2>
-    <p style="text-align:center; color:var(--muted); margin-bottom:60px;">Experience live: carefully curated performances showcasing Julian’s dual strengths as a pianist and cellist.</p>
-
-    <div class="performances">
-      <div class="perf-list">
-        <div class="perf-card">
-          <div style="color:var(--muted);">Oct 18, 2025 — 7:30 PM</div>
-          <h3>Beacon Jazz Room</h3>
-          <p>Seattle, WA — Duo set with saxophone featuring original compositions and reimagined standards.</p>
-          <a href="#">RSVP & Details</a>
-        </div>
-        <div class="perf-card">
-          <div style="color:var(--muted);">Nov 02, 2025 — 6:00 PM</div>
-          <h3>Hayward Chamber Series</h3>
-          <p>Hayward, CA — Cello & piano program of originals and standards with program notes.</p>
-          <a href="#">Tickets & Program</a>
-        </div>
-        <div class="perf-card">
-          <div style="color:var(--muted);">Nov 21, 2025 — 8:00 PM</div>
-          <h3>The Meridian Club</h3>
-          <p>San Francisco, CA — Trio with upright bass and drums in an intimate club setting.</p>
-          <a href="#">Reserve a Table</a>
-        </div>
-        <div class="perf-card">
-          <div style="color:var(--muted);">Dec 12, 2025 — 5:00 PM</div>
-          <h3>Private Holiday Concerts</h3>
-          <p>Various Locations — Corporate and private bookings available for the holiday season.</p>
-          <a href="#">Inquire for Availability</a>
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-label="Hero">
+      <img class="portrait" src="./images/avatar.jpg" alt="Julian Shively portrait">
+      <div class="hero-text">
+        <h1>Julian Shively</h1>
+        <p class="lead">Singer • Songwriter • Producer — creating intimate, story-driven music.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#shows">Upcoming Performances</a>
+          <a class="btn btn-ghost" href="media.html">Listen & Watch</a>
+          <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
         </div>
       </div>
+    </section>
 
-      <div class="perf-side">
-        <div class="side-card">
-          <h4>Performance Alerts</h4>
-          <p>Sign up for priority seating and exclusive pre-sale access.</p>
-          <a href="#">Get Updates</a>
+    <!-- MUSIC -->
+    <section class="section card" id="music">
+      <h2 style="text-align:center;margin-top:0">Music</h2>
+      <div class="tracks">
+        <div class="track">
+          <img src="./images/cover1.jpg" alt="cover1">
+          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
         </div>
-        <div class="side-card">
-          <h4>Group Bookings</h4>
-          <p>Contact for rider, hospitality, and technical specifications.</p>
-          <a href="/contact.html">Contact Manager</a>
+        <div class="track">
+          <img src="./images/cover2.jpg" alt="cover2">
+          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
+        </div>
+      </div>
+      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </section>
+
+    <!-- GALLERY (full-width) -->
+    <section class="gallery-section" id="gallery">
+      <h2 style="text-align:center;margin-top:0">Gallery</h2>
+      <div class="gallery">
+        <img src="./images/photo1.jpg" alt>
+        <img src="./images/photo2.jpg" alt>
+        <img src="./images/photo3.jpg" alt>
+        <img src="./images/photo4.jpg" alt>
+      </div>
+    </section>
+
+    <!-- Upcoming performances (no sidebar) -->
+    <div class="shows-wrap" id="shows">
+      <div class="shows-list">
+        <h2 style="margin-top:0">Upcoming Performances</h2>
+        <p style="color:var(--muted)">Experience live: carefully curated performances highlighting chamber and club shows.</p>
+
+        <div class="show-item">
+          <div class="show-date">Oct 18, 2025 — 7:30 PM</div>
+          <h3 class="show-title">Beacon Jazz Room</h3>
+          <div class="show-location">Seattle, WA</div>
+          <div class="show-desc">Duo set with saxophone featuring original compositions and reimagined standards.</div>
+          <div class="show-cta"><a class="pill" href="#">RSVP & Details</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 02, 2025 — 6:00 PM</div>
+          <h3 class="show-title">Hayward Chamber Series</h3>
+          <div class="show-location">Hayward, CA</div>
+          <div class="show-desc">Cello & piano program of originals and standards with program notes.</div>
+          <div class="show-cta"><a class="pill" href="#">Tickets & Program</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 21, 2025 — 8:00 PM</div>
+          <h3 class="show-title">The Meridian Club</h3>
+          <div class="show-location">San Francisco, CA</div>
+          <div class="show-desc">Trio with upright bass and drums in an intimate club setting.</div>
+          <div class="show-cta"><a class="pill" href="#">Reserve a Table</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Dec 12, 2025 — 5:00 PM</div>
+          <h3 class="show-title">Private Holiday Concerts</h3>
+          <div class="show-location">Various Locations</div>
+          <div class="show-desc">Corporate and private bookings available for the holiday season.</div>
+          <div class="show-cta"><a class="pill" href="#">Inquire for Availability</a></div>
         </div>
       </div>
     </div>
-  </section>
 
-  <footer>
-    © <span id="year"></span> Julian Shively • All rights reserved.
-  </footer>
+    <footer>
+      © <span id="year"></span> Julian Shively • All rights reserved.
+    </footer>
+  </main>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // smooth scroll for internal anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        e.preventDefault();
+        const t=document.querySelector(a.getAttribute('href'));
+        if(!t) return;
+        const y=t.getBoundingClientRect().top + window.pageYOffset - 80; // account for fixed nav
+        window.scrollTo({top:y,behavior:'smooth'});
+      })
+    })
   </script>
 </body>
 </html>
