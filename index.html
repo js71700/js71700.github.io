@@ -1,0 +1,163 @@
+<!--
+Simple single-file musician portfolio for GitHub Pages.
+Instructions: edit the placeholders (YOUR_NAME, YOUR_TAGLINE, YOUR_BIO, social links, embed links) below.
+Save this file as index.html and upload to your repository named yourusername.github.io
+Optional: put images in an 'images' folder and reference them by ./images/filename.jpg
+-->
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>YOUR_NAME — Musician</title>
+  <meta name="description" content="Portfolio of YOUR_NAME — musician, producer, songwriter." />
+
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#ff6b6b}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;color:#e6eef6;background:linear-gradient(180deg,#071025 0%, #071025 60%, #051022 100%);}
+    .container{max-width:1000px;margin:40px auto;padding:20px}
+    header{display:flex;gap:20px;align-items:center}
+    .avatar{width:110px;height:110px;border-radius:12px;object-fit:cover;flex:0 0 110px;border:3px solid rgba(255,255,255,0.06)}
+    h1{margin:0;font-size:28px}
+    p.lead{color:var(--muted);margin:6px 0 0}
+
+    .grid{display:grid;grid-template-columns:1fr 340px;gap:24px;margin-top:28px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:18px;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.6);}
+    .section-title{font-weight:600;margin:0 0 12px}
+
+    .tracks{display:flex;flex-direction:column;gap:12px}
+    .track{display:flex;gap:12px;align-items:center}
+    .track img{width:64px;height:64px;border-radius:8px;object-fit:cover}
+    .track .meta{font-size:14px}
+    .track .meta b{display:block}
+
+    .bio{color:var(--muted);line-height:1.45}
+
+    .socials{display:flex;gap:10px;margin-top:12px}
+    .socials a{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;font-size:14px}
+
+    iframe.responsive{width:100%;height:166px;border:0;border-radius:8px}
+
+    footer{margin-top:28px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* Responsive */
+    @media (max-width:880px){.grid{grid-template-columns:1fr;}.avatar{width:86px;height:86px}.container{margin:20px;padding:16px}}
+
+    /* small utility */
+    .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),#ff8a8a);color:#08121a}
+    .contact-row{display:flex;gap:8px;align-items:center}
+    .gallery{display:flex;gap:8px;flex-wrap:wrap}
+    .gallery img{width:100px;height:100px;object-fit:cover;border-radius:8px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <!-- Replace ./images/avatar.jpg with your portrait file. Or leave it; a fallback color block will be used -->
+      <img class="avatar" src="./images/avatar.jpg" alt="YOUR_NAME avatar" onerror="this.style.background='linear-gradient(135deg,#203647,#10202b)';this.src='';">
+      <div>
+        <h1>YOUR_NAME <span style="color:var(--accent);font-weight:700">— MUSICIAN</span></h1>
+        <p class="lead">YOUR_TAGLINE • Singer • Songwriter • Producer</p>
+        <div class="socials">
+          <!-- Edit these links -->
+          <a href="https://open.spotify.com/" target="_blank" rel="noopener">Spotify</a>
+          <a href="https://youtube.com/" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://soundcloud.com/" target="_blank" rel="noopener">SoundCloud</a>
+          <a href="mailto:you@example.com">Email</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Main column -->
+      <main>
+        <section class="card">
+          <h2 class="section-title">About</h2>
+          <p class="bio">YOUR_BIO — Short paragraph (2–3 sentences) about your influences, style, recent releases, or where you're based. Replace this text in the HTML file with your own bio.</p>
+          <div style="margin-top:12px">
+            <a class="btn btn-primary" href="mailto:you@example.com">Contact & Bookings</a>
+            <a class="btn" href="#music">Listen</a>
+          </div>
+        </section>
+
+        <section id="music" class="card" style="margin-top:18px">
+          <h2 class="section-title">Featured Tracks</h2>
+          <div class="tracks">
+            <!-- Replace the image, title, and hrefs with your tracks. You can embed Spotify/YouTube links in the iframe below. -->
+            <div class="track">
+              <img src="./images/cover1.jpg" alt="Track cover" onerror="this.style.background='#25313a'">
+              <div class="meta">
+                <b>Track Title One</b>
+                <span class="muted">Single — 2025</span>
+                <div style="margin-top:6px"><a class="btn" href="#" target="_blank">Play</a></div>
+              </div>
+            </div>
+
+            <div class="track">
+              <img src="./images/cover2.jpg" alt="Track cover" onerror="this.style.background='#2b2328'">
+              <div class="meta">
+                <b>Track Title Two</b>
+                <span class="muted">EP — 2024</span>
+                <div style="margin-top:6px"><a class="btn" href="#" target="_blank">Play</a></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Example: Spotify embedded player. Replace src with your Spotify embed link or YouTube embed. -->
+          <div style="margin-top:12px">
+            <iframe class="responsive" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          </div>
+        </section>
+
+        <section class="card" style="margin-top:18px">
+          <h2 class="section-title">Gallery</h2>
+          <div class="gallery">
+            <img src="./images/photo1.jpg" alt="photo1" onerror="this.style.background='#172933'">
+            <img src="./images/photo2.jpg" alt="photo2" onerror="this.style.background='#1b2b2f'">
+            <img src="./images/photo3.jpg" alt="photo3" onerror="this.style.background='#21242a'">
+            <img src="./images/photo4.jpg" alt="photo4" onerror="this.style.background='#2a1f25'">
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Sidebar -->
+      <aside>
+        <div class="card">
+          <h3 class="section-title">Upcoming Shows</h3>
+          <ul style="padding-left:16px;margin:12px 0;color:var(--muted)">
+            <li><strong>Oct 25, 2025</strong> — The Blue Stage, Toronto</li>
+            <li><strong>Nov 8, 2025</strong> — Festival Park, Montreal</li>
+          </ul>
+          <a class="btn" href="#">See all shows</a>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 class="section-title">Press Kit</h3>
+          <p style="color:var(--muted);font-size:14px">Download live photos, bio, and hi-res press images.</p>
+          <a class="btn btn-primary" href="#">Download ZIP</a>
+        </div>
+
+        <div class="card" style="margin-top:16px">
+          <h3 class="section-title">Contact</h3>
+          <p style="color:var(--muted);font-size:14px;margin-bottom:8px">For bookings & press:</p>
+          <div class="contact-row"><a class="btn btn-primary" href="mailto:you@example.com">Email</a></div>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <div>© <span id="year"></span> YOUR_NAME • All rights reserved.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Small script: update year automatically
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
