@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     /* --- Original styles kept exactly except hero modifications below --- */
-    :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981}
+    :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981; --hero-height:520px;}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
     .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
@@ -20,7 +20,7 @@
 
     main{padding-top:96px}
 
-    /* HERO - modified to be full-width collage background with portrait largest and text in black box */
+    /* HERO - full-bleed, fixed carousel background (keeps aspect ratio), tall portrait with hover fade */
     .hero{
       /* make full-bleed hero that still aligns content with page width */
       width:100%;
@@ -28,62 +28,94 @@
       margin:56px 0 40px;
       display:grid;
       /* larger left column for portrait, right column for black text box */
-      grid-template-columns: 680px 1fr;
+      grid-template-columns: 700px 1fr;
       gap:28px;
       align-items:center;
       padding:28px 16px;
       position:relative;
       overflow:visible;
       transition:transform 0.3s, opacity 0.3s;
-      /* keep a modest min-height so the collage shows nicely */
-      min-height:460px;
+      /* use CSS variable for hero height so bg can match it */
+      min-height:var(--hero-height);
+      z-index: 2; /* content above fixed background */
+      background: transparent;
     }
 
-    /* full-width collage background using multiple background images.
-       Uses some of the images already present in your project: avatar.jpeg, cover1.jpg, cover2.jpg.
-       If those paths differ, adjust the URLs accordingly. */
-    .hero::before{
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      height: 460px;
-      z-index: 0;
-      pointer-events: none;
-      background-image:
-        url('./images/photo1.jpg'),
-        url('./images/photo9.jpg'),
-        url('./images/photo5.jpg'),
-        url('./images/photo6.jpg'),
-        url('./images/photo7.jpg');
-      /* size: largest image (avatar) in center, others take side slices */
-      background-size: 30% 100%, 25% 100%, 40% 100%;
-      background-position: left top, right top, center top;
-      background-repeat: no-repeat;
-      /* slight dark overlay for contrast with text */
-      filter: saturate(0.95) brightness(0.55);
+    /* Fixed, full-width background carousel that stays while you scroll.
+       It uses native <img> elements (not CSS background-image) so each image keeps its own aspect ratio.
+       The .track is duplicated for a seamless loop. */
+    .hero-bg{
+      position:fixed;
+      left:0;
+      right:0;
+      /* place the fixed bg exactly where the hero sits in the viewport:
+         main has padding-top:96px and hero margin-top:56px -> top = 96 + 56 = 152px */
+      top: calc(96px + 56px);
+      height: var(--hero-height);
+      z-index: 1; /* behind hero content */
+      overflow: hidden;
+      pointer-events: none; /* don't block interaction */
+      display:block;
+      background: transparent;
     }
+
+    .hero-bg .inner-track{
+      position:absolute;
+      left:0;
+      top:0;
+      height:100%;
+      display:flex;
+      align-items: center;
+      will-change: transform;
+      /* animation (duration adjustable in JS/CSS) */
+      animation: scroll-left 28s linear infinite;
+    }
+
+    /* keyframes will move the whole duplicated row leftwards to create continuous scroll */
+    @keyframes scroll-left {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); } /* -50% because the track is duplicated; this yields seamless loop */
+    }
+
+    /* each image keeps its original ratio: height fills the hero height, width auto */
+    .hero-bg .inner-track img{
+      height:100%;
+      width:auto;
+      object-fit:cover;
+      display:block;
+      margin-right:8px;
+      border-radius:6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    /* duplicate wrapper to ensure seamless looping (we'll duplicate images in HTML) */
+    .hero-bg .inner-track.duplicate { left: 50%; }
 
     /* portrait remains the main, largest image of the collage and sits above the background */
     .hero .portrait{
       width:100%;
-      height:420px;
-      max-width:760px;
+      height:calc(var(--hero-height) - 20px); /* slightly shorter than bg to create padding */
+      max-width:780px;
       border-radius:12px;
       object-fit:cover;
       background:#122429;
-      transition:transform 0.3s, opacity 0.3s;
-      z-index: 2; /* sit above the ::before collage */
+      transition:transform 0.3s, opacity 0.25s;
+      z-index: 3; /* sit above the fixed bg */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* fade portrait on hover */
+    .hero .portrait:hover{
+      opacity:0.82;
+      cursor:default;
     }
 
     /* hero text boxed in a solid black panel to the right of the portrait */
     .hero .hero-text{
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
-      z-index: 3;
+      z-index: 4;
       background: rgba(0,0,0,0.95);
       border-radius:12px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -153,10 +185,14 @@
         padding:20px 16px;
         min-height: auto;
       }
-      .hero::before{ height:360px; background-size: 45% 100%, 45% 100%, 100% 100%; background-position: left top, right top, center top; filter: saturate(0.95) brightness(0.45); }
+      /* adjust fixed bg height on small screens */
+      .hero-bg{ top: calc(96px + 20px); height: 360px; }
+      .hero-bg .inner-track img{ height:100%; }
       .hero .portrait{height:320px; max-width:100%; margin-bottom:12px;}
       .hero .hero-text{align-self:stretch; max-width:none;}
       .topnav .inner{width:calc(100% - 32px)}
+      /* slow down animation a bit on small screens for readability */
+      .hero-bg .inner-track{ animation-duration: 36s; }
     }
   </style>
 </head>
@@ -176,6 +212,30 @@
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
+      <!-- Fixed background carousel (images listed here — update paths if needed).
+           Duplicate the sequence inside the second .inner-track to create a seamless loop. -->
+      <div class="hero-bg" aria-hidden="true">
+        <div class="inner-track" id="heroTrack">
+          <!-- add your photos here in the order you want them to scroll -->
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo9.jpg" alt="">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+          <!-- second copy (will be duplicated by JS as well; duplication present here for robustness) -->
+        </div>
+        <!-- duplicate copy for seamless loop (JS also ensures duplication below) -->
+        <div class="inner-track duplicate" id="heroTrackCopy">
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo9.jpg" alt="">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+        </div>
+      </div>
+
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
       <div class="hero-text">
         <h1>Julian Shively</h1>
@@ -326,6 +386,66 @@ animateElements(tracks, 100);
 animateElements(shows, 100);
 animateElements(sections, 50);
 
+// --- Background carousel handling ---
+// This duplicates the hero track at runtime (if not already duplicated) so the CSS loop is seamless.
+// It also adjusts animation duration dynamically based on total width (keeps scroll speed comfortable).
+(function setupHeroCarousel(){
+  const track = document.getElementById('heroTrack');
+  const copy = document.getElementById('heroTrackCopy');
+
+  // If there are no images, do nothing.
+  if(!track) return;
+
+  // If the copy is empty, clone the nodes into it for seamless loop.
+  if(copy && copy.children.length === 0){
+    Array.from(track.children).forEach(n => {
+      copy.appendChild(n.cloneNode(true));
+    });
+  }
+
+  // If the track hasn't been duplicated in DOM (robustness), duplicate it now.
+  // This ensures inner content total width >= 2x viewport for smooth animation.
+  const ensureDup = () => {
+    const heroBg = document.querySelector('.hero-bg');
+    const inner = track.parentElement;
+    // already have duplicate element (#heroTrackCopy) above in markup; skip complex checks.
+  };
+
+  // Dynamically set animation-duration based on total width so the visual scroll speed feels consistent.
+  const setAnimSpeed = () => {
+    const allImgs = track.parentElement.querySelectorAll('.inner-track img');
+    let totalWidth = 0;
+    // calculate combined width of images (they should have loaded)
+    allImgs.forEach(img => totalWidth += img.getBoundingClientRect().width + 8); // include margin-right
+    // fallback if images not loaded yet
+    if(totalWidth < 100) totalWidth = window.innerWidth * 2;
+    // desired pixels per second (adjust this to taste)
+    const pxPerSecond = 120; // speed
+    // compute duration so full 50% translate covers half the duplicated width
+    const duration = Math.max(12, Math.round((totalWidth / 2) / pxPerSecond));
+    // apply to both tracks
+    document.querySelectorAll('.hero-bg .inner-track').forEach(el => {
+      el.style.animationDuration = duration + 's';
+    });
+  };
+
+  // Run on load and on window resize (images might not be loaded yet)
+  window.addEventListener('load', setAnimSpeed);
+  window.addEventListener('resize', () => {
+    // small debounce
+    clearTimeout(window._heroResizeTimer);
+    window._heroResizeTimer = setTimeout(setAnimSpeed, 200);
+  });
+
+  // also try again after images load
+  Array.from(track.querySelectorAll('img')).forEach(img => {
+    if(!img.complete) img.addEventListener('load', setAnimSpeed);
+  });
+
+  ensureDup();
+  setAnimSpeed();
+})();
+
 // --- YouTube Slider Auto Play Centered Video with Fade ---
 let tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
@@ -369,15 +489,18 @@ function playCenteredVideo() {
   });
 }
 
-slider.addEventListener('scroll', () => {
-  requestAnimationFrame(playCenteredVideo);
-});
+if (slider) {
+  slider.addEventListener('scroll', () => {
+    requestAnimationFrame(playCenteredVideo);
+  });
+}
 window.addEventListener('load', () => {
-  setTimeout(playCenteredVideo, 1000);
+  setTimeout(()=>{ if (typeof playCenteredVideo === 'function') playCenteredVideo(); }, 1000);
 });
   </script>
 </body>
 </html>
+
 
 
 
