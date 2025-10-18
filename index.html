@@ -39,24 +39,28 @@
       min-height:var(--hero-height);
       z-index: 2; /* content above fixed background */
       background: transparent;
+      transform-style: preserve-3d;
     }
 
     /* Fixed, full-width background carousel that stays while you scroll.
-       It uses native <img> elements (not CSS background-image) so each image keeps its own aspect ratio.
-       The .track is duplicated for a seamless loop. */
+       Uses <img> elements (height:100%, width:auto) so aspect ratios are preserved.
+       The hero-bg is pinned to the viewport using a dynamic top offset (calculated in JS)
+       and is forced to full opacity so it never fades away when hero transforms. */
     .hero-bg{
       position:fixed;
       left:0;
       right:0;
-      /* place the fixed bg exactly where the hero sits in the viewport:
-         main has padding-top:96px and hero margin-top:56px -> top = 96 + 56 = 152px */
-      top: calc(96px + 56px);
+      top:96px; /* default top; JS will recalc to align perfectly with hero */
       height: var(--hero-height);
       z-index: 1; /* behind hero content */
       overflow: hidden;
       pointer-events: none; /* don't block interaction */
       display:block;
       background: transparent;
+      opacity: 1 !important; /* prevent any accidental fading */
+      will-change: transform;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
     }
 
     .hero-bg .inner-track{
@@ -71,10 +75,10 @@
       animation: scroll-left 28s linear infinite;
     }
 
-    /* keyframes will move the whole duplicated row leftwards to create continuous scroll */
+    /* keyframes move the duplicated row leftwards for continuous loop */
     @keyframes scroll-left {
       0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); } /* -50% because the track is duplicated; this yields seamless loop */
+      100% { transform: translateX(-50%); } /* -50% because we duplicate the track */
     }
 
     /* each image keeps its original ratio: height fills the hero height, width auto */
@@ -86,9 +90,9 @@
       margin-right:8px;
       border-radius:6px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+      transform: translateZ(0); /* avoid subpixel jitter */
     }
 
-    /* duplicate wrapper to ensure seamless looping (we'll duplicate images in HTML) */
     .hero-bg .inner-track.duplicate { left: 50%; }
 
     /* portrait remains the main, largest image of the collage and sits above the background */
@@ -214,7 +218,7 @@
     <section class="hero" aria-label="Hero">
       <!-- Fixed background carousel (images listed here — update paths if needed).
            Duplicate the sequence inside the second .inner-track to create a seamless loop. -->
-      <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg" aria-hidden="true" id="heroBg">
         <div class="inner-track" id="heroTrack">
           <!-- add your photos here in the order you want them to scroll -->
           <img src="./images/photo1.jpg" alt="">
@@ -223,9 +227,7 @@
           <img src="./images/photo6.jpg" alt="">
           <img src="./images/photo7.jpg" alt="">
           <img src="./images/photo8.jpg" alt="">
-          <!-- second copy (will be duplicated by JS as well; duplication present here for robustness) -->
         </div>
-        <!-- duplicate copy for seamless loop (JS also ensures duplication below) -->
         <div class="inner-track duplicate" id="heroTrackCopy">
           <img src="./images/photo1.jpg" alt="">
           <img src="./images/photo9.jpg" alt="">
@@ -388,61 +390,65 @@ animateElements(sections, 50);
 
 // --- Background carousel handling ---
 // This duplicates the hero track at runtime (if not already duplicated) so the CSS loop is seamless.
-// It also adjusts animation duration dynamically based on total width (keeps scroll speed comfortable).
+// It also adjusts animation duration dynamically based on total width so the scroll speed feels consistent.
+// Additionally, it calculates the fixed top offset so the hero-bg remains vertically aligned and DOES NOT move/fade while scrolling.
 (function setupHeroCarousel(){
+  const heroElem = document.querySelector('.hero');
+  const heroBg = document.getElementById('heroBg');
   const track = document.getElementById('heroTrack');
   const copy = document.getElementById('heroTrackCopy');
 
-  // If there are no images, do nothing.
-  if(!track) return;
+  if(!track || !heroBg || !heroElem) return;
 
-  // If the copy is empty, clone the nodes into it for seamless loop.
+  // if copy is empty, clone the track's images into it
   if(copy && copy.children.length === 0){
     Array.from(track.children).forEach(n => {
       copy.appendChild(n.cloneNode(true));
     });
   }
 
-  // If the track hasn't been duplicated in DOM (robustness), duplicate it now.
-  // This ensures inner content total width >= 2x viewport for smooth animation.
-  const ensureDup = () => {
-    const heroBg = document.querySelector('.hero-bg');
-    const inner = track.parentElement;
-    // already have duplicate element (#heroTrackCopy) above in markup; skip complex checks.
-  };
+  // Ensure the hero-bg top is aligned with the hero's position in the viewport on load/resize.
+  // We set the hero-bg 'top' to the heroElement's boundingClientRect.top (distance from viewport top),
+  // clamped so it doesn't go under the topnav. This is only done on load/resize (not on scroll),
+  // so the background remains fixed in the viewport and won't move vertically with page scroll.
+  function alignHeroBgTop(){
+    const rect = heroElem.getBoundingClientRect();
+    // rect.top is the hero's top relative to viewport.
+    // But hero is initially below the fixed topnav + main padding; we want to keep the bg visually behind hero.
+    // If rect.top is negative (hero scrolled up), keep a sensible min top (nav height).
+    const navHeight = 64; // matches .topnav height
+    let topValue = Math.max(rect.top, navHeight + 8); // slight gap
+    // set style
+    heroBg.style.top = Math.round(topValue) + 'px';
+  }
 
-  // Dynamically set animation-duration based on total width so the visual scroll speed feels consistent.
-  const setAnimSpeed = () => {
+  // compute animation duration based on total width of images
+  function setAnimSpeed(){
     const allImgs = track.parentElement.querySelectorAll('.inner-track img');
     let totalWidth = 0;
-    // calculate combined width of images (they should have loaded)
-    allImgs.forEach(img => totalWidth += img.getBoundingClientRect().width + 8); // include margin-right
-    // fallback if images not loaded yet
+    allImgs.forEach(img => totalWidth += (img.getBoundingClientRect().width || 0) + 8);
     if(totalWidth < 100) totalWidth = window.innerWidth * 2;
-    // desired pixels per second (adjust this to taste)
-    const pxPerSecond = 120; // speed
-    // compute duration so full 50% translate covers half the duplicated width
-    const duration = Math.max(12, Math.round((totalWidth / 2) / pxPerSecond));
-    // apply to both tracks
+    const pxPerSecond = 120;
+    const duration = Math.max(10, Math.round((totalWidth / 2) / pxPerSecond));
     document.querySelectorAll('.hero-bg .inner-track').forEach(el => {
       el.style.animationDuration = duration + 's';
     });
-  };
+  }
 
-  // Run on load and on window resize (images might not be loaded yet)
-  window.addEventListener('load', setAnimSpeed);
+  // Run on load and on resize
+  window.addEventListener('load', () => { alignHeroBgTop(); setAnimSpeed(); });
   window.addEventListener('resize', () => {
-    // small debounce
     clearTimeout(window._heroResizeTimer);
-    window._heroResizeTimer = setTimeout(setAnimSpeed, 200);
+    window._heroResizeTimer = setTimeout(() => { alignHeroBgTop(); setAnimSpeed(); }, 180);
   });
 
-  // also try again after images load
+  // Also try again after each image loads (to get correct widths)
   Array.from(track.querySelectorAll('img')).forEach(img => {
-    if(!img.complete) img.addEventListener('load', setAnimSpeed);
+    if(!img.complete) img.addEventListener('load', () => { setAnimSpeed(); alignHeroBgTop(); });
   });
 
-  ensureDup();
+  // immediate attempt
+  alignHeroBgTop();
   setAnimSpeed();
 })();
 
@@ -500,6 +506,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
