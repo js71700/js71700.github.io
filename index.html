@@ -7,7 +7,7 @@
   <meta name="description" content="Julian Shively — musician portfolio">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* --- Original styles kept exactly --- */
+    /* --- Original styles kept exactly except hero modifications below --- */
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
@@ -19,9 +19,77 @@
     .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
 
     main{padding-top:96px}
-    .hero{max-width:1100px;margin:56px auto 40px;display:grid;grid-template-columns:420px 1fr;gap:28px;align-items:center;padding:28px;/* Removed background box */transition:transform 0.3s, opacity 0.3s;}
-    .hero .portrait{width:100%;height:420px;border-radius:12px;object-fit:cover;background:#122429;transition:transform 0.3s, opacity 0.3s;}
-    .hero .hero-text{padding:6px 10px;transition:transform 0.3s, opacity 0.3s;}
+
+    /* HERO - modified to be full-width collage background with portrait largest and text in black box */
+    .hero{
+      /* make full-bleed hero that still aligns content with page width */
+      width:100%;
+      max-width:none;
+      margin:56px 0 40px;
+      display:grid;
+      /* larger left column for portrait, right column for black text box */
+      grid-template-columns: 680px 1fr;
+      gap:28px;
+      align-items:center;
+      padding:28px 16px;
+      position:relative;
+      overflow:visible;
+      transition:transform 0.3s, opacity 0.3s;
+      /* keep a modest min-height so the collage shows nicely */
+      min-height:460px;
+    }
+
+    /* full-width collage background using multiple background images.
+       Uses some of the images already present in your project: avatar.jpeg, cover1.jpg, cover2.jpg.
+       If those paths differ, adjust the URLs accordingly. */
+    .hero::before{
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 460px;
+      z-index: 0;
+      pointer-events: none;
+      background-image:
+        url('./images/cover2.jpg'),
+        url('./images/cover1.jpg'),
+        url('./avatar.jpeg');
+      /* size: largest image (avatar) in center, others take side slices */
+      background-size: 30% 100%, 25% 100%, 40% 100%;
+      background-position: left top, right top, center top;
+      background-repeat: no-repeat;
+      /* slight dark overlay for contrast with text */
+      filter: saturate(0.95) brightness(0.55);
+    }
+
+    /* portrait remains the main, largest image of the collage and sits above the background */
+    .hero .portrait{
+      width:100%;
+      height:420px;
+      max-width:760px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#122429;
+      transition:transform 0.3s, opacity 0.3s;
+      z-index: 2; /* sit above the ::before collage */
+      box-shadow: 0 18px 40px rgba(2,6,10,0.7);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    /* hero text boxed in a solid black panel to the right of the portrait */
+    .hero .hero-text{
+      padding:20px;
+      transition:transform 0.3s, opacity 0.3s;
+      z-index: 3;
+      background: rgba(0,0,0,0.95);
+      border-radius:12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      color: #ffffff;
+      align-self: start;
+      max-width: 520px;
+    }
+
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
     .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
     .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
@@ -76,7 +144,18 @@
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
-    @media (max-width:1000px){.hero{grid-template-columns:1fr;}.topnav .inner{width:calc(100% - 32px)} }
+    @media (max-width:1000px){
+      /* stack portrait and text on smaller screens; keep hero full-bleed but align content */
+      .hero{
+        grid-template-columns:1fr;
+        padding:20px 16px;
+        min-height: auto;
+      }
+      .hero::before{ height:360px; background-size: 45% 100%, 45% 100%, 100% 100%; background-position: left top, right top, center top; filter: saturate(0.95) brightness(0.45); }
+      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px;}
+      .hero .hero-text{align-self:stretch; max-width:none;}
+      .topnav .inner{width:calc(100% - 32px)}
+    }
   </style>
 </head>
 <body>
@@ -297,6 +376,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
