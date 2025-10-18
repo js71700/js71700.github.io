@@ -22,66 +22,66 @@
 
     /* HERO - full-bleed, fixed carousel background (keeps aspect ratio), tall portrait with hover fade */
     .hero{
-      /* make full-bleed hero that still aligns content with page width */
+      /* full-bleed layout */
       width:100%;
       max-width:none;
       margin:56px 0 40px;
       display:grid;
-      /* larger left column for portrait, right column for black text box */
-      grid-template-columns: 700px 1fr;
+      /* text left, portrait right (portrait shown on right by placing columns 1fr 700px) */
+      grid-template-columns: 1fr 700px;
       gap:28px;
       align-items:center;
       padding:28px 16px;
       position:relative;
       overflow:visible;
       transition:transform 0.3s, opacity 0.3s;
-      /* use CSS variable for hero height so bg can match it */
       min-height:var(--hero-height);
       z-index: 2; /* content above fixed background */
       background: transparent;
-      transform-style: preserve-3d;
     }
 
-    /* Fixed, full-width background carousel that stays while you scroll.
-       Uses <img> elements (height:100%, width:auto) so aspect ratios are preserved.
-       The hero-bg is pinned to the viewport using a dynamic top offset (calculated in JS)
-       and is forced to full opacity so it never fades away when hero transforms. */
+    /* IMPORTANT: hero-bg is OUTSIDE the .hero element (see markup). It is fixed to the viewport
+       and calculated to sit visually behind the hero. Because it's not a child, hero opacity/transform
+       will not affect it. */
     .hero-bg{
       position:fixed;
       left:0;
       right:0;
-      top:96px; /* default top; JS will recalc to align perfectly with hero */
+      top:96px; /* default top; JS will set precise top on load/resize */
       height: var(--hero-height);
-      z-index: 1; /* behind hero content */
+      z-index: 0; /* behind page content */
       overflow: hidden;
-      pointer-events: none; /* don't block interaction */
+      pointer-events: none;
       display:block;
       background: transparent;
-      opacity: 1 !important; /* prevent any accidental fading */
+      opacity: 1 !important; /* never fade */
       will-change: transform;
       backface-visibility: hidden;
       -webkit-backface-visibility: hidden;
     }
 
+    /* two inner tracks (duplicated) for seamless/continuous auto scroll.
+       Animation alternates so the scrolling goes left then right repeatedly. */
     .hero-bg .inner-track{
       position:absolute;
       left:0;
       top:0;
       height:100%;
       display:flex;
-      align-items: center;
+      align-items:center;
       will-change: transform;
-      /* animation (duration adjustable in JS/CSS) */
-      animation: scroll-left 28s linear infinite;
+      animation-name: scroll-oscillate;
+      animation-duration: 28s;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
     }
 
-    /* keyframes move the duplicated row leftwards for continuous loop */
-    @keyframes scroll-left {
+    @keyframes scroll-oscillate {
       0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); } /* -50% because we duplicate the track */
+      100% { transform: translateX(-50%); }
     }
 
-    /* each image keeps its original ratio: height fills the hero height, width auto */
     .hero-bg .inner-track img{
       height:100%;
       width:auto;
@@ -90,21 +90,22 @@
       margin-right:8px;
       border-radius:6px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-      transform: translateZ(0); /* avoid subpixel jitter */
+      transform: translateZ(0);
     }
 
     .hero-bg .inner-track.duplicate { left: 50%; }
 
-    /* portrait remains the main, largest image of the collage and sits above the background */
+    /* PORTRAIT placed in the right column (grid-column:2) so it appears on the right side of the text */
     .hero .portrait{
+      grid-column: 2;         /* put portrait in the second column */
       width:100%;
-      height:calc(var(--hero-height) - 20px); /* slightly shorter than bg to create padding */
+      height:calc(var(--hero-height) - 20px);
       max-width:780px;
       border-radius:12px;
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index: 3; /* sit above the fixed bg */
+      z-index: 3; /* above fixed background */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
     }
@@ -115,16 +116,17 @@
       cursor:default;
     }
 
-    /* hero text boxed in a solid black panel to the right of the portrait */
+    /* HERO TEXT is in the left column, vertically centered and sharp corners */
     .hero .hero-text{
+      grid-column: 1;      /* left column */
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
       z-index: 4;
       background: rgba(0,0,0,0.95);
-      border-radius:12px;
+      border-radius: 0;    /* sharp corners as requested */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       color: #ffffff;
-      align-self: start;
+      align-self: center;  /* vertical centering with portrait */
       max-width: 520px;
     }
 
@@ -189,13 +191,11 @@
         padding:20px 16px;
         min-height: auto;
       }
-      /* adjust fixed bg height on small screens */
       .hero-bg{ top: calc(96px + 20px); height: 360px; }
       .hero-bg .inner-track img{ height:100%; }
-      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px;}
-      .hero .hero-text{align-self:stretch; max-width:none;}
+      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column: auto;}
+      .hero .hero-text{align-self:stretch; max-width:none; grid-column: auto; border-radius:0;}
       .topnav .inner{width:calc(100% - 32px)}
-      /* slow down animation a bit on small screens for readability */
       .hero-bg .inner-track{ animation-duration: 36s; }
     }
   </style>
@@ -213,31 +213,29 @@
     </div>
   </div>
 
+  <!-- HERO BACKGROUND is placed outside .hero so it will NOT be affected by .hero opacity/transform -->
+  <div class="hero-bg" aria-hidden="true" id="heroBg">
+    <div class="inner-track" id="heroTrack">
+      <img src="./images/photo1.jpg" alt="">
+      <img src="./images/photo9.jpg" alt="">
+      <img src="./images/photo5.jpg" alt="">
+      <img src="./images/photo6.jpg" alt="">
+      <img src="./images/photo7.jpg" alt="">
+      <img src="./images/photo8.jpg" alt="">
+    </div>
+    <div class="inner-track duplicate" id="heroTrackCopy">
+      <img src="./images/photo1.jpg" alt="">
+      <img src="./images/photo9.jpg" alt="">
+      <img src="./images/photo5.jpg" alt="">
+      <img src="./images/photo6.jpg" alt="">
+      <img src="./images/photo7.jpg" alt="">
+      <img src="./images/photo8.jpg" alt="">
+    </div>
+  </div>
+
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
-      <!-- Fixed background carousel (images listed here — update paths if needed).
-           Duplicate the sequence inside the second .inner-track to create a seamless loop. -->
-      <div class="hero-bg" aria-hidden="true" id="heroBg">
-        <div class="inner-track" id="heroTrack">
-          <!-- add your photos here in the order you want them to scroll -->
-          <img src="./images/photo1.jpg" alt="">
-          <img src="./images/photo9.jpg" alt="">
-          <img src="./images/photo5.jpg" alt="">
-          <img src="./images/photo6.jpg" alt="">
-          <img src="./images/photo7.jpg" alt="">
-          <img src="./images/photo8.jpg" alt="">
-        </div>
-        <div class="inner-track duplicate" id="heroTrackCopy">
-          <img src="./images/photo1.jpg" alt="">
-          <img src="./images/photo9.jpg" alt="">
-          <img src="./images/photo5.jpg" alt="">
-          <img src="./images/photo6.jpg" alt="">
-          <img src="./images/photo7.jpg" alt="">
-          <img src="./images/photo8.jpg" alt="">
-        </div>
-      </div>
-
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
       <div class="hero-text">
         <h1>Julian Shively</h1>
@@ -389,9 +387,9 @@ animateElements(shows, 100);
 animateElements(sections, 50);
 
 // --- Background carousel handling ---
-// This duplicates the hero track at runtime (if not already duplicated) so the CSS loop is seamless.
-// It also adjusts animation duration dynamically based on total width so the scroll speed feels consistent.
-// Additionally, it calculates the fixed top offset so the hero-bg remains vertically aligned and DOES NOT move/fade while scrolling.
+// The hero-bg is outside .hero, so it's not affected by hero opacity/transform.
+// We duplicate images into the second track if needed and compute animation duration
+// and initial fixed top offset so the background remains static in the viewport.
 (function setupHeroCarousel(){
   const heroElem = document.querySelector('.hero');
   const heroBg = document.getElementById('heroBg');
@@ -400,29 +398,22 @@ animateElements(sections, 50);
 
   if(!track || !heroBg || !heroElem) return;
 
-  // if copy is empty, clone the track's images into it
+  // If the copy is empty, clone the track images into it
   if(copy && copy.children.length === 0){
-    Array.from(track.children).forEach(n => {
-      copy.appendChild(n.cloneNode(true));
-    });
+    Array.from(track.children).forEach(n => copy.appendChild(n.cloneNode(true)));
   }
 
-  // Ensure the hero-bg top is aligned with the hero's position in the viewport on load/resize.
-  // We set the hero-bg 'top' to the heroElement's boundingClientRect.top (distance from viewport top),
-  // clamped so it doesn't go under the topnav. This is only done on load/resize (not on scroll),
-  // so the background remains fixed in the viewport and won't move vertically with page scroll.
+  // Align heroBg top to the hero's position in the viewport on load/resize.
+  // Use rect.top (viewport coord) so heroBg is fixed at that vertical spot and will not move on scroll.
   function alignHeroBgTop(){
     const rect = heroElem.getBoundingClientRect();
-    // rect.top is the hero's top relative to viewport.
-    // But hero is initially below the fixed topnav + main padding; we want to keep the bg visually behind hero.
-    // If rect.top is negative (hero scrolled up), keep a sensible min top (nav height).
-    const navHeight = 64; // matches .topnav height
-    let topValue = Math.max(rect.top, navHeight + 8); // slight gap
-    // set style
+    const navHeight = 64;
+    // Clamp value so bg doesn't hide behind topnav
+    let topValue = Math.max(rect.top, navHeight + 8);
     heroBg.style.top = Math.round(topValue) + 'px';
   }
 
-  // compute animation duration based on total width of images
+  // Set animation duration based on combined image widths so visual speed remains comfortable.
   function setAnimSpeed(){
     const allImgs = track.parentElement.querySelectorAll('.inner-track img');
     let totalWidth = 0;
@@ -442,12 +433,12 @@ animateElements(sections, 50);
     window._heroResizeTimer = setTimeout(() => { alignHeroBgTop(); setAnimSpeed(); }, 180);
   });
 
-  // Also try again after each image loads (to get correct widths)
+  // Recalc when images finish loading
   Array.from(track.querySelectorAll('img')).forEach(img => {
     if(!img.complete) img.addEventListener('load', () => { setAnimSpeed(); alignHeroBgTop(); });
   });
 
-  // immediate attempt
+  // initial attempt
   alignHeroBgTop();
   setAnimSpeed();
 })();
@@ -506,6 +497,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
