@@ -20,36 +20,40 @@
 
     main{padding-top:96px}
 
-    /* HERO - full-bleed, fixed carousel background (keeps aspect ratio), tall portrait with hover fade */
+    /* HERO - in-flow sticky background (collage) + hero content */
     .hero{
-      /* full-bleed layout */
       width:100%;
       max-width:none;
       margin:56px 0 40px;
       display:grid;
-      /* text left, portrait right (portrait shown on right by placing columns 1fr 700px) */
+      /* text left, portrait right */
       grid-template-columns: 1fr 700px;
       gap:28px;
-      align-items:center;
+      align-items:center; /* vertical centering for cells */
       padding:28px 16px;
       position:relative;
       overflow:visible;
       transition:transform 0.3s, opacity 0.3s;
       min-height:var(--hero-height);
-      z-index: 2; /* content above fixed background */
+      z-index: 4; /* content above the hero-bg which is z-index:3 */
       background: transparent;
     }
 
-    /* IMPORTANT: hero-bg is OUTSIDE the .hero element (see markup). It is fixed to the viewport
-       and calculated to sit visually behind the hero. Because it's not a child, hero opacity/transform
-       will not affect it. */
+    /*
+      hero-bg is in-flow (a direct child of <main> placed BEFORE the .hero).
+      It is sticky: it remains pinned at the top of the viewport while the user scrolls
+      through main's content, so it will remain visible and overlap subsequent sections
+      (like the video-slider). Because it's not a child of .hero, it will not be affected
+      by .hero transforms/opacity.
+    */
     .hero-bg{
-      position:fixed;
+      position: -webkit-sticky;
+      position: sticky;
       left:0;
       right:0;
-      top:96px; /* default top; JS will set precise top on load/resize */
+      top:96px; /* sits beneath the topnav */
       height: var(--hero-height);
-      z-index: 0; /* behind page content */
+      z-index: 3; /* sits above video links (which are default z-index), but behind hero content */
       overflow: hidden;
       pointer-events: none;
       display:block;
@@ -60,8 +64,7 @@
       -webkit-backface-visibility: hidden;
     }
 
-    /* two inner tracks (duplicated) for seamless/continuous auto scroll.
-       Animation alternates so the scrolling goes left then right repeatedly. */
+    /* inner-track duplicated for a continuous loop; animation alternates so it scrolls both ways */
     .hero-bg .inner-track{
       position:absolute;
       left:0;
@@ -95,9 +98,9 @@
 
     .hero-bg .inner-track.duplicate { left: 50%; }
 
-    /* PORTRAIT placed in the right column (grid-column:2) so it appears on the right side of the text */
+    /* portrait on right column, vertically centered */
     .hero .portrait{
-      grid-column: 2;         /* put portrait in the second column */
+      grid-column: 2;
       width:100%;
       height:calc(var(--hero-height) - 20px);
       max-width:780px;
@@ -105,28 +108,28 @@
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index: 3; /* above fixed background */
+      z-index: 5; /* above hero-bg and above .hero (content) layering */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
+      align-self:center;
     }
 
-    /* fade portrait on hover */
     .hero .portrait:hover{
       opacity:0.82;
       cursor:default;
     }
 
-    /* HERO TEXT is in the left column, vertically centered and sharp corners */
+    /* hero text on left column, vertically centered, sharp corners */
     .hero .hero-text{
-      grid-column: 1;      /* left column */
+      grid-column: 1;
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
-      z-index: 4;
+      z-index: 6; /* above portrait when necessary */
       background: rgba(0,0,0,0.95);
-      border-radius: 0;    /* sharp corners as requested */
+      border-radius: 0; /* sharp corners */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       color: #ffffff;
-      align-self: center;  /* vertical centering with portrait */
+      align-self: center; /* vertical centering with portrait */
       max-width: 520px;
     }
 
@@ -143,6 +146,9 @@
     .track{display:flex;align-items:center;gap:20px;padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);opacity:0;transform:translateX(-50px);transition:all 0.6s ease-out;}
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
+
+    /* ensure video-slider is below the hero-bg (so hero-bg appears above videos) */
+    .video-slider { position: relative; z-index: 1; }
 
     .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
     .shows-list{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
@@ -193,8 +199,8 @@
       }
       .hero-bg{ top: calc(96px + 20px); height: 360px; }
       .hero-bg .inner-track img{ height:100%; }
-      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column: auto;}
-      .hero .hero-text{align-self:stretch; max-width:none; grid-column: auto; border-radius:0;}
+      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column:auto;}
+      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0;}
       .topnav .inner{width:calc(100% - 32px)}
       .hero-bg .inner-track{ animation-duration: 36s; }
     }
@@ -213,27 +219,27 @@
     </div>
   </div>
 
-  <!-- HERO BACKGROUND is placed outside .hero so it will NOT be affected by .hero opacity/transform -->
-  <div class="hero-bg" aria-hidden="true" id="heroBg">
-    <div class="inner-track" id="heroTrack">
-      <img src="./images/photo1.jpg" alt="">
-      <img src="./images/photo9.jpg" alt="">
-      <img src="./images/photo5.jpg" alt="">
-      <img src="./images/photo6.jpg" alt="">
-      <img src="./images/photo7.jpg" alt="">
-      <img src="./images/photo8.jpg" alt="">
-    </div>
-    <div class="inner-track duplicate" id="heroTrackCopy">
-      <img src="./images/photo1.jpg" alt="">
-      <img src="./images/photo9.jpg" alt="">
-      <img src="./images/photo5.jpg" alt="">
-      <img src="./images/photo6.jpg" alt="">
-      <img src="./images/photo7.jpg" alt="">
-      <img src="./images/photo8.jpg" alt="">
-    </div>
-  </div>
-
   <main>
+    <!-- HERO BACKGROUND placed in-flow inside main (before .hero), sticky so it remains visible and overlays video section -->
+    <div class="hero-bg" aria-hidden="true" id="heroBg">
+      <div class="inner-track" id="heroTrack">
+        <img src="./images/photo1.jpg" alt="">
+        <img src="./images/photo9.jpg" alt="">
+        <img src="./images/photo5.jpg" alt="">
+        <img src="./images/photo6.jpg" alt="">
+        <img src="./images/photo7.jpg" alt="">
+        <img src="./images/photo8.jpg" alt="">
+      </div>
+      <div class="inner-track duplicate" id="heroTrackCopy">
+        <img src="./images/photo1.jpg" alt="">
+        <img src="./images/photo9.jpg" alt="">
+        <img src="./images/photo5.jpg" alt="">
+        <img src="./images/photo6.jpg" alt="">
+        <img src="./images/photo7.jpg" alt="">
+        <img src="./images/photo8.jpg" alt="">
+      </div>
+    </div>
+
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
@@ -353,6 +359,7 @@ window.addEventListener('scroll', () => {
   const scale = 1 - 0.2 * eased;
   const opacity = 1 - eased;
   const textSlide = Math.min(scroll * 0.2, 50);
+  // Keep transforms; but because hero-bg is NOT a child of .hero, it won't be affected.
   hero.style.transform = `scale(${scale})`;
   hero.style.opacity = opacity;
   heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
@@ -387,33 +394,17 @@ animateElements(shows, 100);
 animateElements(sections, 50);
 
 // --- Background carousel handling ---
-// The hero-bg is outside .hero, so it's not affected by hero opacity/transform.
-// We duplicate images into the second track if needed and compute animation duration
-// and initial fixed top offset so the background remains static in the viewport.
+// Duplicate the heroTrack images into the second track if needed, and set animation duration.
 (function setupHeroCarousel(){
-  const heroElem = document.querySelector('.hero');
-  const heroBg = document.getElementById('heroBg');
   const track = document.getElementById('heroTrack');
   const copy = document.getElementById('heroTrackCopy');
-
-  if(!track || !heroBg || !heroElem) return;
-
-  // If the copy is empty, clone the track images into it
+  if(!track) return;
   if(copy && copy.children.length === 0){
-    Array.from(track.children).forEach(n => copy.appendChild(n.cloneNode(true)));
+    Array.from(track.children).forEach(n => {
+      copy.appendChild(n.cloneNode(true));
+    });
   }
 
-  // Align heroBg top to the hero's position in the viewport on load/resize.
-  // Use rect.top (viewport coord) so heroBg is fixed at that vertical spot and will not move on scroll.
-  function alignHeroBgTop(){
-    const rect = heroElem.getBoundingClientRect();
-    const navHeight = 64;
-    // Clamp value so bg doesn't hide behind topnav
-    let topValue = Math.max(rect.top, navHeight + 8);
-    heroBg.style.top = Math.round(topValue) + 'px';
-  }
-
-  // Set animation duration based on combined image widths so visual speed remains comfortable.
   function setAnimSpeed(){
     const allImgs = track.parentElement.querySelectorAll('.inner-track img');
     let totalWidth = 0;
@@ -426,20 +417,16 @@ animateElements(sections, 50);
     });
   }
 
-  // Run on load and on resize
-  window.addEventListener('load', () => { alignHeroBgTop(); setAnimSpeed(); });
+  window.addEventListener('load', setAnimSpeed);
   window.addEventListener('resize', () => {
     clearTimeout(window._heroResizeTimer);
-    window._heroResizeTimer = setTimeout(() => { alignHeroBgTop(); setAnimSpeed(); }, 180);
+    window._heroResizeTimer = setTimeout(setAnimSpeed, 180);
   });
 
-  // Recalc when images finish loading
   Array.from(track.querySelectorAll('img')).forEach(img => {
-    if(!img.complete) img.addEventListener('load', () => { setAnimSpeed(); alignHeroBgTop(); });
+    if(!img.complete) img.addEventListener('load', setAnimSpeed);
   });
 
-  // initial attempt
-  alignHeroBgTop();
   setAnimSpeed();
 })();
 
@@ -497,6 +484,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
