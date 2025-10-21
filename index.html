@@ -20,6 +20,11 @@
 
     main{padding-top:96px}
 
+    /* Ensure every top-level child of main sits above the collage by default.
+       This creates a reliable stacking relationship so hero-bg (which is a sibling)
+       remains behind everything. */
+    main > * { position: relative; z-index: 5; }
+
     /* HERO - in-flow sticky background (collage) + hero content */
     .hero{
       width:100%;
@@ -35,16 +40,15 @@
       overflow:visible;
       transition:transform 0.3s, opacity 0.3s;
       min-height:var(--hero-height);
-      z-index: 4; /* content above the hero-bg which is z-index:3 */
+      z-index: 6; /* ensure hero content is above the main> * baseline */
       background: transparent;
     }
 
     /*
       hero-bg is in-flow (a direct child of <main> placed BEFORE the .hero).
       It is sticky: it remains pinned at the top of the viewport while the user scrolls
-      through main's content, so it will remain visible and overlap subsequent sections
-      (like the video-slider). Because it's not a child of .hero, it will not be affected
-      by .hero transforms/opacity.
+      through main's content, so it will remain visible as a background, but we force
+      it to be behind everything via z-index:0.
     */
     .hero-bg{
       position: -webkit-sticky;
@@ -53,7 +57,7 @@
       right:0;
       top:96px; /* sits beneath the topnav */
       height: var(--hero-height);
-      z-index: 3; /* sits above video links (which are default z-index), but behind hero content */
+      z-index: 0; /* BEHIND everything (main children have z-index:5+) */
       overflow: hidden;
       pointer-events: none;
       display:block;
@@ -108,7 +112,7 @@
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index: 5; /* above hero-bg and above .hero (content) layering */
+      z-index: 7; /* above hero-bg and above other main content */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
       align-self:center;
@@ -124,7 +128,7 @@
       grid-column: 1;
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
-      z-index: 6; /* above portrait when necessary */
+      z-index: 8; /* ensure text/button box is topmost in hero */
       background: rgba(0,0,0,0.95);
       border-radius: 0; /* sharp corners */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
@@ -147,8 +151,8 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* ensure video-slider is below the hero-bg (so hero-bg appears above videos) */
-    .video-slider { position: relative; z-index: 1; }
+    /* ensure video-slider is behind hero-bg? — we want collage behind everything, so video-slider stays above collage */
+    .video-slider { position: relative; z-index: 6; }
 
     .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
     .shows-list{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
@@ -192,6 +196,7 @@
 
     @media (max-width:1000px){
       /* stack portrait and text on smaller screens; keep hero full-bleed but align content */
+      main > * { z-index: 5; } /* keep main children positioned */
       .hero{
         grid-template-columns:1fr;
         padding:20px 16px;
@@ -220,7 +225,7 @@
   </div>
 
   <main>
-    <!-- HERO BACKGROUND placed in-flow inside main (before .hero), sticky so it remains visible and overlays video section -->
+    <!-- HERO BACKGROUND placed in-flow inside main (before .hero), sticky so it remains visible -->
     <div class="hero-bg" aria-hidden="true" id="heroBg">
       <div class="inner-track" id="heroTrack">
         <img src="./images/photo1.jpg" alt="">
@@ -346,7 +351,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// --- Hero scroll effect with scaling, parallax, fade, and horizontal slide-in ---
+// --- Hero scroll animation transforms are left intact but will NOT affect hero-bg (it's a sibling) ---
 const hero = document.querySelector('.hero');
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
@@ -359,7 +364,6 @@ window.addEventListener('scroll', () => {
   const scale = 1 - 0.2 * eased;
   const opacity = 1 - eased;
   const textSlide = Math.min(scroll * 0.2, 50);
-  // Keep transforms; but because hero-bg is NOT a child of .hero, it won't be affected.
   hero.style.transform = `scale(${scale})`;
   hero.style.opacity = opacity;
   heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
@@ -394,15 +398,13 @@ animateElements(shows, 100);
 animateElements(sections, 50);
 
 // --- Background carousel handling ---
-// Duplicate the heroTrack images into the second track if needed, and set animation duration.
+// Duplicate images if needed and adjust animation duration.
 (function setupHeroCarousel(){
   const track = document.getElementById('heroTrack');
   const copy = document.getElementById('heroTrackCopy');
   if(!track) return;
   if(copy && copy.children.length === 0){
-    Array.from(track.children).forEach(n => {
-      copy.appendChild(n.cloneNode(true));
-    });
+    Array.from(track.children).forEach(n => copy.appendChild(n.cloneNode(true)));
   }
 
   function setAnimSpeed(){
@@ -484,6 +486,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
