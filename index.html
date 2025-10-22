@@ -97,20 +97,30 @@
       align-self:center;
     }
 
-    /* TEXT box left column, vertically centered, sharp corners, above bg */
+    /* TEXT box left column, vertically centered, sharp corners, and made a flex container */
     .hero .hero-text{
       grid-column:1;
-      padding:20px;
+      padding:0;                 /* remove extra top/bottom padding so vertical centering is precise */
       transition:transform 0.3s, opacity 0.3s;
       z-index:5;
       background: rgba(0,0,0,0.95);
       border-radius:0; /* sharp corners */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       color:#fff;
-      align-self:center;
+      align-self:center;        /* vertical centering within the grid cell */
       max-width:520px;
+
+      /* Make hero-text a flex column so content is centered vertically */
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      padding-left:20px;
+      padding-right:20px;
+      height: calc(var(--hero-height) - 40px); /* match portrait's visual height */
+      box-sizing: border-box;
     }
 
+    /* Reduce default margins on headings so they don't push layout */
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
     .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
     .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
@@ -149,7 +159,7 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       position: relative;
-      z-index:6; /* above normal main children (so background never covers videos) */
+      z-index:6; /* videos above normal main children */
     }
     .video-slider iframe {
       flex: 0 0 300px;
@@ -171,7 +181,7 @@
       .hero .hero-bg{ height:360px; top:0; }
       .hero .hero-bg .inner-track img{ height:100%; }
       .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column:auto;}
-      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0;}
+      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0; height:auto; padding:16px;}
       .topnav .inner{width:calc(100% - 32px)}
     }
   </style>
@@ -192,7 +202,7 @@
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
-      <!-- background collage is INSIDE the hero and absolutely fills it (so it's visually a hero background only) -->
+      <!-- background collage is INSIDE the hero and absolutely fills it (keeps it behind the hero content) -->
       <div class="hero-bg" aria-hidden="true">
         <div class="inner-track" id="heroTrack">
           <img src="./images/photo1.jpg" alt="">
@@ -317,7 +327,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// --- Animate portrait & text only (do NOT transform .hero) ---
+// --- Animate portrait & text only (do NOT transform .hero container) ---
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
 
@@ -330,7 +340,6 @@ window.addEventListener('scroll', () => {
   const opacity = 1 - eased;
   const textSlide = Math.min(scroll * 0.2, 50);
 
-  // transform only the portrait and the text (not the container / background)
   heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
   heroImg.style.opacity = opacity;
   heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
@@ -450,6 +459,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
