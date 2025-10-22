@@ -7,194 +7,493 @@
   <meta name="description" content="Julian Shively — musician portfolio">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #000;
-      color: white;
-      overflow-x: hidden;
+    :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981; --hero-height:520px;}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
+    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
+    .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+    .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
+    .navlinks{display:flex;gap:8px;align-items:center}
+    .navlinks a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600}
+    .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
+
+    main{padding-top:96px}
+
+    /* keep other content in normal flow */
+    main > * { position: relative; z-index: 5; }
+
+    /* HERO uses flexbox */
+    .hero{
+      width:100%;
+      max-width:none;
+      margin:56px 0 40px;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      justify-content:space-between;
+      gap:28px;
+      padding:28px 16px;
+      position:relative;
+      overflow:visible;
+      min-height:var(--hero-height);
+      background: transparent;
     }
 
-    /* --- Background Collage --- */
-    .background-collage {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 200%;
-      height: 100%;
+    /* BACKGROUND COLLAGE container inside hero (fills hero area) */
+    .hero .hero-bg{
+      position:absolute;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+      pointer-events:none;
+      display:block;
+      background:transparent;
+    }
+
+    /* scroll-wrap will be transformed by JS. It contains two copies of the image sequence.
+       We intentionally do NOT use CSS keyframe animation here; JS animates with requestAnimationFrame
+       to guarantee pixel-perfect seamless looping and consistent timing. */
+    .hero .hero-bg .scroll-wrap{
+      position:absolute;
+      left:0;
+      top:0;
+      height:100%;
+      display:flex;
+      align-items:center;
+      will-change:transform;
+    }
+
+    .hero .hero-bg img{
+      height:100%;
+      width:auto;
+      object-fit:cover;
+      display:block;
+      margin-right:8px;
+      border-radius:6px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    /* PORTRAIT on the right */
+    .hero .portrait{
+      order: 2;
+      flex: 0 0 700px;
+      width:100%;
+      height:calc(var(--hero-height) - 20px);
+      max-width:780px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#122429;
+      transition:transform 0.3s, opacity 0.25s;
+      z-index:4;
+      box-shadow: 0 18px 40px rgba(2,6,10,0.7);
+      border: 1px solid rgba(255,255,255,0.03);
+      align-self:center;
+    }
+
+    .hero .portrait:hover{
+      opacity:0.82;
+      cursor:default;
+    }
+
+    /* TEXT box on left */
+    .hero .hero-text{
+      order: 1;
+      flex: 0 1 520px;
+      padding:20px;
+      transition:transform 0.3s, opacity 0.3s;
+      z-index:5;
+      background: rgba(0,0,0,0.95);
+      border-radius:0;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      box-sizing:border-box;
+      max-width:520px;
+      margin:0;
+    }
+
+    .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
+    .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
+    .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+    .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
+
+    .section{max-width:1100px;margin:36px auto;padding:32px}
+    .section.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:28px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
+    .tracks{display:flex;flex-direction:column;gap:18px}
+    .track{display:flex;align-items:center;gap:20px;padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);opacity:0;transform:translateX(-50px);transition:all 0.6s ease-out;}
+    .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
+    .track .meta b{display:block;font-weight:700;font-size:18px}
+
+    .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
+    .shows-list{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
+    .show-item{margin-bottom:20px;padding:18px;border-radius:10px;background:#071217;box-shadow:0 6px 18px rgba(2,6,10,0.6);border:1px solid rgba(255,255,255,0.02);opacity:0;transform:translateX(50px);transition:all 0.6s ease-out;}
+    .show-date{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .show-title{font-family:'Playfair Display',serif;font-size:22px;margin:0}
+    .show-location{color:var(--muted);margin-top:8px}
+    .show-desc{margin-top:12px;color:var(--muted)}
+    .show-cta{margin-top:12px}
+    .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
+
+    .gallery-section{width:100%;margin:40px 0;padding:40px 0;background:transparent}
+    .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
+    .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
+
+    .video-slider {
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 20px 0;
       display: flex;
-      animation: scrollCollage 60s linear infinite;
-      z-index: -1;
-    }
-
-    .background-collage img {
-      width: 25vw;
-      height: 100vh;
-      object-fit: cover;
-      flex-shrink: 0;
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-    }
-
-    @keyframes scrollCollage {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* --- Hero Section --- */
-    .hero {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      padding: 0 10%;
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
       position: relative;
-      z-index: 1;
+      z-index:6;
+    }
+    .video-slider iframe {
+      flex: 0 0 300px;
+      height: 180px;
+      border-radius: 8px;
+      scroll-snap-align: center;
+      transition: transform 0.3s, opacity 0.3s;
+      opacity: 0.6;
+    }
+    .video-slider iframe.centered {
+      opacity: 1;
+      transform: scale(1.05);
     }
 
-    .hero-text {
-      background: rgba(0, 0, 0, 0.8);
-      padding: 2rem;
-      max-width: 400px;
-      text-align: left;
-      border-radius: 0;
-      margin-right: 2rem;
-    }
+    footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
-    .hero-text h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
-      margin: 0;
-    }
-
-    .hero-text p {
-      margin: 0.5rem 0 1.5rem;
-      font-size: 1.1rem;
-      line-height: 1.5;
-    }
-
-    .hero-buttons a {
-      display: inline-block;
-      padding: 0.6rem 1.2rem;
-      margin-right: 1rem;
-      background: #00b894;
-      color: white;
-      text-decoration: none;
-      border-radius: 0.4rem;
-      font-weight: 600;
-      transition: background 0.3s;
-    }
-
-    .hero-buttons a:hover {
-      background: #019870;
-    }
-
-    .hero img {
-      width: 380px;
-      height: auto;
-      border-radius: 0.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-    }
-
-    /* --- Contact Section --- */
-    .contact {
-      background: #111;
-      text-align: center;
-      padding: 5rem 1rem;
-    }
-
-    .contact h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.2rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-      max-width: 500px;
-      margin: 0 auto;
-    }
-
-    .contact input, .contact textarea {
-      width: 100%;
-      padding: 0.8rem;
-      border: none;
-      border-radius: 0.3rem;
-      background: #222;
-      color: white;
-      font-size: 1rem;
-    }
-
-    .contact button {
-      background: #00b894;
-      color: white;
-      border: none;
-      padding: 0.8rem 1.5rem;
-      font-size: 1.1rem;
-      border-radius: 0.4rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .contact button:hover {
-      background: #019870;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.9rem;
-      background: #000;
+    @media (max-width:1000px){
+      .hero{flex-direction:column; padding:20px 16px; min-height:auto;}
+      .hero .hero-bg{ height:360px; top:0; }
+      .hero .hero-bg .scroll-wrap img{ height:100%; }
+      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; flex: 0 0 auto;}
+      .hero .hero-text{align-self:stretch; max-width:none; flex: 0 1 auto; border-radius:0; padding:16px;}
+      .topnav .inner{width:calc(100% - 32px)}
     }
   </style>
 </head>
-
 <body>
-  <!-- Background Collage -->
-  <div class="background-collage">
-    <img src="images/collage1.jpg" alt="">
-    <img src="images/collage2.jpg" alt="">
-    <img src="images/collage3.jpg" alt="">
-    <img src="images/collage4.jpg" alt="">
-    <img src="images/collage1.jpg" alt=""> <!-- Repeats once for seamless loop -->
-  </div>
-
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-text">
-      <h1>Julian Shively</h1>
-      <p>Pianist • Cellist • Composer/Arranger</p>
-      <div class="hero-buttons">
-        <a href="#performances">Upcoming Performances</a>
-        <a href="#listen">Listen & Watch</a>
+  <div class="topnav">
+    <div class="inner">
+      <div class="brand">Julian Shively</div>
+      <div class="navlinks">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="media.html">Media</a>
+        <a class="contact" href="contact.html">Contact</a>
       </div>
     </div>
-    <img src="images/hero.jpg" alt="Julian Shively performing">
-  </section>
+  </div>
 
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <h2>Contact</h2>
-    <form>
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea rows="5" placeholder="Message (Lessons, Events, or Collaborations)"></textarea>
-      <button type="submit">Send</button>
-    </form>
-  </section>
+  <main>
+    <!-- HERO -->
+    <section class="hero" aria-label="Hero">
+      <!-- background collage INSIDE hero: JS will create a seamless scroll by duplicating the original sequence -->
+      <div class="hero-bg" aria-hidden="true">
+        <div class="scroll-wrap" id="scrollWrap">
+          <!-- original sequence (ordered exactly as you listed) -->
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo9.jpg" alt="">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+          <!-- JS will append an identical copy of this exact sequence directly after it -->
+        </div>
+      </div>
 
-  <footer>
-    <p>© 2025 Julian Shively — All Rights Reserved</p>
-  </footer>
+      <div class="hero-text">
+        <h1>Julian Shively</h1>
+        <p class="lead">Pianist • Cellist • Composer/Arranger</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#shows">Upcoming Performances</a>
+          <a class="btn btn-ghost" href="media.html">Listen & Watch</a>
+          <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
+        </div>
+      </div>
+
+      <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
+    </section>
+
+    <!-- VIDEO SLIDER -->
+    <section class="video-slider" aria-label="Video Slider">
+      <iframe id="video1" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video2" src="https://www.youtube.com/embed/3JZ_D3ELwOQ?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video3" src="https://www.youtube.com/embed/V-_O7nl0Ii0?enablejsapi=1" allowfullscreen></iframe>
+      <iframe id="video4" src="https://www.youtube.com/embed/oHg5SJYRHA0?enablejsapi=1" allowfullscreen></iframe>
+    </section>
+
+    <!-- Upcoming performances -->
+    <div class="shows-wrap" id="shows">
+      <div class="shows-list">
+        <h2 style="margin-top:0">Upcoming Performances</h2>
+        <p style="color:var(--muted)">Check out where to catch me next!</p>
+
+        <div class="show-item">
+          <div class="show-date">Oct 19, 2025 — 7:00 PM, 8:15 PM, & 9:30 PM</div>
+          <h3 class="show-title">'Jules's Quartet' @ Upstairs</h3>
+          <div class="show-location">Upstairs Jazz Bar & Grill, 1254 Mackay St, Montreal, QC</div>
+          <div class="show-cta"><a class="pill" href="https://booking.libroreserve.com/25bc58466445a43/QC016994658341/seat">Reserve Seats</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Oct 24, 2025 — 7:00 PM</div>
+          <h3 class="show-title">Julian Shively & Emma McDonald: An evening of jazz, R&B and neo-soul</h3>
+          <div class="show-location">Suzuki Music Schools, 246 Post Road East, Westport, CT</div>
+          <div class="show-cta"><a class="pill" href="https://www.eventbrite.com/e/julian-shively-emma-mcdonald-an-evening-of-jazz-rb-and-neo-soul-tickets-1625371101719?aff=oddtdtcreator">Tickets</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 06, 2025 — 7:30 PM</div>
+          <h3 class="show-title">The DelaOssa Quartet</h3>
+          <div class="show-location">Brasserie Beaubien, 73 Rue Beaubien E, Montreal, QC</div>
+          <div class="show-cta"><a class="pill" href="https://www.instagram.com/p/DPvMHevDaCy/">Details</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 11, 2025 — 7:00 PM</div>
+          <h3 class="show-title">Ingrid Li with Strings</h3>
+          <div class="show-location">La Sala Rossa, 4848 St Laurent Blvd, Montreal, QC</div>
+          <div class="show-cta"><a class="pill" href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA">Tickets</a></div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 17, 2025</div>
+          <h3 class="show-title">Nick Baddelay Quartet</h3>
+          <div class="show-location">Casa des Popolo, 4873 St Laurent Blvd, Montreal, QC</div>
+        </div>
+
+        <div class="show-item">
+          <div class="show-date">Nov 20, 2025</div>
+          <h3 class="show-title">JOSA's Atmosphere</h3>
+          <div class="show-location">Petit Campus, 57-b Rue Prince-Arthur E, Montreal, QC</div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- MUSIC -->
+    <section class="section card" id="music">
+      <h2 style="text-align:center;margin-top:0">Music</h2>
+      <div class="tracks">
+        <div class="track">
+          <img src="./images/cover1.jpg" alt="cover1">
+          <div class="meta"><b>Track Title One</b><span style="display:block;color:var(--muted)">Single — 2025</span></div>
+        </div>
+        <div class="track">
+          <img src="./images/cover2.jpg" alt="cover2">
+          <div class="meta"><b>Track Title Two</b><span style="display:block;color:var(--muted)">EP — 2024</span></div>
+        </div>
+      </div>
+      <iframe class="responsive" style="width:100%;height:200px;border:0;border-radius:8px;margin-top:18px" src="https://open.spotify.com/embed/album/1DFixLWuPkv3KT3TnV35m3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Julian Shively • All rights reserved.
+    </footer>
+  </main>
+
+  <script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// Smooth scroll anchors (unchanged)
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if(!t) return;
+    const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({top:y, behavior:'smooth'});
+  });
+});
+
+// Portrait & text scroll transforms (unchanged)
+const heroImg = document.querySelector('.hero .portrait');
+const heroText = document.querySelector('.hero .hero-text');
+
+window.addEventListener('scroll', () => {
+  const scroll = window.scrollY;
+  const easeOutQuad = t => 1 - (1 - t) * (1 - t);
+  let progress = Math.min(scroll / 400, 1);
+  let eased = easeOutQuad(progress);
+  const scale = 1 - 0.2 * eased;
+  const opacity = 1 - eased;
+  const textSlide = Math.min(scroll * 0.2, 50);
+
+  if (heroImg) heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
+  if (heroImg) heroImg.style.opacity = opacity;
+  if (heroText) heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
+  if (heroText) heroText.style.opacity = opacity;
+});
+
+// --- Seamless, ordered, continuous carousel (JS-driven) ---
+// This code duplicates the exact original sequence, measures its pixel width,
+// then uses requestAnimationFrame to translate the scrollWrap continuously.
+// When the offset reaches the width of the original sequence, it wraps to 0.
+// This creates a perfect, jump-free loop and preserves your listed order.
+
+(function seamlessCarousel(){
+  const scrollWrap = document.getElementById('scrollWrap');
+  if(!scrollWrap) return;
+
+  // Build list of image sources from the initial DOM order
+  const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+  if(initialImgs.length === 0) return;
+
+  // Remove any extra nodes (we'll rebuild to ensure consistency)
+  scrollWrap.innerHTML = '';
+
+  // Helper to create img element
+  const makeImg = src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    return i;
+  };
+
+  // Append the original sequence
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  // Append a second identical sequence immediately after the first (same order)
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  // After images load (or if cached), measure widths
+  function measure() {
+    // total width of the original sequence (first half)
+    let width = 0;
+    // images are in order [orig0..origN-1, orig0..origN-1]
+    const imgs = scrollWrap.querySelectorAll('img');
+    const half = imgs.length / 2;
+    for(let i=0;i<half;i++){
+      const r = imgs[i].getBoundingClientRect();
+      width += r.width + parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+    }
+    return Math.round(width);
+  }
+
+  // Wait for images to load then start animation
+  let trackWidth = 0;
+  let rafId = null;
+  let lastTime = null;
+  let offset = 0;
+  const pxPerSecond = 80; // speed — tweak as desired
+
+  function recalcAndStart(){
+    // small timeout to ensure layout settled
+    setTimeout(() => {
+      trackWidth = measure();
+      // If trackWidth is 0 (images not loaded), try again later
+      if(trackWidth <= 0){
+        setTimeout(recalcAndStart, 120);
+        return;
+      }
+      // Set scrollWrap width to the combined width of both sequences to avoid wrapping artifacts
+      scrollWrap.style.width = (trackWidth * 2) + 'px';
+      // Start RAF animation loop
+      cancelAnimationFrame(rafId);
+      lastTime = null;
+      offset = 0;
+      rafId = requestAnimationFrame(step);
+    }, 50);
+  }
+
+  function step(ts){
+    if(!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000; // seconds
+    lastTime = ts;
+    // increment offset by pxPerSecond * dt
+    offset += pxPerSecond * dt;
+    // wrap offset when it reaches trackWidth
+    if(offset >= trackWidth) offset = offset - trackWidth;
+    // apply transform
+    scrollWrap.style.transform = `translateX(${-offset}px)`;
+    rafId = requestAnimationFrame(step);
+  }
+
+  // Recalculate on load/resize/orientation change
+  window.addEventListener('load', recalcAndStart);
+  window.addEventListener('resize', () => {
+    cancelAnimationFrame(rafId);
+    recalcAndStart();
+  });
+  // Also recalc once images in the scrollWrap have loaded
+  const imgs = scrollWrap.querySelectorAll('img');
+  let pending = imgs.length;
+  if(pending === 0) recalcAndStart();
+  imgs.forEach(img => {
+    if(img.complete){ pending--; }
+    else img.addEventListener('load', () => {
+      pending--;
+      if(pending === 0) recalcAndStart();
+    });
+  });
+  // safety fallback: start after a short delay in case loads are cached
+  setTimeout(recalcAndStart, 600);
+})();
+
+// --- YouTube Slider Auto Play Centered Video with Fade (unchanged) ---
+let tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+document.body.appendChild(tag);
+let players = [];
+
+function onYouTubeIframeAPIReady() {
+  document.querySelectorAll('.video-slider iframe').forEach((iframe, i) => {
+    players[i] = new YT.Player(iframe.id);
+  });
+}
+
+const slider = document.querySelector('.video-slider');
+function playCenteredVideo() {
+  if(!slider || players.length === 0) return;
+  const sliderRect = slider.getBoundingClientRect();
+  const centerX = sliderRect.left + sliderRect.width / 2;
+
+  let closestIndex = 0;
+  let closestDistance = Infinity;
+
+  players.forEach((player, i) => {
+    const iframe = player.getIframe();
+    const rect = iframe.getBoundingClientRect();
+    const videoCenter = rect.left + rect.width / 2;
+    const distance = Math.abs(centerX - videoCenter);
+    if (distance < closestDistance) {
+      closestDistance = distance;
+      closestIndex = i;
+    }
+    iframe.classList.remove('centered');
+  });
+
+  players.forEach((player, i) => {
+    const iframe = player.getIframe();
+    if (i === closestIndex) {
+      player.playVideo();
+      iframe.classList.add('centered');
+    } else {
+      player.pauseVideo();
+    }
+  });
+}
+
+if (slider) {
+  slider.addEventListener('scroll', () => {
+    requestAnimationFrame(playCenteredVideo);
+  });
+}
+window.addEventListener('load', () => {
+  setTimeout(()=>{ if (typeof playCenteredVideo === 'function') playCenteredVideo(); }, 1000);
+});
+  </script>
 </body>
 </html>
+
 
 
 
