@@ -22,15 +22,15 @@
     /* keep other content in normal flow */
     main > * { position: relative; z-index: 5; }
 
-    /* HERO now uses flexbox to ensure robust vertical centering */
+    /* HERO uses flexbox */
     .hero{
       width:100%;
       max-width:none;
       margin:56px 0 40px;
       display:flex;
       flex-direction:row;
-      align-items:center;            /* vertical centering */
-      justify-content:space-between;/* keep portrait on right, text on left */
+      align-items:center;
+      justify-content:space-between;
       gap:28px;
       padding:28px 16px;
       position:relative;
@@ -39,53 +39,44 @@
       background: transparent;
     }
 
-    /* BACKGROUND COLLAGE: inside .hero, absolutely fills hero area and stays behind hero content */
+    /* BACKGROUND COLLAGE container inside hero (fills hero area) */
     .hero .hero-bg{
       position:absolute;
-      inset:0;                  /* fill the hero area */
-      z-index:0;                /* behind portrait/text */
+      inset:0;
+      z-index:0;
       overflow:hidden;
       pointer-events:none;
       display:block;
       background:transparent;
     }
 
-    .hero .hero-bg .inner-track{
+    /* scroll-wrap will be transformed by JS. It contains two copies of the image sequence.
+       We intentionally do NOT use CSS keyframe animation here; JS animates with requestAnimationFrame
+       to guarantee pixel-perfect seamless looping and consistent timing. */
+    .hero .hero-bg .scroll-wrap{
       position:absolute;
       left:0;
       top:0;
       height:100%;
       display:flex;
       align-items:center;
-      will-change: transform;
-      animation-name: scroll-left;
-      animation-duration: 32s;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
+      will-change:transform;
     }
 
-    @keyframes scroll-left {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); } /* duplicate track ensures seamless loop */
-    }
-
-    .hero .hero-bg .inner-track img{
+    .hero .hero-bg img{
       height:100%;
-      width:auto;           /* preserve aspect ratio */
+      width:auto;
       object-fit:cover;
       display:block;
       margin-right:8px;
       border-radius:6px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.45);
-      transform: translateZ(0);
     }
 
-    .hero .hero-bg .inner-track.dup { left:50%; }
-
-    /* PORTRAIT on the right. Using flex-basis so it keeps intended width and stays vertically centered. */
+    /* PORTRAIT on the right */
     .hero .portrait{
-      order: 2;                       /* ensure portrait is rendered after the text */
-      flex: 0 0 700px;                /* fixed visual width area */
+      order: 2;
+      flex: 0 0 700px;
       width:100%;
       height:calc(var(--hero-height) - 20px);
       max-width:780px;
@@ -93,7 +84,7 @@
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index:4; /* above background */
+      z-index:4;
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
       align-self:center;
@@ -104,7 +95,7 @@
       cursor:default;
     }
 
-    /* TEXT box on left. flex: 0 1 520px so it fits nicely and doesn't overflow; make it a flex column to center its content */
+    /* TEXT box on left */
     .hero .hero-text{
       order: 1;
       flex: 0 1 520px;
@@ -112,18 +103,17 @@
       transition:transform 0.3s, opacity 0.3s;
       z-index:5;
       background: rgba(0,0,0,0.95);
-      border-radius:0; /* sharp corners */
+      border-radius:0;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       color:#fff;
       display:flex;
       flex-direction:column;
-      justify-content:center; /* vertical centering of inner content */
+      justify-content:center;
       box-sizing:border-box;
       max-width:520px;
-      margin:0; /* ensure no extra margins push it */
+      margin:0;
     }
 
-    /* Reduce default margins on headings so they don't push layout */
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
     .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
     .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
@@ -162,7 +152,7 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       position: relative;
-      z-index:6; /* videos above background collage */
+      z-index:6;
     }
     .video-slider iframe {
       flex: 0 0 300px;
@@ -182,11 +172,10 @@
     @media (max-width:1000px){
       .hero{flex-direction:column; padding:20px 16px; min-height:auto;}
       .hero .hero-bg{ height:360px; top:0; }
-      .hero .hero-bg .inner-track img{ height:100%; }
+      .hero .hero-bg .scroll-wrap img{ height:100%; }
       .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; flex: 0 0 auto;}
       .hero .hero-text{align-self:stretch; max-width:none; flex: 0 1 auto; border-radius:0; padding:16px;}
       .topnav .inner{width:calc(100% - 32px)}
-      .hero .inner-track{ animation-duration: 36s; }
     }
   </style>
 </head>
@@ -206,18 +195,17 @@
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
-      <!-- background collage INSIDE hero -->
+      <!-- background collage INSIDE hero: JS will create a seamless scroll by duplicating the original sequence -->
       <div class="hero-bg" aria-hidden="true">
-        <div class="inner-track" id="heroTrack">
+        <div class="scroll-wrap" id="scrollWrap">
+          <!-- original sequence (ordered exactly as you listed) -->
           <img src="./images/photo1.jpg" alt="">
           <img src="./images/photo9.jpg" alt="">
           <img src="./images/photo5.jpg" alt="">
           <img src="./images/photo6.jpg" alt="">
           <img src="./images/photo7.jpg" alt="">
           <img src="./images/photo8.jpg" alt="">
-        </div>
-        <div class="inner-track dup" id="heroTrackCopy">
-          <!-- will be populated by JS with a rotated sequence to avoid duplicate seam -->
+          <!-- JS will append an identical copy of this exact sequence directly after it -->
         </div>
       </div>
 
@@ -242,7 +230,7 @@
       <iframe id="video4" src="https://www.youtube.com/embed/oHg5SJYRHA0?enablejsapi=1" allowfullscreen></iframe>
     </section>
 
-    <!-- Upcoming performances (no sidebar) -->
+    <!-- Upcoming performances -->
     <div class="shows-wrap" id="shows">
       <div class="shows-list">
         <h2 style="margin-top:0">Upcoming Performances</h2>
@@ -315,7 +303,7 @@
   <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Smooth scroll for internal anchors
+// Smooth scroll anchors (unchanged)
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     e.preventDefault();
@@ -326,7 +314,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// --- Animate portrait & text only ---
+// Portrait & text scroll transforms (unchanged)
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
 
@@ -345,99 +333,112 @@ window.addEventListener('scroll', () => {
   if (heroText) heroText.style.opacity = opacity;
 });
 
-// --- Staggered animations on scroll with easing ---
-const tracks = document.querySelectorAll('.track');
-const shows = document.querySelectorAll('.show-item');
-const sections = document.querySelectorAll('.section.card, .shows-list');
+// --- Seamless, ordered, continuous carousel (JS-driven) ---
+// This code duplicates the exact original sequence, measures its pixel width,
+// then uses requestAnimationFrame to translate the scrollWrap continuously.
+// When the offset reaches the width of the original sequence, it wraps to 0.
+// This creates a perfect, jump-free loop and preserves your listed order.
 
-const animateElements = (elements, offset = 100) => {
-  elements.forEach((el, index) => {
-    const rect = el.getBoundingClientRect();
-    if(rect.top < window.innerHeight - offset){
-      el.style.transition = `all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) ${index * 0.1}s`;
-      el.style.opacity = 1;
-      el.style.transform = 'translateX(0) translateY(0)';
+(function seamlessCarousel(){
+  const scrollWrap = document.getElementById('scrollWrap');
+  if(!scrollWrap) return;
+
+  // Build list of image sources from the initial DOM order
+  const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+  if(initialImgs.length === 0) return;
+
+  // Remove any extra nodes (we'll rebuild to ensure consistency)
+  scrollWrap.innerHTML = '';
+
+  // Helper to create img element
+  const makeImg = src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    return i;
+  };
+
+  // Append the original sequence
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  // Append a second identical sequence immediately after the first (same order)
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  // After images load (or if cached), measure widths
+  function measure() {
+    // total width of the original sequence (first half)
+    let width = 0;
+    // images are in order [orig0..origN-1, orig0..origN-1]
+    const imgs = scrollWrap.querySelectorAll('img');
+    const half = imgs.length / 2;
+    for(let i=0;i<half;i++){
+      const r = imgs[i].getBoundingClientRect();
+      width += r.width + parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
     }
-  });
-};
-
-window.addEventListener('scroll', () => {
-  animateElements(tracks, 100);
-  animateElements(shows, 100);
-  animateElements(sections, 50);
-});
-animateElements(tracks, 100);
-animateElements(shows, 100);
-animateElements(sections, 50);
-
-// --- Background carousel handling ---
-// Duplicate the heroTrack images into the second track, but rotate the sequence by 1 so the seam
-// does not show the same image twice in a row.
-(function setupHeroCarousel(){
-  const track = document.getElementById('heroTrack');
-  const copy = document.getElementById('heroTrackCopy');
-  if(!track || !copy) return;
-
-  // ensure the copy is empty first
-  copy.innerHTML = '';
-
-  // collect srcs in an array (skip empty imgs)
-  const imgs = Array.from(track.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
-  if(imgs.length === 0) return;
-
-  // rebuild the main track in case images were modified
-  track.innerHTML = '';
-  imgs.forEach(src => {
-    const i = document.createElement('img');
-    i.src = src;
-    i.alt = '';
-    track.appendChild(i);
-  });
-
-  // rotate the sequence by 1 to prevent duplicate seam
-  let rotated = imgs.slice();
-  if(rotated.length > 1){
-    rotated.push(rotated.shift());
+    return Math.round(width);
   }
 
-  rotated.forEach(src => {
-    const i = document.createElement('img');
-    i.src = src;
-    i.alt = '';
-    copy.appendChild(i);
-  });
+  // Wait for images to load then start animation
+  let trackWidth = 0;
+  let rafId = null;
+  let lastTime = null;
+  let offset = 0;
+  const pxPerSecond = 80; // speed — tweak as desired
 
-  copy.classList.add('dup');
-
-  function setAnimSpeed(){
-    const allImgs = Array.from(track.parentElement.querySelectorAll('.inner-track img'));
-    let totalWidth = 0;
-    allImgs.forEach(img => totalWidth += (img.getBoundingClientRect().width || 0) + 8);
-    if(totalWidth < 100) totalWidth = window.innerWidth * 2;
-    const pxPerSecond = 120;
-    const duration = Math.max(12, Math.round((totalWidth / 2) / pxPerSecond));
-    Array.from(track.parentElement.querySelectorAll('.inner-track')).forEach(el => {
-      el.style.animationDuration = duration + 's';
-    });
+  function recalcAndStart(){
+    // small timeout to ensure layout settled
+    setTimeout(() => {
+      trackWidth = measure();
+      // If trackWidth is 0 (images not loaded), try again later
+      if(trackWidth <= 0){
+        setTimeout(recalcAndStart, 120);
+        return;
+      }
+      // Set scrollWrap width to the combined width of both sequences to avoid wrapping artifacts
+      scrollWrap.style.width = (trackWidth * 2) + 'px';
+      // Start RAF animation loop
+      cancelAnimationFrame(rafId);
+      lastTime = null;
+      offset = 0;
+      rafId = requestAnimationFrame(step);
+    }, 50);
   }
 
-  window.addEventListener('load', setAnimSpeed);
+  function step(ts){
+    if(!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000; // seconds
+    lastTime = ts;
+    // increment offset by pxPerSecond * dt
+    offset += pxPerSecond * dt;
+    // wrap offset when it reaches trackWidth
+    if(offset >= trackWidth) offset = offset - trackWidth;
+    // apply transform
+    scrollWrap.style.transform = `translateX(${-offset}px)`;
+    rafId = requestAnimationFrame(step);
+  }
+
+  // Recalculate on load/resize/orientation change
+  window.addEventListener('load', recalcAndStart);
   window.addEventListener('resize', () => {
-    clearTimeout(window._heroResizeTimer);
-    window._heroResizeTimer = setTimeout(setAnimSpeed, 160);
+    cancelAnimationFrame(rafId);
+    recalcAndStart();
   });
-
-  Array.from(track.querySelectorAll('img')).forEach(img => {
-    if(!img.complete) img.addEventListener('load', setAnimSpeed);
+  // Also recalc once images in the scrollWrap have loaded
+  const imgs = scrollWrap.querySelectorAll('img');
+  let pending = imgs.length;
+  if(pending === 0) recalcAndStart();
+  imgs.forEach(img => {
+    if(img.complete){ pending--; }
+    else img.addEventListener('load', () => {
+      pending--;
+      if(pending === 0) recalcAndStart();
+    });
   });
-  Array.from(copy.querySelectorAll('img')).forEach(img => {
-    if(!img.complete) img.addEventListener('load', setAnimSpeed);
-  });
-
-  setAnimSpeed();
+  // safety fallback: start after a short delay in case loads are cached
+  setTimeout(recalcAndStart, 600);
 })();
 
-// --- YouTube Slider Auto Play Centered Video with Fade ---
+// --- YouTube Slider Auto Play Centered Video with Fade (unchanged) ---
 let tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
 document.body.appendChild(tag);
@@ -492,6 +493,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
