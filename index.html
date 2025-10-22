@@ -50,9 +50,7 @@
       background:transparent;
     }
 
-    /* scroll-wrap will be transformed by JS. It contains two copies of the image sequence.
-       We intentionally do NOT use CSS keyframe animation here; JS animates with requestAnimationFrame
-       to guarantee pixel-perfect seamless looping and consistent timing. */
+    /* scroll-wrap will be translated by JS; it contains two back-to-back copies of the image sequence */
     .hero .hero-bg .scroll-wrap{
       position:absolute;
       left:0;
@@ -142,31 +140,6 @@
     .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
     .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
 
-    .video-slider {
-      max-width: 1100px;
-      margin: 36px auto;
-      padding: 20px 0;
-      display: flex;
-      gap: 16px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      position: relative;
-      z-index:6;
-    }
-    .video-slider iframe {
-      flex: 0 0 300px;
-      height: 180px;
-      border-radius: 8px;
-      scroll-snap-align: center;
-      transition: transform 0.3s, opacity 0.3s;
-      opacity: 0.6;
-    }
-    .video-slider iframe.centered {
-      opacity: 1;
-      transform: scale(1.05);
-    }
-
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
     @media (max-width:1000px){
@@ -195,7 +168,7 @@
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
-      <!-- background collage INSIDE hero: JS will create a seamless scroll by duplicating the original sequence -->
+      <!-- background collage INSIDE hero: JS will duplicate the exact sequence for a seamless ordered loop -->
       <div class="hero-bg" aria-hidden="true">
         <div class="scroll-wrap" id="scrollWrap">
           <!-- original sequence (ordered exactly as you listed) -->
@@ -205,7 +178,7 @@
           <img src="./images/photo6.jpg" alt="">
           <img src="./images/photo7.jpg" alt="">
           <img src="./images/photo8.jpg" alt="">
-          <!-- JS will append an identical copy of this exact sequence directly after it -->
+          <!-- JS duplicates this sequence directly after it -->
         </div>
       </div>
 
@@ -222,13 +195,7 @@
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
     </section>
 
-    <!-- VIDEO SLIDER -->
-    <section class="video-slider" aria-label="Video Slider">
-      <iframe id="video1" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" allowfullscreen></iframe>
-      <iframe id="video2" src="https://www.youtube.com/embed/3JZ_D3ELwOQ?enablejsapi=1" allowfullscreen></iframe>
-      <iframe id="video3" src="https://www.youtube.com/embed/V-_O7nl0Ii0?enablejsapi=1" allowfullscreen></iframe>
-      <iframe id="video4" src="https://www.youtube.com/embed/oHg5SJYRHA0?enablejsapi=1" allowfullscreen></iframe>
-    </section>
+    <!-- VIDEO BAR REMOVED — Upcoming Performances now sits directly under the hero -->
 
     <!-- Upcoming performances -->
     <div class="shows-wrap" id="shows">
@@ -333,166 +300,143 @@ window.addEventListener('scroll', () => {
   if (heroText) heroText.style.opacity = opacity;
 });
 
+// --- Staggered animations on scroll with easing ---
+// (kept so offscreen items animate in)
+const tracks = document.querySelectorAll('.track');
+const shows = document.querySelectorAll('.show-item');
+const sections = document.querySelectorAll('.section.card, .shows-list');
+
+const animateElements = (elements, offset = 100) => {
+  elements.forEach((el, index) => {
+    const rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight - offset){
+      el.style.transition = `all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1) ${index * 0.1}s`;
+      el.style.opacity = 1;
+      el.style.transform = 'translateX(0) translateY(0)';
+    }
+  });
+};
+
+// ensure elements already in view are revealed on load
+window.addEventListener('load', () => {
+  animateElements(tracks, 100);
+  animateElements(shows, 100);
+  animateElements(sections, 50);
+});
+
+// also trigger on scroll as before
+window.addEventListener('scroll', () => {
+  animateElements(tracks, 100);
+  animateElements(shows, 100);
+  animateElements(sections, 50);
+});
+
 // --- Seamless, ordered, continuous carousel (JS-driven) ---
-// This code duplicates the exact original sequence, measures its pixel width,
-// then uses requestAnimationFrame to translate the scrollWrap continuously.
-// When the offset reaches the width of the original sequence, it wraps to 0.
-// This creates a perfect, jump-free loop and preserves your listed order.
+// Duplicate the exact sequence, measure the first sequence pixel width, then translate continuously.
+// Only starts once after measurement — no redundant timeouts to prevent brief reset.
 
 (function seamlessCarousel(){
   const scrollWrap = document.getElementById('scrollWrap');
   if(!scrollWrap) return;
 
-  // Build list of image sources from the initial DOM order
+  // read initial sources in order
   const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
   if(initialImgs.length === 0) return;
 
-  // Remove any extra nodes (we'll rebuild to ensure consistency)
+  // rebuild scrollWrap: append original sequence, then an identical second sequence (same order)
   scrollWrap.innerHTML = '';
-
-  // Helper to create img element
   const makeImg = src => {
     const i = document.createElement('img');
     i.src = src;
     i.alt = '';
     return i;
   };
-
-  // Append the original sequence
   initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src))); // second copy for seamless loop
 
-  // Append a second identical sequence immediately after the first (same order)
-  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
-
-  // After images load (or if cached), measure widths
+  // measure width of the first sequence (first half)
   function measure() {
-    // total width of the original sequence (first half)
-    let width = 0;
-    // images are in order [orig0..origN-1, orig0..origN-1]
     const imgs = scrollWrap.querySelectorAll('img');
     const half = imgs.length / 2;
+    let width = 0;
     for(let i=0;i<half;i++){
       const r = imgs[i].getBoundingClientRect();
-      width += r.width + parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+      const mr = parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+      width += r.width + mr;
     }
     return Math.round(width);
   }
 
-  // Wait for images to load then start animation
   let trackWidth = 0;
   let rafId = null;
   let lastTime = null;
   let offset = 0;
-  const pxPerSecond = 80; // speed — tweak as desired
+  const pxPerSecond = 80; // adjust speed here
 
-  function recalcAndStart(){
-    // small timeout to ensure layout settled
-    setTimeout(() => {
-      trackWidth = measure();
-      // If trackWidth is 0 (images not loaded), try again later
-      if(trackWidth <= 0){
-        setTimeout(recalcAndStart, 120);
-        return;
-      }
-      // Set scrollWrap width to the combined width of both sequences to avoid wrapping artifacts
-      scrollWrap.style.width = (trackWidth * 2) + 'px';
-      // Start RAF animation loop
-      cancelAnimationFrame(rafId);
-      lastTime = null;
-      offset = 0;
-      rafId = requestAnimationFrame(step);
-    }, 50);
+  function startAnimation(){
+    if(rafId) cancelAnimationFrame(rafId);
+    lastTime = null;
+    offset = 0;
+    rafId = requestAnimationFrame(step);
   }
 
   function step(ts){
     if(!lastTime) lastTime = ts;
-    const dt = (ts - lastTime) / 1000; // seconds
+    const dt = (ts - lastTime) / 1000;
     lastTime = ts;
-    // increment offset by pxPerSecond * dt
     offset += pxPerSecond * dt;
-    // wrap offset when it reaches trackWidth
     if(offset >= trackWidth) offset = offset - trackWidth;
-    // apply transform
     scrollWrap.style.transform = `translateX(${-offset}px)`;
     rafId = requestAnimationFrame(step);
   }
 
-  // Recalculate on load/resize/orientation change
-  window.addEventListener('load', recalcAndStart);
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(rafId);
+  // recalc on load/resize/orientation change — start only after successful measurement
+  function recalcAndStart(){
+    // measure after current layout pass
+    trackWidth = measure();
+    if(trackWidth <= 0){
+      // images may not be laid out yet; retry shortly but do not use long redundant timers
+      setTimeout(recalcAndStart, 120);
+      return;
+    }
+    // set explicit width to avoid wrapping issues
+    scrollWrap.style.width = (trackWidth * 2) + 'px';
+    startAnimation();
+  }
+
+  // Wait for images to load then recalcAndStart once
+  let pending = scrollWrap.querySelectorAll('img').length;
+  if(pending === 0){
     recalcAndStart();
-  });
-  // Also recalc once images in the scrollWrap have loaded
-  const imgs = scrollWrap.querySelectorAll('img');
-  let pending = imgs.length;
-  if(pending === 0) recalcAndStart();
-  imgs.forEach(img => {
-    if(img.complete){ pending--; }
-    else img.addEventListener('load', () => {
-      pending--;
-      if(pending === 0) recalcAndStart();
+  } else {
+    const imgs = scrollWrap.querySelectorAll('img');
+    let loaded = 0;
+    imgs.forEach(img => {
+      if(img.complete) loaded++;
+      else img.addEventListener('load', () => {
+        loaded++;
+        if(loaded === pending) recalcAndStart();
+      });
     });
+    // safety: if most are cached and load events won't fire, call after small delay
+    setTimeout(() => {
+      if(trackWidth === 0) recalcAndStart();
+    }, 700);
+  }
+
+  window.addEventListener('resize', () => {
+    // stop and remeasure/start on resize
+    if(rafId) cancelAnimationFrame(rafId);
+    setTimeout(recalcAndStart, 160);
   });
-  // safety fallback: start after a short delay in case loads are cached
-  setTimeout(recalcAndStart, 600);
 })();
 
-// --- YouTube Slider Auto Play Centered Video with Fade (unchanged) ---
-let tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-document.body.appendChild(tag);
-let players = [];
+// --- end carousel ---
 
-function onYouTubeIframeAPIReady() {
-  document.querySelectorAll('.video-slider iframe').forEach((iframe, i) => {
-    players[i] = new YT.Player(iframe.id);
-  });
-}
-
-const slider = document.querySelector('.video-slider');
-function playCenteredVideo() {
-  if(!slider || players.length === 0) return;
-  const sliderRect = slider.getBoundingClientRect();
-  const centerX = sliderRect.left + sliderRect.width / 2;
-
-  let closestIndex = 0;
-  let closestDistance = Infinity;
-
-  players.forEach((player, i) => {
-    const iframe = player.getIframe();
-    const rect = iframe.getBoundingClientRect();
-    const videoCenter = rect.left + rect.width / 2;
-    const distance = Math.abs(centerX - videoCenter);
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestIndex = i;
-    }
-    iframe.classList.remove('centered');
-  });
-
-  players.forEach((player, i) => {
-    const iframe = player.getIframe();
-    if (i === closestIndex) {
-      player.playVideo();
-      iframe.classList.add('centered');
-    } else {
-      player.pauseVideo();
-    }
-  });
-}
-
-if (slider) {
-  slider.addEventListener('scroll', () => {
-    requestAnimationFrame(playCenteredVideo);
-  });
-}
-window.addEventListener('load', () => {
-  setTimeout(()=>{ if (typeof playCenteredVideo === 'function') playCenteredVideo(); }, 1000);
-});
   </script>
 </body>
 </html>
+
 
 
 
