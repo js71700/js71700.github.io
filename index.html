@@ -22,15 +22,16 @@
     /* keep other content in normal flow */
     main > * { position: relative; z-index: 5; }
 
-    /* HERO */
+    /* HERO now uses flexbox to ensure robust vertical centering */
     .hero{
       width:100%;
       max-width:none;
       margin:56px 0 40px;
-      display:grid;
-      grid-template-columns: 1fr 700px; /* text left, portrait right */
+      display:flex;
+      flex-direction:row;
+      align-items:center;            /* vertical centering */
+      justify-content:space-between;/* keep portrait on right, text on left */
       gap:28px;
-      align-items:center; /* vertical centering for cells */
       padding:28px 16px;
       position:relative;
       overflow:visible;
@@ -81,9 +82,10 @@
 
     .hero .hero-bg .inner-track.dup { left:50%; }
 
-    /* PORTRAIT on right column; ensure sits above background */
+    /* PORTRAIT on the right. Using flex-basis so it keeps intended width and stays vertically centered. */
     .hero .portrait{
-      grid-column:2;
+      order: 2;                       /* ensure portrait is rendered after the text */
+      flex: 0 0 700px;                /* fixed visual width area */
       width:100%;
       height:calc(var(--hero-height) - 20px);
       max-width:780px;
@@ -91,7 +93,7 @@
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index:4; /* above background and above other main children */
+      z-index:4; /* above background */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
       align-self:center;
@@ -102,10 +104,10 @@
       cursor:default;
     }
 
-    /* TEXT box left column, vertically centered, sharp corners.
-       Use flex to center content; DO NOT use a fixed height so it won't push off-screen. */
+    /* TEXT box on left. flex: 0 1 520px so it fits nicely and doesn't overflow; make it a flex column to center its content */
     .hero .hero-text{
-      grid-column:1;
+      order: 1;
+      flex: 0 1 520px;
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
       z-index:5;
@@ -113,14 +115,12 @@
       border-radius:0; /* sharp corners */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
       color:#fff;
-      align-self:center;        /* vertical centering within the grid cell */
-      max-width:520px;
-
-      /* Make hero-text a flex column so content is centered vertically without forcing container height */
       display:flex;
       flex-direction:column;
-      justify-content:center;
+      justify-content:center; /* vertical centering of inner content */
       box-sizing:border-box;
+      max-width:520px;
+      margin:0; /* ensure no extra margins push it */
     }
 
     /* Reduce default margins on headings so they don't push layout */
@@ -180,12 +180,13 @@
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
     @media (max-width:1000px){
-      .hero{grid-template-columns:1fr; padding:20px 16px; min-height:auto;}
+      .hero{flex-direction:column; padding:20px 16px; min-height:auto;}
       .hero .hero-bg{ height:360px; top:0; }
       .hero .hero-bg .inner-track img{ height:100%; }
-      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column:auto;}
-      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0; padding:16px;}
+      .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; flex: 0 0 auto;}
+      .hero .hero-text{align-self:stretch; max-width:none; flex: 0 1 auto; border-radius:0; padding:16px;}
       .topnav .inner{width:calc(100% - 32px)}
+      .hero .inner-track{ animation-duration: 36s; }
     }
   </style>
 </head>
@@ -220,7 +221,6 @@
         </div>
       </div>
 
-      <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
       <div class="hero-text">
         <h1>Julian Shively</h1>
         <p class="lead">Pianist • Cellist • Composer/Arranger</p>
@@ -230,6 +230,8 @@
           <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
         </div>
       </div>
+
+      <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
     </section>
 
     <!-- VIDEO SLIDER -->
@@ -324,7 +326,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// --- Animate portrait & text only (do NOT transform .hero container) ---
+// --- Animate portrait & text only ---
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
 
@@ -383,7 +385,7 @@ animateElements(sections, 50);
   const imgs = Array.from(track.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
   if(imgs.length === 0) return;
 
-  // build the main track (in case user modified HTML) - ensure track contains exactly imgs in order
+  // rebuild the main track in case images were modified
   track.innerHTML = '';
   imgs.forEach(src => {
     const i = document.createElement('img');
@@ -392,10 +394,9 @@ animateElements(sections, 50);
     track.appendChild(i);
   });
 
-  // create rotated array for the copy so the first image of copy is imgs[1], preventing immediate duplicate
+  // rotate the sequence by 1 to prevent duplicate seam
   let rotated = imgs.slice();
   if(rotated.length > 1){
-    // rotate by 1: move first to end
     rotated.push(rotated.shift());
   }
 
@@ -406,10 +407,8 @@ animateElements(sections, 50);
     copy.appendChild(i);
   });
 
-  // set duplicate class position to 50% so the duplicate starts after the first sequence
   copy.classList.add('dup');
 
-  // animation duration based on combined width so speed feels consistent
   function setAnimSpeed(){
     const allImgs = Array.from(track.parentElement.querySelectorAll('.inner-track img'));
     let totalWidth = 0;
@@ -428,7 +427,6 @@ animateElements(sections, 50);
     window._heroResizeTimer = setTimeout(setAnimSpeed, 160);
   });
 
-  // recalc when images load
   Array.from(track.querySelectorAll('img')).forEach(img => {
     if(!img.complete) img.addEventListener('load', setAnimSpeed);
   });
@@ -494,6 +492,7 @@ window.addEventListener('load', () => {
   </script>
 </body>
 </html>
+
 
 
 
