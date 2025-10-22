@@ -38,11 +38,11 @@
       background: transparent;
     }
 
-    /* BACKGROUND COLLAGE: inside .hero, absolute and clipped to hero area so it stays behind hero content only */
+    /* BACKGROUND COLLAGE: inside .hero, absolutely fills hero area and stays behind hero content */
     .hero .hero-bg{
       position:absolute;
       inset:0;                  /* fill the hero area */
-      z-index:0;                /* behind portrait/text which will have higher z */
+      z-index:0;                /* behind portrait/text */
       overflow:hidden;
       pointer-events:none;
       display:block;
@@ -97,10 +97,16 @@
       align-self:center;
     }
 
-    /* TEXT box left column, vertically centered, sharp corners, and made a flex container */
+    .hero .portrait:hover{
+      opacity:0.82;
+      cursor:default;
+    }
+
+    /* TEXT box left column, vertically centered, sharp corners.
+       Use flex to center content; DO NOT use a fixed height so it won't push off-screen. */
     .hero .hero-text{
       grid-column:1;
-      padding:0;                 /* remove extra top/bottom padding so vertical centering is precise */
+      padding:20px;
       transition:transform 0.3s, opacity 0.3s;
       z-index:5;
       background: rgba(0,0,0,0.95);
@@ -110,14 +116,11 @@
       align-self:center;        /* vertical centering within the grid cell */
       max-width:520px;
 
-      /* Make hero-text a flex column so content is centered vertically */
+      /* Make hero-text a flex column so content is centered vertically without forcing container height */
       display:flex;
       flex-direction:column;
       justify-content:center;
-      padding-left:20px;
-      padding-right:20px;
-      height: calc(var(--hero-height) - 40px); /* match portrait's visual height */
-      box-sizing: border-box;
+      box-sizing:border-box;
     }
 
     /* Reduce default margins on headings so they don't push layout */
@@ -159,7 +162,7 @@
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
       position: relative;
-      z-index:6; /* videos above normal main children */
+      z-index:6; /* videos above background collage */
     }
     .video-slider iframe {
       flex: 0 0 300px;
@@ -181,7 +184,7 @@
       .hero .hero-bg{ height:360px; top:0; }
       .hero .hero-bg .inner-track img{ height:100%; }
       .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column:auto;}
-      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0; height:auto; padding:16px;}
+      .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0; padding:16px;}
       .topnav .inner{width:calc(100% - 32px)}
     }
   </style>
@@ -202,7 +205,7 @@
   <main>
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
-      <!-- background collage is INSIDE the hero and absolutely fills it (keeps it behind the hero content) -->
+      <!-- background collage INSIDE hero -->
       <div class="hero-bg" aria-hidden="true">
         <div class="inner-track" id="heroTrack">
           <img src="./images/photo1.jpg" alt="">
@@ -213,13 +216,7 @@
           <img src="./images/photo8.jpg" alt="">
         </div>
         <div class="inner-track dup" id="heroTrackCopy">
-          <!-- duplication for seamless loop -->
-          <img src="./images/photo1.jpg" alt="">
-          <img src="./images/photo9.jpg" alt="">
-          <img src="./images/photo5.jpg" alt="">
-          <img src="./images/photo6.jpg" alt="">
-          <img src="./images/photo7.jpg" alt="">
-          <img src="./images/photo8.jpg" alt="">
+          <!-- will be populated by JS with a rotated sequence to avoid duplicate seam -->
         </div>
       </div>
 
@@ -292,7 +289,7 @@
       </div>
     </div>
 
-    <!-- MUSIC (moved below shows) -->
+    <!-- MUSIC -->
     <section class="section card" id="music">
       <h2 style="text-align:center;margin-top:0">Music</h2>
       <div class="tracks">
@@ -340,10 +337,10 @@ window.addEventListener('scroll', () => {
   const opacity = 1 - eased;
   const textSlide = Math.min(scroll * 0.2, 50);
 
-  heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
-  heroImg.style.opacity = opacity;
-  heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
-  heroText.style.opacity = opacity;
+  if (heroImg) heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
+  if (heroImg) heroImg.style.opacity = opacity;
+  if (heroText) heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
+  if (heroText) heroText.style.opacity = opacity;
 });
 
 // --- Staggered animations on scroll with easing ---
@@ -371,23 +368,56 @@ animateElements(tracks, 100);
 animateElements(shows, 100);
 animateElements(sections, 50);
 
-// --- Background carousel handling (duplicate images for seamless loop and set duration) ---
+// --- Background carousel handling ---
+// Duplicate the heroTrack images into the second track, but rotate the sequence by 1 so the seam
+// does not show the same image twice in a row.
 (function setupHeroCarousel(){
   const track = document.getElementById('heroTrack');
   const copy = document.getElementById('heroTrackCopy');
-  if(!track) return;
-  if(copy && copy.children.length === 0){
-    Array.from(track.children).forEach(n => copy.appendChild(n.cloneNode(true)));
+  if(!track || !copy) return;
+
+  // ensure the copy is empty first
+  copy.innerHTML = '';
+
+  // collect srcs in an array (skip empty imgs)
+  const imgs = Array.from(track.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+  if(imgs.length === 0) return;
+
+  // build the main track (in case user modified HTML) - ensure track contains exactly imgs in order
+  track.innerHTML = '';
+  imgs.forEach(src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    track.appendChild(i);
+  });
+
+  // create rotated array for the copy so the first image of copy is imgs[1], preventing immediate duplicate
+  let rotated = imgs.slice();
+  if(rotated.length > 1){
+    // rotate by 1: move first to end
+    rotated.push(rotated.shift());
   }
 
+  rotated.forEach(src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    copy.appendChild(i);
+  });
+
+  // set duplicate class position to 50% so the duplicate starts after the first sequence
+  copy.classList.add('dup');
+
+  // animation duration based on combined width so speed feels consistent
   function setAnimSpeed(){
-    const allImgs = track.parentElement.querySelectorAll('.inner-track img');
+    const allImgs = Array.from(track.parentElement.querySelectorAll('.inner-track img'));
     let totalWidth = 0;
     allImgs.forEach(img => totalWidth += (img.getBoundingClientRect().width || 0) + 8);
     if(totalWidth < 100) totalWidth = window.innerWidth * 2;
     const pxPerSecond = 120;
     const duration = Math.max(12, Math.round((totalWidth / 2) / pxPerSecond));
-    document.querySelectorAll('.hero .inner-track').forEach(el => {
+    Array.from(track.parentElement.querySelectorAll('.inner-track')).forEach(el => {
       el.style.animationDuration = duration + 's';
     });
   }
@@ -395,10 +425,14 @@ animateElements(sections, 50);
   window.addEventListener('load', setAnimSpeed);
   window.addEventListener('resize', () => {
     clearTimeout(window._heroResizeTimer);
-    window._heroResizeTimer = setTimeout(setAnimSpeed, 180);
+    window._heroResizeTimer = setTimeout(setAnimSpeed, 160);
   });
 
+  // recalc when images load
   Array.from(track.querySelectorAll('img')).forEach(img => {
+    if(!img.complete) img.addEventListener('load', setAnimSpeed);
+  });
+  Array.from(copy.querySelectorAll('img')).forEach(img => {
     if(!img.complete) img.addEventListener('load', setAnimSpeed);
   });
 
@@ -419,6 +453,7 @@ function onYouTubeIframeAPIReady() {
 
 const slider = document.querySelector('.video-slider');
 function playCenteredVideo() {
+  if(!slider || players.length === 0) return;
   const sliderRect = slider.getBoundingClientRect();
   const centerX = sliderRect.left + sliderRect.width / 2;
 
