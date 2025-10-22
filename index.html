@@ -7,7 +7,6 @@
   <meta name="description" content="Julian Shively — musician portfolio">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* --- Original styles kept exactly except hero modifications below --- */
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981; --hero-height:520px;}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
@@ -20,56 +19,37 @@
 
     main{padding-top:96px}
 
-    /* Ensure every top-level child of main sits above the collage by default.
-       This creates a reliable stacking relationship so hero-bg (which is a sibling)
-       remains behind everything. */
+    /* keep other content in normal flow */
     main > * { position: relative; z-index: 5; }
 
-    /* HERO - in-flow sticky background (collage) + hero content */
+    /* HERO */
     .hero{
       width:100%;
       max-width:none;
       margin:56px 0 40px;
       display:grid;
-      /* text left, portrait right */
-      grid-template-columns: 1fr 700px;
+      grid-template-columns: 1fr 700px; /* text left, portrait right */
       gap:28px;
       align-items:center; /* vertical centering for cells */
       padding:28px 16px;
       position:relative;
       overflow:visible;
-      transition:transform 0.3s, opacity 0.3s;
       min-height:var(--hero-height);
-      z-index: 6; /* ensure hero content is above the main> * baseline */
       background: transparent;
     }
 
-    /*
-      hero-bg is in-flow (a direct child of <main> placed BEFORE the .hero).
-      It is sticky: it remains pinned at the top of the viewport while the user scrolls
-      through main's content, so it will remain visible as a background, but we force
-      it to be behind everything via z-index:0.
-    */
-    .hero-bg{
-      position: -webkit-sticky;
-      position: sticky;
-      left:0;
-      right:0;
-      top:96px; /* sits beneath the topnav */
-      height: var(--hero-height);
-      z-index: 0; /* BEHIND everything (main children have z-index:5+) */
-      overflow: hidden;
-      pointer-events: none;
+    /* BACKGROUND COLLAGE: inside .hero, absolute and clipped to hero area so it stays behind hero content only */
+    .hero .hero-bg{
+      position:absolute;
+      inset:0;                  /* fill the hero area */
+      z-index:0;                /* behind portrait/text which will have higher z */
+      overflow:hidden;
+      pointer-events:none;
       display:block;
-      background: transparent;
-      opacity: 1 !important; /* never fade */
-      will-change: transform;
-      backface-visibility: hidden;
-      -webkit-backface-visibility: hidden;
+      background:transparent;
     }
 
-    /* inner-track duplicated for a continuous loop; animation alternates so it scrolls both ways */
-    .hero-bg .inner-track{
+    .hero .hero-bg .inner-track{
       position:absolute;
       left:0;
       top:0;
@@ -77,21 +57,20 @@
       display:flex;
       align-items:center;
       will-change: transform;
-      animation-name: scroll-oscillate;
-      animation-duration: 28s;
+      animation-name: scroll-left;
+      animation-duration: 32s;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
-      animation-direction: alternate;
     }
 
-    @keyframes scroll-oscillate {
+    @keyframes scroll-left {
       0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(-50%); } /* duplicate track ensures seamless loop */
     }
 
-    .hero-bg .inner-track img{
+    .hero .hero-bg .inner-track img{
       height:100%;
-      width:auto;
+      width:auto;           /* preserve aspect ratio */
       object-fit:cover;
       display:block;
       margin-right:8px;
@@ -100,11 +79,11 @@
       transform: translateZ(0);
     }
 
-    .hero-bg .inner-track.duplicate { left: 50%; }
+    .hero .hero-bg .inner-track.dup { left:50%; }
 
-    /* portrait on right column, vertically centered */
+    /* PORTRAIT on right column; ensure sits above background */
     .hero .portrait{
-      grid-column: 2;
+      grid-column:2;
       width:100%;
       height:calc(var(--hero-height) - 20px);
       max-width:780px;
@@ -112,29 +91,24 @@
       object-fit:cover;
       background:#122429;
       transition:transform 0.3s, opacity 0.25s;
-      z-index: 7; /* above hero-bg and above other main content */
+      z-index:4; /* above background and above other main children */
       box-shadow: 0 18px 40px rgba(2,6,10,0.7);
       border: 1px solid rgba(255,255,255,0.03);
       align-self:center;
     }
 
-    .hero .portrait:hover{
-      opacity:0.82;
-      cursor:default;
-    }
-
-    /* hero text on left column, vertically centered, sharp corners */
+    /* TEXT box left column, vertically centered, sharp corners, above bg */
     .hero .hero-text{
-      grid-column: 1;
+      grid-column:1;
       padding:20px;
       transition:transform 0.3s, opacity 0.3s;
-      z-index: 8; /* ensure text/button box is topmost in hero */
+      z-index:5;
       background: rgba(0,0,0,0.95);
-      border-radius: 0; /* sharp corners */
+      border-radius:0; /* sharp corners */
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      color: #ffffff;
-      align-self: center; /* vertical centering with portrait */
-      max-width: 520px;
+      color:#fff;
+      align-self:center;
+      max-width:520px;
     }
 
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
@@ -151,9 +125,6 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* ensure video-slider is behind hero-bg? — we want collage behind everything, so video-slider stays above collage */
-    .video-slider { position: relative; z-index: 6; }
-
     .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
     .shows-list{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;opacity:0;transform:translateY(40px);transition:all 0.6s ease-out;}
     .show-item{margin-bottom:20px;padding:18px;border-radius:10px;background:#071217;box-shadow:0 6px 18px rgba(2,6,10,0.6);border:1px solid rgba(255,255,255,0.02);opacity:0;transform:translateX(50px);transition:all 0.6s ease-out;}
@@ -168,7 +139,6 @@
     .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
     .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
 
-    /* Video slider section with smooth horizontal scroll and snapping */
     .video-slider {
       max-width: 1100px;
       margin: 36px auto;
@@ -178,6 +148,8 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       -webkit-overflow-scrolling: touch;
+      position: relative;
+      z-index:6; /* above normal main children (so background never covers videos) */
     }
     .video-slider iframe {
       flex: 0 0 300px;
@@ -195,19 +167,12 @@
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
     @media (max-width:1000px){
-      /* stack portrait and text on smaller screens; keep hero full-bleed but align content */
-      main > * { z-index: 5; } /* keep main children positioned */
-      .hero{
-        grid-template-columns:1fr;
-        padding:20px 16px;
-        min-height: auto;
-      }
-      .hero-bg{ top: calc(96px + 20px); height: 360px; }
-      .hero-bg .inner-track img{ height:100%; }
+      .hero{grid-template-columns:1fr; padding:20px 16px; min-height:auto;}
+      .hero .hero-bg{ height:360px; top:0; }
+      .hero .hero-bg .inner-track img{ height:100%; }
       .hero .portrait{height:320px; max-width:100%; margin-bottom:12px; grid-column:auto;}
       .hero .hero-text{align-self:stretch; max-width:none; grid-column:auto; border-radius:0;}
       .topnav .inner{width:calc(100% - 32px)}
-      .hero-bg .inner-track{ animation-duration: 36s; }
     }
   </style>
 </head>
@@ -225,28 +190,29 @@
   </div>
 
   <main>
-    <!-- HERO BACKGROUND placed in-flow inside main (before .hero), sticky so it remains visible -->
-    <div class="hero-bg" aria-hidden="true" id="heroBg">
-      <div class="inner-track" id="heroTrack">
-        <img src="./images/photo1.jpg" alt="">
-        <img src="./images/photo9.jpg" alt="">
-        <img src="./images/photo5.jpg" alt="">
-        <img src="./images/photo6.jpg" alt="">
-        <img src="./images/photo7.jpg" alt="">
-        <img src="./images/photo8.jpg" alt="">
-      </div>
-      <div class="inner-track duplicate" id="heroTrackCopy">
-        <img src="./images/photo1.jpg" alt="">
-        <img src="./images/photo9.jpg" alt="">
-        <img src="./images/photo5.jpg" alt="">
-        <img src="./images/photo6.jpg" alt="">
-        <img src="./images/photo7.jpg" alt="">
-        <img src="./images/photo8.jpg" alt="">
-      </div>
-    </div>
-
     <!-- HERO -->
     <section class="hero" aria-label="Hero">
+      <!-- background collage is INSIDE the hero and absolutely fills it (so it's visually a hero background only) -->
+      <div class="hero-bg" aria-hidden="true">
+        <div class="inner-track" id="heroTrack">
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo9.jpg" alt="">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+        </div>
+        <div class="inner-track dup" id="heroTrackCopy">
+          <!-- duplication for seamless loop -->
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo9.jpg" alt="">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+        </div>
+      </div>
+
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
       <div class="hero-text">
         <h1>Julian Shively</h1>
@@ -351,8 +317,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// --- Hero scroll animation transforms are left intact but will NOT affect hero-bg (it's a sibling) ---
-const hero = document.querySelector('.hero');
+// --- Animate portrait & text only (do NOT transform .hero) ---
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
 
@@ -364,8 +329,8 @@ window.addEventListener('scroll', () => {
   const scale = 1 - 0.2 * eased;
   const opacity = 1 - eased;
   const textSlide = Math.min(scroll * 0.2, 50);
-  hero.style.transform = `scale(${scale})`;
-  hero.style.opacity = opacity;
+
+  // transform only the portrait and the text (not the container / background)
   heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
   heroImg.style.opacity = opacity;
   heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
@@ -397,8 +362,7 @@ animateElements(tracks, 100);
 animateElements(shows, 100);
 animateElements(sections, 50);
 
-// --- Background carousel handling ---
-// Duplicate images if needed and adjust animation duration.
+// --- Background carousel handling (duplicate images for seamless loop and set duration) ---
 (function setupHeroCarousel(){
   const track = document.getElementById('heroTrack');
   const copy = document.getElementById('heroTrackCopy');
@@ -413,8 +377,8 @@ animateElements(sections, 50);
     allImgs.forEach(img => totalWidth += (img.getBoundingClientRect().width || 0) + 8);
     if(totalWidth < 100) totalWidth = window.innerWidth * 2;
     const pxPerSecond = 120;
-    const duration = Math.max(10, Math.round((totalWidth / 2) / pxPerSecond));
-    document.querySelectorAll('.hero-bg .inner-track').forEach(el => {
+    const duration = Math.max(12, Math.round((totalWidth / 2) / pxPerSecond));
+    document.querySelectorAll('.hero .inner-track').forEach(el => {
       el.style.animationDuration = duration + 's';
     });
   }
