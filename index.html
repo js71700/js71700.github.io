@@ -193,11 +193,11 @@
   <main>
     <section class="hero" aria-label="Hero">
       <div class="hero-bg" aria-hidden="true" id="heroCarousel">
-        <img src="./images/photo5.jpg" alt="" class="active">
+        <img src="./images/photo1.jpg" alt="" class="active">
+        <img src="./images/photo5.jpg" alt="">
         <img src="./images/photo6.jpg" alt="">
         <img src="./images/photo7.jpg" alt="">
         <img src="./images/photo8.jpg" alt="">
-        <img src="./images/photo1.jpg" alt="">
       </div>
 
       <div class="hero-text">
@@ -215,7 +215,7 @@
 
     <div class="shows-wrap" id="shows">
       <div class="shows-list">
-       <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Playfair Display',serif;letter-spacing:1px">Upcoming Performances</h2>
+       <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Montserrat',sans-serif;letter-spacing:1px">Upcoming Performances</h2>
 
         <div class="show-item">
           <div class="show-date">Nov 06, 2025 — 7:30 PM</div>
@@ -322,29 +322,82 @@ function handleScroll() {
 window.addEventListener('scroll', handleScroll);
 window.addEventListener('load', handleScroll);
 
-// Crossfade carousel
-(function crossfadeCarousel(){
-  const carousel = document.getElementById('heroCarousel');
-  if(!carousel) return;
+// Seamless carousel
+(function seamlessCarousel(){
+  const scrollWrap = document.getElementById('scrollWrap');
+  if(!scrollWrap) return;
 
-  const images = Array.from(carousel.querySelectorAll('img'));
-  if(images.length === 0) return;
+  const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+  if(initialImgs.length === 0) return;
 
-  let currentIndex = 0;
-  
-  function fadeToNext() {
-    const current = images[currentIndex];
-    const nextIndex = (currentIndex + 1) % images.length;
-    const next = images[nextIndex];
-    
-    current.classList.remove('active');
-    next.classList.add('active');
-    
-    currentIndex = nextIndex;
+  // Duplicate images for seamless loop
+  scrollWrap.innerHTML = '';
+  const makeImg = src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    return i;
+  };
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  function measure() {
+    const imgs = scrollWrap.querySelectorAll('img');
+    const half = imgs.length / 2;
+    let width = 0;
+    for(let i=0;i<half;i++){
+      const r = imgs[i].getBoundingClientRect();
+      const mr = parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+      width += r.width + mr;
+    }
+    return Math.round(width);
   }
+
+  let trackWidth = 0;
+  let rafId = null;
+  let lastTime = null;
+  let offset = 0;
+  const pxPerSecond = 80;
+
+  function step(ts){
+    if(!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000;
+    lastTime = ts;
+    offset += pxPerSecond * dt;
+    if(offset >= trackWidth) offset = offset - trackWidth;
+    scrollWrap.style.transform = `translateX(${-offset}px)`;
+    rafId = requestAnimationFrame(step);
+  }
+
+  function startAnimation(){
+    if(rafId) cancelAnimationFrame(rafId);
+    lastTime = null;
+    offset = 0;
+    trackWidth = measure();
+    if(trackWidth <= 0) return;
+    scrollWrap.style.width = (trackWidth * 2) + 'px';
+    rafId = requestAnimationFrame(step);
+  }
+
+  // Wait for images to load
+  const imgs = scrollWrap.querySelectorAll('img');
+  let loaded = 0;
+  const checkStart = () => {
+    loaded++;
+    if(loaded === imgs.length) startAnimation();
+  };
   
-  // Change image every 4 seconds
-  setInterval(fadeToNext, 4000);
+  imgs.forEach(img => {
+    if(img.complete) checkStart();
+    else img.addEventListener('load', checkStart);
+  });
+
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(startAnimation, 160);
+  });
 })();
   </script>
 </body>
