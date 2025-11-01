@@ -223,6 +223,30 @@
     lightbox.addEventListener('click', () => {
       lightbox.classList.remove('show');
     });
+
+// Smooth scroll to hash on page load
+window.addEventListener('load', () => {
+  if(window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if(target) {
+      setTimeout(() => {
+        const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({top: y, behavior: 'smooth'});
+      }, 100);
+    }
+  }
+});
+
+// Also handle hash clicks within the page
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if(!t) return;
+    const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({top:y, behavior:'smooth'});
+  });
+});
   </script>
 </body>
 </html>
