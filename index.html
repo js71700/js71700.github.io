@@ -121,7 +121,7 @@
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
 
-    .section{max-width:1100px;margin:36px auto;padding:32px}
+    .section{padding:32px}
     .section.card{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       border-radius:12px;
@@ -129,6 +129,7 @@
       opacity:0;
       transform:translateY(40px);
       transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
+      flex:1;
     }
     
     .tracks{display:flex;flex-direction:column;gap:18px}
@@ -146,7 +147,16 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    .shows-wrap{max-width:1100px;margin:36px auto;display:block;padding:0 16px}
+    .content-flex-wrap{
+      max-width:1100px;
+      margin:36px auto;
+      padding:0 16px;
+      display:flex;
+      gap:24px;
+      align-items:flex-start;
+    }
+
+    .shows-wrap{flex:1;display:block;}
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -184,6 +194,7 @@
       .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
       .hero .hero-text{align-self:stretch;max-width:none;flex:0 1 auto;border-radius:0;padding:16px;}
       .topnav .inner{width:calc(100% - 32px)}
+      .content-flex-wrap{flex-direction:column;}
     }
 
     #music{padding-top:12px !important;padding-bottom:12px !important;}
@@ -208,10 +219,10 @@
     <section class="hero" aria-label="Hero">
       <div class="hero-bg" aria-hidden="true">
         <div class="scroll-wrap" id="scrollWrap">
+          <img src="./images/photo1.jpg" alt="">
           <img src="./images/photo5.jpg" alt="">
           <img src="./images/photo6.jpg" alt="">
           <img src="./images/photo7.jpg" alt="">
-          <img src="./images/photo1.jpg" alt="">
           <img src="./images/photo8.jpg" alt="">
         </div>
       </div>
@@ -230,48 +241,50 @@
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
     </section>
 
-    <div class="shows-wrap" id="shows">
-      <div class="shows-list">
-       <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Playerfair Display',serif;letter-spacing:1px">Upcoming Performances</h2>
+    <div class="content-flex-wrap">
+      <div class="shows-wrap" id="shows">
+        <div class="shows-list">
+         <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Playfair Display',serif;letter-spacing:1px">Upcoming Performances</h2>
 
-        <div class="show-item">
-          <div class="show-date">Nov 06, 2025 — 7:30 PM</div>
-          <h3 class="show-title">The DelaOssa Quartet</h3>
-          <div class="show-location">Brasserie Beaubien, 73 Rue Beaubien E, Montreal, QC</div>
-          <div class="show-cta"><a class="pill" href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg">Tickets</a></div>
-        </div>
+          <div class="show-item">
+            <div class="show-date">Nov 06, 2025 — 7:30 PM</div>
+            <h3 class="show-title">The DelaOssa Quartet</h3>
+            <div class="show-location">Brasserie Beaubien, 73 Rue Beaubien E, Montreal, QC</div>
+            <div class="show-cta"><a class="pill" href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg">Tickets</a></div>
+          </div>
 
-        <div class="show-item">
-          <div class="show-date">Nov 11, 2025 — 7:00 PM</div>
-          <h3 class="show-title">Ingrid Li with Strings</h3>
-          <div class="show-location">La Sala Rossa, 4848 St Laurent Blvd, Montreal, QC</div>
-          <div class="show-cta"><a class="pill" href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA">Tickets</a></div>
-        </div>
+          <div class="show-item">
+            <div class="show-date">Nov 11, 2025 — 7:00 PM</div>
+            <h3 class="show-title">Ingrid Li with Strings</h3>
+            <div class="show-location">La Sala Rossa, 4848 St Laurent Blvd, Montreal, QC</div>
+            <div class="show-cta"><a class="pill" href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA">Tickets</a></div>
+          </div>
 
-        <div class="show-item">
-          <div class="show-date">Nov 17, 2025</div>
-          <h3 class="show-title">Nick Baddelay Quartet</h3>
-          <div class="show-location">Casa des Popolo, 4873 St Laurent Blvd, Montreal, QC</div>
-        </div>
+          <div class="show-item">
+            <div class="show-date">Nov 17, 2025</div>
+            <h3 class="show-title">Nick Baddelay Quartet</h3>
+            <div class="show-location">Casa des Popolo, 4873 St Laurent Blvd, Montreal, QC</div>
+          </div>
 
-        <div class="show-item">
-          <div class="show-date">Nov 20, 2025</div>
-          <h3 class="show-title">JOSA's Atmosphere</h3>
-          <div class="show-location">Petit Campus, 57-b Rue Prince-Arthur E, Montreal, QC</div>
+          <div class="show-item">
+            <div class="show-date">Nov 20, 2025</div>
+            <h3 class="show-title">JOSA's Atmosphere</h3>
+            <div class="show-location">Petit Campus, 57-b Rue Prince-Arthur E, Montreal, QC</div>
+          </div>
+          
         </div>
-        
       </div>
+
+      <section class="section card" id="music">
+        <h2 style="text-align:center;margin-top:0">Music</h2>
+
+        <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+        <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+      </section>
     </div>
-
-   <section class="section card" id="music">
-  <h2 style="text-align:center;margin-top:0">Music</h2>
-
-  <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-
-  <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
-    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-</section>
 
     <footer>
       © <span id="year"></span> Julian Shively • All rights reserved.
