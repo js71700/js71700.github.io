@@ -45,22 +45,36 @@
       background:transparent;
     }
 
-    .hero .hero-bg img{
+    .hero .hero-bg .scroll-wrap{
       position:absolute;
-      top:0;
       left:0;
-      width:100%;
+      top:0;
       height:100%;
-      object-fit:cover;
-      display:block;
-      border-radius:0;
-      box-shadow:0 10px 30px rgba(0,0,0,0.45);
-      opacity:0;
-      transition:opacity 1.5s ease-in-out;
+      display:flex;
+      align-items:center;
+      will-change:transform;
     }
 
-    .hero .hero-bg img.active{
-      opacity:1;
+    .hero .hero-bg img{
+      height:100%;
+      width:auto;
+      object-fit:cover;
+      display:block;
+      margin-right:0;
+      border-radius:0;
+      box-shadow:none;
+      position:relative;
+    }
+
+    .hero .hero-bg img::after{
+      content:'';
+      position:absolute;
+      right:0;
+      top:0;
+      bottom:0;
+      width:40px;
+      background:linear-gradient(to right, transparent, rgba(6,16,24,0.3));
+      pointer-events:none;
     }
 
     .hero .portrait{
@@ -192,12 +206,14 @@
 
   <main>
     <section class="hero" aria-label="Hero">
-      <div class="hero-bg" aria-hidden="true" id="heroCarousel">
-        <img src="./images/photo5.jpg" alt="" class="active">
-        <img src="./images/photo6.jpg" alt="">
-        <img src="./images/photo7.jpg" alt="">
-        <img src="./images/photo8.jpg" alt="">
-        <img src="./images/photo1.jpg" alt="">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="scroll-wrap" id="scrollWrap">
+          <img src="./images/photo5.jpg" alt="">
+          <img src="./images/photo6.jpg" alt="">
+          <img src="./images/photo7.jpg" alt="">
+          <img src="./images/photo1.jpg" alt="">
+          <img src="./images/photo8.jpg" alt="">
+        </div>
       </div>
 
       <div class="hero-text">
