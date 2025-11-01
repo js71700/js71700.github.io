@@ -7,23 +7,157 @@
   <meta name="description" content="Media for Julian Shively — musician portfolio">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    /* Same styles as index.html */
-    :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981}
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
-    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
-    .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
-    .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
-    .navlinks{display:flex;gap:8px;align-items:center}
-    .navlinks a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600}
-    .navlinks a.contact{background:linear-gradient(90deg,var(--teal),#08c9b5);color:#04201d}
-    main{padding-top:96px}
-    .section{max-width:1100px;margin:36px auto;padding:32px}
-    .section.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:28px}
-    .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
-    .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
-    footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
-    
+    :root {
+      --bg: #071018;
+      --muted: #98a6ad;
+      --teal: #06b6a4;
+      --accent: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: #e6eef6;
+      font-family: Inter, system-ui, Arial;
+      overflow-x: hidden;
+    }
+
+    .topnav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(3,8,10,0.6), rgba(3,8,10,0.3));
+      z-index: 40;
+    }
+
+    .topnav .inner {
+      width: 1100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .navlinks {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .navlinks a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 8px;
+      font-weight: 600;
+    }
+
+    .navlinks a.contact {
+      background: linear-gradient(90deg, var(--teal), #08c9b5);
+      color: #04201d;
+    }
+
+    main {
+      padding-top: 96px;
+    }
+
+    /* --- Gallery --- */
+    .gallery {
+      column-count: 4;
+      column-gap: 12px;
+      max-width: 100%;
+      padding: 0 16px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      z-index: 10;
+    }
+
+    @media (max-width: 1000px) {
+      .gallery { column-count: 3; }
+    }
+    @media (max-width: 700px) {
+      .gallery { column-count: 2; }
+    }
+    @media (max-width: 500px) {
+      .gallery { column-count: 1; }
+    }
+
+    /* --- Modal for large image view --- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+    }
+
+    .lightbox.show {
+      display: flex;
+    }
+
+    .videos {
+      max-width: 1100px;
+      margin: 60px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 0 16px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 350px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 40px auto;
+      color: var(--muted);
+      text-align: center;
+      padding: 40px 16px;
+    }
   </style>
 </head>
 <body>
@@ -40,35 +174,57 @@
   </div>
 
   <main>
-    <section class="section card">
-      <div class="gallery">
-        <img src="./images/photo1.jpg" alt="Performance photo 1">
-        <img src="./images/photo2.jpg" alt="Performance photo 2">
-        <img src="./images/photo3.jpeg" alt="Performance photo 3">
-        <img src="./images/photo4.png" alt="Performance photo 4">
-        <img src="./images/photo5.jpg" alt="Performance photo 5">
-        <img src="./images/photo6.jpg" alt="Performance photo 6">
-        <img src="./images/photo7.jpg" alt="Performance photo 7">
-        <img src="./images/photo8.jpg" alt="Performance photo 8">
-        <img src="./images/photo9.jpg" alt="Performance photo 9">
-        <img src="./images/photo10.jpg" alt="Performance photo 10">
-        <img src="./images/photo11.jpg" alt="Performance photo 11">
-        <img src="./images/photo12.jpg" alt="Performance photo 12">
-      </div>
-      <div style="margin-top:32px">
-        <iframe style="width:100%;height:300px;border:0;border-radius:8px" src="https://www.youtube.com/embed/Hxol81jbS5A?si=Xv01YbC6gFQIgRNZ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <iframe style="width:100%;height:300px;border:0;border-radius:8px" src="https://www.youtube.com/embed/5sRneIJE-lo?si=UOKMaZXeI5d1UQz-" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-      </div>
-    </section>
+    <div class="gallery">
+      <img src="./images/photo1.jpg" alt="Performance photo 1">
+      <img src="./images/photo2.jpg" alt="Performance photo 2">
+      <img src="./images/photo3.jpeg" alt="Performance photo 3">
+      <img src="./images/photo4.png" alt="Performance photo 4">
+      <img src="./images/photo5.jpg" alt="Performance photo 5">
+      <img src="./images/photo6.jpg" alt="Performance photo 6">
+      <img src="./images/photo7.jpg" alt="Performance photo 7">
+      <img src="./images/photo8.jpg" alt="Performance photo 8">
+      <img src="./images/photo9.jpg" alt="Performance photo 9">
+      <img src="./images/photo10.jpg" alt="Performance photo 10">
+      <img src="./images/photo11.jpg" alt="Performance photo 11">
+      <img src="./images/photo12.jpg" alt="Performance photo 12">
+    </div>
+
+    <div class="videos">
+      <iframe src="https://www.youtube.com/embed/Hxol81jbS5A?si=Xv01YbC6gFQIgRNZ" 
+        title="YouTube video player" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/5sRneIJE-lo?si=UOKMaZXeI5d1UQz-" 
+        title="YouTube video player" allowfullscreen></iframe>
+    </div>
 
     <footer>
       © <span id="year"></span> Julian Shively • All rights reserved.
     </footer>
   </main>
 
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Expanded view">
+  </div>
+
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lightbox logic
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = lightbox.querySelector('img');
+    const galleryImgs = document.querySelectorAll('.gallery img');
+
+    galleryImgs.forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('show');
+      });
+    });
+
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('show');
+    });
   </script>
 </body>
 </html>
+
 
