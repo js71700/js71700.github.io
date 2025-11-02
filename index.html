@@ -5,10 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Julian Shively — Home</title>
   <meta name="description" content="Julian Shively — musician portfolio">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981;}
     *{box-sizing:border-box}
@@ -186,10 +183,6 @@
     .show-cta{margin-top:12px}
     .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
-    .gallery-section{width:100%;margin:40px 0;padding:40px 0;background:transparent}
-    .gallery{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;max-width:1200px;margin:0 auto}
-    .gallery img{width:220px;height:220px;object-fit:cover;border-radius:10px}
-
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
     @media (max-width:1000px){
@@ -203,7 +196,6 @@
     #music{padding-top:12px !important;padding-bottom:12px !important;}
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
-    /* Custom Audio Player Styles */
     .custom-audio-player{
       background:#121212;
       border-radius:8px;
@@ -322,20 +314,18 @@
       <section class="section card" id="music">
         <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
 
-        <!-- CUSTOM AUDIO PLAYER FOR ANTITUNE.WAV -->
         <div class="custom-audio-player">
           <img class="album-art" src="./avatar.jpeg" alt="Antitune">
           <div class="track-details">
             <div class="track-title">Antitune</div>
             <div class="track-artist">written by Julian Shively</div>
             <audio controls>
-              <source src="./Antitune.mp3" type="audio/wav">
+              <source src="./Antitune.mp3" type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>
           </div>
         </div>
 
-        <!-- SPOTIFY EMBEDS -->
         <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
@@ -352,7 +342,6 @@
   <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-// Smooth scroll anchors
 document.querySelectorAll('a[href^="#"]').forEach(a=>{
   a.addEventListener('click', e=>{
     e.preventDefault();
@@ -363,7 +352,6 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
   });
 });
 
-// Combined scroll handler for all animations
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
 const tracks = document.querySelectorAll('.track');
@@ -373,7 +361,6 @@ const sections = document.querySelectorAll('.section.card, .shows-list');
 function handleScroll() {
   const scroll = window.scrollY;
   
-  // Hero animations
   const easeOutQuad = t => 1 - (1 - t) * (1 - t);
   let progress = Math.min(scroll / 400, 1);
   let eased = easeOutQuad(progress);
@@ -390,7 +377,6 @@ function handleScroll() {
     heroText.style.opacity = opacity;
   }
 
-  // Staggered element animations
   const animateElements = (elements, offset) => {
     elements.forEach((el, index) => {
       const rect = el.getBoundingClientRect();
@@ -410,7 +396,6 @@ function handleScroll() {
 window.addEventListener('scroll', handleScroll);
 window.addEventListener('load', handleScroll);
 
-// Seamless carousel
 (function seamlessCarousel(){
   const scrollWrap = document.getElementById('scrollWrap');
   if(!scrollWrap) return;
@@ -418,7 +403,6 @@ window.addEventListener('load', handleScroll);
   const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
   if(initialImgs.length === 0) return;
 
-  // Duplicate images for seamless loop
   scrollWrap.innerHTML = '';
   const makeImg = src => {
     const i = document.createElement('img');
@@ -467,7 +451,6 @@ window.addEventListener('load', handleScroll);
     rafId = requestAnimationFrame(step);
   }
 
-  // Wait for images to load
   const imgs = scrollWrap.querySelectorAll('img');
   let loaded = 0;
   const checkStart = () => {
@@ -480,7 +463,6 @@ window.addEventListener('load', handleScroll);
     else img.addEventListener('load', checkStart);
   });
 
-  // Handle window resize
   let resizeTimeout;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
