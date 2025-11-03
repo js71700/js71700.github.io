@@ -157,6 +157,7 @@
       transform:translateY(40px);
       transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
       flex:1;
+      /* REMOVED: border:1px solid rgba(255,255,255,0.03); to remove border around music section */
     }
     
     .tracks{display:flex;flex-direction:column;gap:18px}
@@ -175,15 +176,16 @@
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
     .content-flex-wrap{
-      max-width:1100px;
+      /* REMOVED: max-width:1100px; to allow sections to fill width */
       margin:36px auto;
       padding:0 16px;
       display:flex;
       gap:24px;
       align-items:flex-start;
+      flex-direction: column; /* Changed to column to stack the sections */
     }
 
-    .shows-wrap{flex:1;display:block;}
+    .shows-wrap{flex:1;display:block; width: 100%;} /* Added width: 100% */
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -219,9 +221,13 @@
       .social-icons{flex-direction:row;order:3;margin-top:16px;}
       .topnav .inner{width:calc(100% - 32px)}
       .content-flex-wrap{flex-direction:column;}
+      /* Added for small screens */
+      .performances-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
     }
 
-    #music{padding-top:12px !important;padding-bottom:12px !important;}
+    #music{padding-top:12px !important;padding-bottom:12px !important; width: 100%;} /* Added width: 100% */
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
     .custom-audio-player{
@@ -267,29 +273,38 @@
     
 /* --- Upcoming Performances Card Grid (refined) --- */
 .performances-grid {
+  /* MODIFIED: To ensure exactly 3 columns on large screens */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
   justify-items: center;
   margin-top: 20px;
 }
 
+@media (max-width: 1000px) {
+  .performances-grid {
+    /* Kept the responsive layout for smaller screens */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
 .card {
   background-color: #000;
-  border: 2px solid #d6bfa0;
+  /* REMOVED: border: 2px solid #d6bfa0; to remove gold border around performance cards */
   padding: 24px 26px;
-  width: 320px;
+  width: 100%; /* Changed to 100% to fill grid column */
+  max-width: 320px; /* Added max-width to keep card size reasonable within the column */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: auto;
-  min-height: 280px; /* shorter cards */
+  min-height: 280px;
 }
 
 .card .top {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end; /* align year and date vertically */
+  align-items: flex-end;
   margin-bottom: 8px;
 }
 
@@ -300,8 +315,8 @@
   color: #d6bfa0;
   line-height: 1;
   margin: 0;
-  align-self: flex-end; /* bring the year inline with the date */
-  transform: translateY(8px); /* visually nudge it down slightly */
+  align-self: flex-end;
+  transform: translateY(8px);
 }
 
 .card .date {
@@ -418,86 +433,81 @@
     <div class="content-flex-wrap">
       <div class="shows-wrap" id="shows">
         <div class="shows-list">
-  <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;
-             font-family:'Cinzel',serif;letter-spacing:1px">
-    Upcoming Performances
-  </h2>
+          <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;
+            font-family:'Cinzel',serif;letter-spacing:1px">
+            Upcoming Performances
+          </h2>
 
-  <div class="performances-grid">
-    <!-- Performance Card 1 -->
-    <div class="card">
-      <div class="top">
-        <div class="year">2025</div>
-        <div class="date">
-          <h3>THURSDAY<br>NOVEMBER</h3>
-          <h2>06</h2>
+          <div class="performances-grid">
+            <div class="card">
+              <div class="top">
+                <div class="year">2025</div>
+                <div class="date">
+                  <h3>THURSDAY<br>NOVEMBER</h3>
+                  <h2>06</h2>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="details">
+                <div>The DelaOssa Quartet</div>
+                <div class="city">Brasserie Beaubien<br>73 Rue Beaubien E, Montreal QC</div>
+                <div class="band">Showtime 7:30 PM</div>
+              </div>
+              <a href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg"
+                  class="buy-btn" target="_blank">Buy Tickets</a>
+            </div>
+
+            <div class="card">
+              <div class="top">
+                <div class="year">2025</div>
+                <div class="date">
+                  <h3>TUESDAY<br>NOVEMBER</h3>
+                  <h2>11</h2>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="details">
+                <div>Ingrid Li with Strings</div>
+                <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
+                <div class="band">Showtime 7:00 PM</div>
+              </div>
+              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
+                  class="buy-btn" target="_blank">Buy Tickets</a>
+            </div>
+
+            <div class="card">
+              <div class="top">
+                <div class="year">2025</div>
+                <div class="date">
+                  <h3>MONDAY<br>NOVEMBER</h3>
+                  <h2>17</h2>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="details">
+                <div>Nick Baddelay Quartet</div>
+                <div class="city">Casa del Popolo<br>4873 St Laurent Blvd, Montreal QC</div>
+              </div>
+              <a href="#" class="buy-btn">Info Coming Soon</a>
+            </div>
+
+            <div class="card">
+              <div class="top">
+                <div class="year">2025</div>
+                <div class="date">
+                  <h3>THURSDAY<br>NOVEMBER</h3>
+                  <h2>20</h2>
+                </div>
+              </div>
+              <div class="divider"></div>
+              <div class="details">
+                <div>JOSA’s Atmosphere</div>
+                <div class="city">Petit Campus<br>57-b Rue Prince-Arthur E, Montreal QC</div>
+              </div>
+              <a href="#" class="buy-btn">Info Coming Soon</a>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="divider"></div>
-      <div class="details">
-        <div>The DelaOssa Quartet</div>
-        <div class="city">Brasserie Beaubien<br>73 Rue Beaubien E, Montreal QC</div>
-        <div class="band">Showtime 7:30 PM</div>
-      </div>
-      <a href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg"
-         class="buy-btn" target="_blank">Buy Tickets</a>
-    </div>
-
-    <!-- Performance Card 2 -->
-    <div class="card">
-      <div class="top">
-        <div class="year">2025</div>
-        <div class="date">
-          <h3>TUESDAY<br>NOVEMBER</h3>
-          <h2>11</h2>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="details">
-        <div>Ingrid Li with Strings</div>
-        <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
-        <div class="band">Showtime 7:00 PM</div>
-      </div>
-      <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
-         class="buy-btn" target="_blank">Buy Tickets</a>
-    </div>
-
-    <!-- Performance Card 3 -->
-    <div class="card">
-      <div class="top">
-        <div class="year">2025</div>
-        <div class="date">
-          <h3>MONDAY<br>NOVEMBER</h3>
-          <h2>17</h2>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="details">
-        <div>Nick Baddelay Quartet</div>
-        <div class="city">Casa del Popolo<br>4873 St Laurent Blvd, Montreal QC</div>
-      </div>
-      <a href="#" class="buy-btn">Info Coming Soon</a>
-    </div>
-
-    <!-- Performance Card 4 -->
-    <div class="card">
-      <div class="top">
-        <div class="year">2025</div>
-        <div class="date">
-          <h3>THURSDAY<br>NOVEMBER</h3>
-          <h2>20</h2>
-        </div>
-      </div>
-      <div class="divider"></div>
-      <div class="details">
-        <div>JOSA’s Atmosphere</div>
-        <div class="city">Petit Campus<br>57-b Rue Prince-Arthur E, Montreal QC</div>
-      </div>
-      <a href="#" class="buy-btn">Info Coming Soon</a>
-    </div>
-  </div>
-</div>
-
       </div>
 
       <section class="section card" id="music">
@@ -529,140 +539,140 @@
   </main>
 
   <script>
-document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click', e=>{
-    e.preventDefault();
-    const t = document.querySelector(a.getAttribute('href'));
-    if(!t) return;
-    const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
-    window.scrollTo({top:y, behavior:'smooth'});
-  });
-});
-
-const heroImg = document.querySelector('.hero .portrait');
-const heroText = document.querySelector('.hero .hero-text');
-const socialIcons = document.querySelector('.social-icons');
-const tracks = document.querySelectorAll('.track');
-const shows = document.querySelectorAll('.show-item');
-const sections = document.querySelectorAll('.section.card, .shows-list');
-
-function handleScroll() {
-  const scroll = window.scrollY;
-  
-  const easeOutQuad = t => 1 - (1 - t) * (1 - t);
-  let progress = Math.min(scroll / 400, 1);
-  let eased = easeOutQuad(progress);
-  const scale = 1 - 0.2 * eased;
-  const opacity = 1 - eased;
-  const textSlide = Math.min(scroll * 0.2, 50);
-
-  if (heroImg) {
-    heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
-    heroImg.style.opacity = opacity;
-  }
-  if (heroText) {
-    heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
-    heroText.style.opacity = opacity;
-  }
-  if (socialIcons) {
-    socialIcons.style.transform = `scale(${scale}) translateY(${scroll * 0.15}px)`;
-    socialIcons.style.opacity = opacity;
-  }
-
-  const animateElements = (elements, offset) => {
-    elements.forEach((el, index) => {
-      const rect = el.getBoundingClientRect();
-      if(rect.top < window.innerHeight - offset){
-        el.style.transitionDelay = `${index * 0.1}s`;
-        el.style.opacity = 1;
-        el.style.transform = 'translateX(0) translateY(0)';
-      }
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const t = document.querySelector(a.getAttribute('href'));
+        if(!t) return;
+        const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
+        window.scrollTo({top:y, behavior:'smooth'});
+      });
     });
-  };
 
-  animateElements(tracks, 100);
-  animateElements(shows, 100);
-  animateElements(sections, 50);
-}
+    const heroImg = document.querySelector('.hero .portrait');
+    const heroText = document.querySelector('.hero .hero-text');
+    const socialIcons = document.querySelector('.social-icons');
+    const tracks = document.querySelectorAll('.track');
+    const shows = document.querySelectorAll('.show-item');
+    const sections = document.querySelectorAll('.section.card, .shows-list');
 
-window.addEventListener('scroll', handleScroll);
-window.addEventListener('load', handleScroll);
+    function handleScroll() {
+      const scroll = window.scrollY;
+      
+      const easeOutQuad = t => 1 - (1 - t) * (1 - t);
+      let progress = Math.min(scroll / 400, 1);
+      let eased = easeOutQuad(progress);
+      const scale = 1 - 0.2 * eased;
+      const opacity = 1 - eased;
+      const textSlide = Math.min(scroll * 0.2, 50);
 
-(function seamlessCarousel(){
-  const scrollWrap = document.getElementById('scrollWrap');
-  if(!scrollWrap) return;
+      if (heroImg) {
+        heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
+        heroImg.style.opacity = opacity;
+      }
+      if (heroText) {
+        heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
+        heroText.style.opacity = opacity;
+      }
+      if (socialIcons) {
+        socialIcons.style.transform = `scale(${scale}) translateY(${scroll * 0.15}px)`;
+        socialIcons.style.opacity = opacity;
+      }
 
-  const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
-  if(initialImgs.length === 0) return;
+      const animateElements = (elements, offset) => {
+        elements.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          if(rect.top < window.innerHeight - offset){
+            el.style.transitionDelay = `${index * 0.1}s`;
+            el.style.opacity = 1;
+            el.style.transform = 'translateX(0) translateY(0)';
+          }
+        });
+      };
 
-  scrollWrap.innerHTML = '';
-  const makeImg = src => {
-    const i = document.createElement('img');
-    i.src = src;
-    i.alt = '';
-    return i;
-  };
-  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
-  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
-
-  function measure() {
-    const imgs = scrollWrap.querySelectorAll('img');
-    const half = imgs.length / 2;
-    let width = 0;
-    for(let i=0;i<half;i++){
-      const r = imgs[i].getBoundingClientRect();
-      const mr = parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
-      width += r.width + mr;
+      animateElements(tracks, 100);
+      animateElements(shows, 100);
+      animateElements(sections, 50);
     }
-    return Math.round(width);
-  }
 
-  let trackWidth = 0;
-  let rafId = null;
-  let lastTime = null;
-  let offset = 0;
-  const pxPerSecond = 80;
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('load', handleScroll);
 
-  function step(ts){
-    if(!lastTime) lastTime = ts;
-    const dt = (ts - lastTime) / 1000;
-    lastTime = ts;
-    offset += pxPerSecond * dt;
-    if(offset >= trackWidth) offset = offset - trackWidth;
-    scrollWrap.style.transform = `translateX(${-offset}px)`;
-    rafId = requestAnimationFrame(step);
-  }
+    (function seamlessCarousel(){
+      const scrollWrap = document.getElementById('scrollWrap');
+      if(!scrollWrap) return;
 
-  function startAnimation(){
-    if(rafId) cancelAnimationFrame(rafId);
-    lastTime = null;
-    offset = 0;
-    trackWidth = measure();
-    if(trackWidth <= 0) return;
-    scrollWrap.style.width = (trackWidth * 2) + 'px';
-    rafId = requestAnimationFrame(step);
-  }
+      const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+      if(initialImgs.length === 0) return;
 
-  const imgs = scrollWrap.querySelectorAll('img');
-  let loaded = 0;
-  const checkStart = () => {
-    loaded++;
-    if(loaded === imgs.length) startAnimation();
-  };
-  
-  imgs.forEach(img => {
-    if(img.complete) checkStart();
-    else img.addEventListener('load', checkStart);
-  });
+      scrollWrap.innerHTML = '';
+      const makeImg = src => {
+        const i = document.createElement('img');
+        i.src = src;
+        i.alt = '';
+        return i;
+      };
+      initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+      initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
 
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(startAnimation, 160);
-  });
-})();
+      function measure() {
+        const imgs = scrollWrap.querySelectorAll('img');
+        const half = imgs.length / 2;
+        let width = 0;
+        for(let i=0;i<half;i++){
+          const r = imgs[i].getBoundingClientRect();
+          const mr = parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+          width += r.width + mr;
+        }
+        return Math.round(width);
+      }
+
+      let trackWidth = 0;
+      let rafId = null;
+      let lastTime = null;
+      let offset = 0;
+      const pxPerSecond = 80;
+
+      function step(ts){
+        if(!lastTime) lastTime = ts;
+        const dt = (ts - lastTime) / 1000;
+        lastTime = ts;
+        offset += pxPerSecond * dt;
+        if(offset >= trackWidth) offset = offset - trackWidth;
+        scrollWrap.style.transform = `translateX(${-offset}px)`;
+        rafId = requestAnimationFrame(step);
+      }
+
+      function startAnimation(){
+        if(rafId) cancelAnimationFrame(rafId);
+        lastTime = null;
+        offset = 0;
+        trackWidth = measure();
+        if(trackWidth <= 0) return;
+        scrollWrap.style.width = (trackWidth * 2) + 'px';
+        rafId = requestAnimationFrame(step);
+      }
+
+      const imgs = scrollWrap.querySelectorAll('img');
+      let loaded = 0;
+      const checkStart = () => {
+        loaded++;
+        if(loaded === imgs.length) startAnimation();
+      };
+      
+      imgs.forEach(img => {
+        if(img.complete) checkStart();
+        else img.addEventListener('load', checkStart);
+      });
+
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(startAnimation, 160);
+      });
+    })();
   </script>
 </body>
 </html>
