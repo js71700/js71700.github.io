@@ -215,60 +215,21 @@
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
     
-    /* NEW FLEX CONTAINER for Music and Bio Columns (FIXED) */
+    /* Simple side-by-side layout */
     .music-bio-wrap {
       display: flex;
       gap: 24px;
-      width: 100%; /* Important: Takes up 100% of the parent (.content-flex-wrap) */
-      align-items: flex-start;
     }
 
-    /* MUSIC SECTION (50%) */
     .music-section {
-      flex: 1 1 50%; /* Distributes space 50/50 */
-      min-width: 0; 
+      flex: 1;
     }
-    #music{
-      padding-top:12px !important;
-      padding-bottom:12px !important;
-      width: 100%;
-    }
-    #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
-    /* BIO SECTION (50%) */
     .bio-section {
-      flex: 1 1 50%; /* Distributes space 50/50 */
-      min-width: 0;
-      padding-top: 12px; 
+      flex: 1;
     }
-    .bio-section h2 {
-      margin-top: 0;
-      text-align: center;
-      color: #fff;
-      font-size: 32px;
-      font-family: 'Cinzel', serif;
-      letter-spacing: 1px;
-    }
-    .bio-section img {
-      width: 100%;
-      max-width: 300px; 
-      height: auto;
-      border-radius: 12px;
-      object-fit: cover;
-      display: block;
-      margin: 20px auto;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-    }
-    .bio-content {
-      line-height: 1.6;
-      color: var(--muted);
-      max-width: 400px;
-      margin: 0 auto 20px;
-      text-align: center;
-    }
-    .bio-content p {
-      margin-bottom: 1em;
-    }
+    
+    #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
 
     .custom-audio-player{
       background:#121212;
