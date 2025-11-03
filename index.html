@@ -264,6 +264,89 @@
       width:100%;
       height:32px;
     }
+    
+    /* --- Upcoming Performances Card Grid --- */
+.performances-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  justify-items: center;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #000;
+  border: 2px solid #d6bfa0;
+  padding: 30px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card .year {
+  font-family: "Playfair Display", serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #d6bfa0;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+
+.card .date {
+  text-align: right;
+}
+
+.card .date h3 {
+  font-size: 1rem;
+  letter-spacing: 1px;
+  margin: 0;
+  font-weight: 400;
+  color: #fff;
+}
+
+.card .date h2 {
+  font-size: 1.8rem;
+  margin: 5px 0 10px;
+  color: #fff;
+}
+
+.divider {
+  border-top: 1px dotted #d6bfa0;
+  margin: 10px 0 20px;
+}
+
+.details {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.details .city {
+  color: #8cb3e6;
+  font-weight: 700;
+  margin: 6px 0;
+}
+
+.buy-btn {
+  background-color: #d6bfa0;
+  color: #001f3f;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  padding: 12px;
+  margin-top: 20px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.buy-btn:hover {
+  background-color: #8cb3e6;
+  color: #000;
+}
+
   </style>
 </head>
 <body>
@@ -320,35 +403,86 @@
     <div class="content-flex-wrap">
       <div class="shows-wrap" id="shows">
         <div class="shows-list">
-         <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Upcoming Performances</h2>
+  <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;
+             font-family:'Cinzel',serif;letter-spacing:1px">
+    Upcoming Performances
+  </h2>
 
-          <div class="show-item">
-            <div class="show-date">Nov 06, 2025 — 7:30 PM</div>
-            <h3 class="show-title">The DelaOssa Quartet</h3>
-            <div class="show-location">Brasserie Beaubien, 73 Rue Beaubien E, Montreal, QC</div>
-            <div class="show-cta"><a class="pill" href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg">Tickets</a></div>
-          </div>
-
-          <div class="show-item">
-            <div class="show-date">Nov 11, 2025 — 7:00 PM</div>
-            <h3 class="show-title">Ingrid Li with Strings</h3>
-            <div class="show-location">La Sala Rossa, 4848 St Laurent Blvd, Montreal, QC</div>
-            <div class="show-cta"><a class="pill" href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA">Tickets</a></div>
-          </div>
-
-          <div class="show-item">
-            <div class="show-date">Nov 17, 2025</div>
-            <h3 class="show-title">Nick Baddelay Quartet</h3>
-            <div class="show-location">Casa des Popolo, 4873 St Laurent Blvd, Montreal, QC</div>
-          </div>
-
-          <div class="show-item">
-            <div class="show-date">Nov 20, 2025</div>
-            <h3 class="show-title">JOSA's Atmosphere</h3>
-            <div class="show-location">Petit Campus, 57-b Rue Prince-Arthur E, Montreal, QC</div>
-          </div>
-          
+  <div class="performances-grid">
+    <!-- Performance Card 1 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>THURSDAY<br>NOVEMBER</h3>
+          <h2>06</h2>
         </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>The DelaOssa Quartet</div>
+        <div class="city">Brasserie Beaubien<br>73 Rue Beaubien E, Montreal QC</div>
+        <div class="band">Showtime 7:30 PM</div>
+      </div>
+      <a href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg"
+         class="buy-btn" target="_blank">Buy Tickets</a>
+    </div>
+
+    <!-- Performance Card 2 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>TUESDAY<br>NOVEMBER</h3>
+          <h2>11</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>Ingrid Li with Strings</div>
+        <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
+        <div class="band">Showtime 7:00 PM</div>
+      </div>
+      <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
+         class="buy-btn" target="_blank">Buy Tickets</a>
+    </div>
+
+    <!-- Performance Card 3 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>MONDAY<br>NOVEMBER</h3>
+          <h2>17</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>Nick Baddelay Quartet</div>
+        <div class="city">Casa del Popolo<br>4873 St Laurent Blvd, Montreal QC</div>
+      </div>
+      <a href="#" class="buy-btn">Info Coming Soon</a>
+    </div>
+
+    <!-- Performance Card 4 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>THURSDAY<br>NOVEMBER</h3>
+          <h2>20</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>JOSA’s Atmosphere</div>
+        <div class="city">Petit Campus<br>57-b Rue Prince-Arthur E, Montreal QC</div>
+      </div>
+      <a href="#" class="buy-btn">Info Coming Soon</a>
+    </div>
+  </div>
+</div>
+
       </div>
 
       <section class="section card" id="music">
