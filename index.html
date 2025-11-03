@@ -10,7 +10,7 @@
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981;}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
-    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba[...]
+    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
     .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
     .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
     .navlinks{display:flex;gap:8px;align-items:center}
@@ -297,8 +297,7 @@
   }
 }
 
-/* Renamed the event card styles to .event-card so .card can remain a general utility used by .section.card */
-.event-card {
+.card {
   background-color: #000;
   border: 2px solid #d6bfa0;
   padding: 24px 26px;
@@ -311,14 +310,14 @@
   min-height: 280px;
 }
 
-.event-card .top {
+.card .top {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
   margin-bottom: 8px;
 }
 
-.event-card .year {
+.card .year {
   font-family: "Playfair Display", serif;
   font-size: 2.6rem;
   font-weight: 700;
@@ -329,11 +328,11 @@
   transform: translateY(8px);
 }
 
-.event-card .date {
+.card .date {
   text-align: right;
 }
 
-.event-card .date h3 {
+.card .date h3 {
   font-size: 0.9rem;
   letter-spacing: 0.5px;
   margin: 0;
@@ -342,32 +341,32 @@
   line-height: 1.2;
 }
 
-.event-card .date h2 {
+.card .date h2 {
   font-size: 1.6rem;
   margin: 4px 0 0;
   color: #fff;
   line-height: 1;
 }
 
-.event-card .divider {
+.divider {
   border-top: 1px dotted #d6bfa0;
   margin: 8px 0 14px;
 }
 
-.event-card .details {
+.details {
   font-size: 0.9rem;
   line-height: 1.4;
   color: #ddd;
   flex-grow: 1;
 }
 
-.event-card .details .city {
+.details .city {
   color: #8cb3e6;
   font-weight: 700;
   margin: 4px 0;
 }
 
-.event-card .buy-btn {
+.buy-btn {
   background-color: #d6bfa0;
   color: #001f3f;
   text-transform: uppercase;
@@ -381,21 +380,11 @@
   border-radius: 3px;
 }
 
-.event-card .buy-btn:hover {
+.buy-btn:hover {
   background-color: #8cb3e6;
   color: #000;
 }
 
-/* Keep .section.card as-is (used for music & bio) and don't let event card rules affect them.
-   No overrides needed because event cards use .event-card now.
-*/
-
-/* Minor helpful flex fixes for .music-bio-wrap children to avoid overflow */
-.music-bio-wrap .music-section,
-.music-bio-wrap .bio-section {
-  min-width: 0;
-  flex: 1 1 0;
-}
 
   </style>
 </head>
@@ -459,7 +448,7 @@
           </h2>
 
           <div class="performances-grid">
-            <div class="event-card">
+            <div class="card">
               <div class="top">
                 <div class="year">2025</div>
                 <div class="date">
@@ -477,7 +466,7 @@
                   class="buy-btn" target="_blank">Buy Tickets</a>
             </div>
 
-            <div class="event-card">
+            <div class="card">
               <div class="top">
                 <div class="year">2025</div>
                 <div class="date">
@@ -491,11 +480,11 @@
                 <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
                 <div class="band">Showtime 7:00 PM</div>
               </div>
-              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0[...]
+              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
                   class="buy-btn" target="_blank">Buy Tickets</a>
             </div>
 
-            <div class="event-card">
+            <div class="card">
               <div class="top">
                 <div class="year">2025</div>
                 <div class="date">
@@ -511,7 +500,7 @@
               <a href="#" class="buy-btn">Info Coming Soon</a>
             </div>
 
-            <div class="event-card">
+            <div class="card">
               <div class="top">
                 <div class="year">2025</div>
                 <div class="date">
@@ -712,6 +701,7 @@
   </script>
 </body>
 </html>
+
 
 
 
