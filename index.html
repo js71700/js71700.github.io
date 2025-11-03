@@ -217,8 +217,9 @@
     
     /* Simple side-by-side layout */
     .music-bio-wrap {
-      display: flex-start;
+      display: flex;
       gap: 24px;
+      align-items: flex-start;
     }
 
     .music-section {
@@ -226,6 +227,27 @@
     }
     
     .bio-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .bio-header {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    
+    .bio-image {
+      width: 180px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+    
+    .bio-text-wrapper {
       flex: 1;
     }
     
