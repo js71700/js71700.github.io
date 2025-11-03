@@ -157,7 +157,7 @@
       transform:translateY(40px);
       transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
       flex:1;
-      /* REMOVED: border:1px solid rgba(255,255,255,0.03); to remove border around music section */
+      /* Border removed for general section cards, specific border on .card below */
     }
     
     .tracks{display:flex;flex-direction:column;gap:18px}
@@ -176,16 +176,15 @@
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
     .content-flex-wrap{
-      /* REMOVED: max-width:1100px; to allow sections to fill width */
       margin:36px auto;
       padding:0 16px;
       display:flex;
       gap:24px;
       align-items:flex-start;
-      flex-direction: column; /* Changed to column to stack the sections */
+      flex-direction: column;
     }
 
-    .shows-wrap{flex:1;display:block; width: 100%;} /* Added width: 100% */
+    .shows-wrap{flex:1;display:block; width: 100%;}
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -227,7 +226,7 @@
       }
     }
 
-    #music{padding-top:12px !important;padding-bottom:12px !important; width: 100%;} /* Added width: 100% */
+    #music{padding-top:12px !important;padding-bottom:12px !important; width: 100%;}
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
     .custom-audio-player{
@@ -273,27 +272,25 @@
     
 /* --- Upcoming Performances Card Grid (refined) --- */
 .performances-grid {
-  /* MODIFIED: To ensure exactly 3 columns on large screens */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 20px; /* MODIFIED: Reduced gap for closer cards */
   justify-items: center;
   margin-top: 20px;
 }
 
 @media (max-width: 1000px) {
   .performances-grid {
-    /* Kept the responsive layout for smaller screens */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
 .card {
   background-color: #000;
-  /* REMOVED: border: 2px solid #d6bfa0; to remove gold border around performance cards */
+  border: 2px solid #d6bfa0; /* RE-ADDED: Gold border */
   padding: 24px 26px;
-  width: 100%; /* Changed to 100% to fill grid column */
-  max-width: 320px; /* Added max-width to keep card size reasonable within the column */
+  width: 100%;
+  max-width: 320px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
