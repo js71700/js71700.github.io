@@ -221,6 +221,7 @@
       .content-flex-wrap{flex-direction:column;}
     }
 
+    #music {border-top: 1px solid rgba(255,255,255,0.08);}
     #music{padding-top:12px !important;padding-bottom:12px !important;}
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
@@ -361,6 +362,32 @@
   color: #000;
 }
 
+    /* Expand performances and music sections to full width */
+.shows-list {
+  max-width: none;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 8vw; /* wider padding that scales with viewport */
+}
+
+.performances-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 36px;
+  justify-items: stretch; /* make cards stretch evenly */
+}
+
+.card {
+  width: 100%;
+  max-width: 420px; /* slightly wider cards */
+}
+
+/* Make the music section also full width */
+.wide-section {
+  max-width: none !important;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 8vw !important;
+}
 
   </style>
 </head>
@@ -500,27 +527,27 @@
 
       </div>
 
-      <section class="section card" id="music">
-        <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
+      <section class="section card wide-section" id="music">
+      <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
 
-        <div class="custom-audio-player">
-          <img class="album-art" src="./avatar.jpeg" alt="Antitune">
-          <div class="track-details">
-            <div class="track-title">Antitune</div>
-            <div class="track-artist">written by Julian Shively</div>
-            <audio controls>
-              <source src="./Antitune.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
-          </div>
+      <div class="custom-audio-player">
+        <img class="album-art" src="./avatar.jpeg" alt="Antitune">
+        <div class="track-details">
+          <div class="track-title">Antitune</div>
+          <div class="track-artist">written by Julian Shively</div>
+          <audio controls>
+            <source src="./Antitune.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+          </audio>
         </div>
+      </div>
 
-        <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+      <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
-        <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      </section>
+      <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
+        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+    </section>
     </div>
 
     <footer>
