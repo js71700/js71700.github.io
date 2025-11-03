@@ -214,7 +214,12 @@
     .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
-    
+
+    .music-section,
+.bio-section {
+  background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  border-radius: 12px;
+  
     /* Simple side-by-side layout */
     .music-bio-wrap {
   max-width: none;
@@ -228,6 +233,7 @@
 
     .music-section {
       flex: 1;
+      
     }
     
     .bio-section {
@@ -547,7 +553,7 @@
     </div>
     <div class="music-bio-wrap">
         
-        <section class="card music-section" id="music">
+        <section class="section music-section" id="music">
           <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
 
           <div class="custom-audio-player">
@@ -569,7 +575,7 @@
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
         </section>
 
-        <section class="card bio-section" id="bio">
+        <section class="section bio-section" id="bio">
           <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">About Julian</h2>
           
           <img src="./avatar.jpeg" alt="Julian Shively profile" class="bio-image">
