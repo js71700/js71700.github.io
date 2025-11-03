@@ -156,7 +156,6 @@
       opacity:0;
       transform:translateY(40px);
       transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
-      /* flex:1; Removed default flex 1 for half-width logic below */
     }
     
     .tracks{display:flex;flex-direction:column;gap:18px}
@@ -174,12 +173,14 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* --- Primary Content Wrappers for Full Width & Columns --- */
+    /* --- Primary Content Wrappers for Full Width & Columns (FIXED) --- */
     .content-flex-wrap{
-      margin:36px auto;
+      max-width: 1100px; /* NEW: Use a max width to center content */
+      width: 100%;      /* Ensure it uses 100% of the max width */
+      margin:36px auto; /* Center the wrapper */
       padding:0 16px;
       display:flex;
-      flex-direction: column; /* Stack sections (shows on top, music/bio below) */
+      flex-direction: column; 
       gap:24px;
     }
 
@@ -214,18 +215,18 @@
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
     
-    /* NEW FLEX CONTAINER for Music and Bio */
+    /* NEW FLEX CONTAINER for Music and Bio Columns (FIXED) */
     .music-bio-wrap {
       display: flex;
       gap: 24px;
-      width: 100%;
+      width: 100%; /* Important: Takes up 100% of the parent (.content-flex-wrap) */
       align-items: flex-start;
     }
 
-    /* MUSIC SECTION (Left Half) */
+    /* MUSIC SECTION (50%) */
     .music-section {
-      flex: 1 1 50%;
-      min-width: 0; /* Allows content to shrink */
+      flex: 1 1 50%; /* Distributes space 50/50 */
+      min-width: 0; 
     }
     #music{
       padding-top:12px !important;
@@ -234,11 +235,11 @@
     }
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
-    /* BIO SECTION (Right Half) */
+    /* BIO SECTION (50%) */
     .bio-section {
-      flex: 1 1 50%;
+      flex: 1 1 50%; /* Distributes space 50/50 */
       min-width: 0;
-      padding-top: 12px; /* Align with music title height */
+      padding-top: 12px; 
     }
     .bio-section h2 {
       margin-top: 0;
@@ -250,7 +251,7 @@
     }
     .bio-section img {
       width: 100%;
-      max-width: 300px; /* Limit image size */
+      max-width: 300px; 
       height: auto;
       border-radius: 12px;
       object-fit: cover;
@@ -268,7 +269,6 @@
     .bio-content p {
       margin-bottom: 1em;
     }
-
 
     .custom-audio-player{
       background:#121212;
@@ -315,7 +315,7 @@
 .performances-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px; /* MODIFIED: Reduced gap for closer cards (was 20px) */
+  gap: 12px; 
   justify-items: center;
   margin-top: 20px;
 }
@@ -478,7 +478,7 @@
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
     </section>
 
-    <div class="content-flex-wrap">
+    <div class="content-flex-wrap"> 
       <div class="shows-wrap" id="shows">
         <div class="shows-list">
           <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;
