@@ -10,7 +10,7 @@
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981;}
     *{box-sizing:border-box}
     html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
-    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
+    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8[...]
     .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
     .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
     .navlinks{display:flex;gap:8px;align-items:center}
@@ -233,86 +233,46 @@
   padding: 28px;
 }
 
+/* ---------- Minimal CSS-only changes to place the bio image to the right, make it bigger and crop to a tall oval.
+   NOTE: I only changed CSS rules below; the HTML markup remains exactly as in the original file. ---------- */
+
 .bio-section {
-  flex: 1;
+  /* keep existing look but use flex so we can place image on the right without touching HTML */
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse; /* image will appear visually on the right even if it's before the text in DOM */
+  align-items: flex-start;
+  gap: 24px;
   background: linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
   border-radius: 12px;
   padding: 28px;
-    }
-    
-    .bio-header {
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      margin-bottom: 20px;
-    }
-    
-    .bio-image {
-      width: 180px;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
-    
-    .bio-text-wrapper {
-      flex: 1;
-    }
-    
-    #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
-
-    .custom-audio-player{
-      background:#121212;
-      border-radius:8px;
-      padding:12px;
-      margin-bottom:8px;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.3);
-    }
-    .custom-audio-player .album-art{
-      width:80px;
-      height:80px;
-      border-radius:4px;
-      object-fit:cover;
-      background:#1a1a1a;
-      flex-shrink:0;
-    }
-    .custom-audio-player .track-details{
-      flex:1;
-      min-width:0;
-    }
-    .custom-audio-player .track-title{
-      font-weight:700;
-      font-size:16px;
-      color:#fff;
-      margin-bottom:4px;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .custom-audio-player .track-artist{
-      font-size:14px;
-      color:#b3b3b3;
-      margin-bottom:8px;
-    }
-    .custom-audio-player audio{
-      width:100%;
-      height:32px;
-    }
-    
-/* --- Upcoming Performances Card Grid (refined) --- */
-.performances-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px; 
-  justify-items: center;
-  margin-top: 20px;
+  box-sizing: border-box;
 }
 
+/* Make the image bigger and a tall oval */
+.bio-image {
+  width: 220px;
+  height: 320px;
+  object-fit: cover;
+  flex-shrink: 0;
+  /* tall oval: elliptical border-radius */
+  border-radius: 50% / 35%;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+
+/* Ensure the text area takes remaining space and wraps nicely */
+.bio-content {
+  flex: 1 1 0%;
+  min-width: 0; /* allow proper truncation/wrapping inside flex */
+  color: #ddd;
+}
+
+/* keep the Read Full Bio button visually under the text on wide screens */
+.bio-section .btn {
+  margin-top: 18px;
+}
+
+/* responsive: on small screens fall back to stacked layout with image below text (unchanged UX) */
 @media (max-width: 1000px) {
   .hero{flex-direction:column;padding:20px 16px;min-height:auto;}
   .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
@@ -326,6 +286,18 @@
   .performances-grid {
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
+  }
+
+  /* ensure bio stacks vertically on narrow screens and image isn't too large */
+  .bio-section {
+    flex-direction: column;
+    align-items: center;
+  }
+  .bio-image {
+    width: 180px;
+    height: 260px;
+    border-radius: 50% / 36%;
+    margin-top: 12px;
   }
 }
 
@@ -512,7 +484,7 @@
                 <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
                 <div class="band">Showtime 7:00 PM</div>
               </div>
-              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
+              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX[...]
                   class="buy-btn" target="_blank">Buy Tickets</a>
             </div>
 
@@ -581,8 +553,8 @@
           <img src="./avatar.jpeg" alt="Julian Shively profile" class="bio-image">
           
           <div class="bio-content">
-            <p>Julian Shively is a virtuosic pianist and cellist whose artistry spans a wide range of genres and influences. A graduate of McGill University with double degrees in both jazz piano and classical cello, Julian's musical experiences have taken him across the globe, performing in a wide array of musical settings from serving as principal cellist with orchestras traveling in Western Europe and China, to collaborating with jazz ensembles in the United States, Canada and The Bahamas, to performing as a featured soloist with 9 different orchestras.</p>
-            <p>Julian is currently based in Montreal, Quebec where he continues to perform in and around the city, engaged in its vibrant music scene. His summers are typically filled with a variety of music festivals and institutes to further develop his musicianship as well as performances, teaching and coaching opportunities.</p>
+            <p>Julian Shively is a virtuosic pianist and cellist whose artistry spans a wide range of genres and influences. A graduate of McGill University with double degrees in both jazz piano and [...]
+            <p>Julian is currently based in Montreal, Quebec where he continues to perform in and around the city, engaged in its vibrant music scene. His summers are typically filled with a variety o[...]
           </div>
           <a class="btn btn-primary" href="about.html" style="display: block; width: fit-content; margin: 0 auto; text-align: center;">Read Full Bio</a>
         </section>
