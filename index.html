@@ -77,6 +77,32 @@
       pointer-events:none;
     }
 
+    .social-icons{
+      order:1.5;
+      display:flex;
+      flex-direction:column;
+      gap:20px;
+      z-index:5;
+      align-self:center;
+    }
+
+    .social-icons a{
+      display:block;
+      transition:transform 0.3s ease, opacity 0.3s ease;
+      opacity:0.9;
+    }
+
+    .social-icons a:hover{
+      transform:scale(1.15);
+      opacity:1;
+    }
+
+    .social-icons img{
+      display:block;
+      width:48px;
+      height:48px;
+    }
+
     .hero .portrait{
       order:2;
       flex:0 0 700px;
@@ -189,6 +215,7 @@
       .hero{flex-direction:column;padding:20px 16px;min-height:auto;}
       .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
       .hero .hero-text{align-self:stretch;max-width:none;flex:0 1 auto;border-radius:0;padding:16px;}
+      .social-icons{flex-direction:row;order:3;margin-top:16px;}
       .topnav .inner{width:calc(100% - 32px)}
       .content-flex-wrap{flex-direction:column;}
     }
@@ -272,6 +299,18 @@
           <a class="btn btn-ghost" href="media.html#videos">Watch</a>
           <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
         </div>
+      </div>
+
+      <div class="social-icons">
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook">
+        </a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram">
+        </a>
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <img src="https://img.icons8.com/color/48/youtube-play.png" alt="YouTube">
+        </a>
       </div>
 
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
