@@ -394,6 +394,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a=>{
 
 const heroImg = document.querySelector('.hero .portrait');
 const heroText = document.querySelector('.hero .hero-text');
+const socialIcons = document.querySelector('.social-icons');
 const tracks = document.querySelectorAll('.track');
 const shows = document.querySelectorAll('.show-item');
 const sections = document.querySelectorAll('.section.card, .shows-list');
@@ -415,6 +416,10 @@ function handleScroll() {
   if (heroText) {
     heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
     heroText.style.opacity = opacity;
+  }
+  if (socialIcons) {
+    socialIcons.style.transform = `scale(${scale}) translateY(${scroll * 0.15}px)`;
+    socialIcons.style.opacity = opacity;
   }
 
   const animateElements = (elements, offset) => {
