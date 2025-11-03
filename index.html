@@ -173,24 +173,20 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* --- Primary Content Wrappers for Full Width & Columns (FIXED AGAIN) --- */
+    /* --- Primary Content Wrappers for Full Width & Columns (FIXED) --- */
     .content-flex-wrap{
-      width: 100%;      
-      margin:36px auto; 
-      padding:0; /* Removed padding here, moved to shows/music-bio wrap */
+      max-width: 1100px; /* NEW: Use a max width to center content */
+      width: 100%;      /* Ensure it uses 100% of the max width */
+      margin:36px auto; /* Center the wrapper */
+      padding:0 16px;
       display:flex;
       flex-direction: column; 
       gap:24px;
     }
 
-    /* Set max width and center the major content blocks */
-    .shows-wrap, .music-bio-wrap {
+    .shows-wrap{
       width: 100%;
-      max-width: 1400px; /* NEW: Allows content to span up to 1400px wide */
-      margin: 0 auto;
-      padding: 0 16px; /* Apply page padding here */
     }
-
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -217,12 +213,13 @@
     .show-cta{margin-top:12px}
     .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
-    footer{max-width:1400px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
+    footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
     
-    /* NEW FLEX CONTAINER for Music and Bio Columns */
+    /* NEW FLEX CONTAINER for Music and Bio Columns (FIXED) */
     .music-bio-wrap {
       display: flex;
       gap: 24px;
+      width: 100%; /* Important: Takes up 100% of the parent (.content-flex-wrap) */
       align-items: flex-start;
     }
 
@@ -314,7 +311,7 @@
       height:32px;
     }
     
-/* --- Upcoming Performances Card Grid --- */
+/* --- Upcoming Performances Card Grid (refined) --- */
 .performances-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -743,6 +740,7 @@
   </script>
 </body>
 </html>
+
 
 
 
