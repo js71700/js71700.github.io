@@ -8,16 +8,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
   <style>
     :root{--bg:#071018;--muted:#98a6ad;--teal:#06b6a4;--accent:#10b981;}
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
-
-    .topnav{
-      position:fixed;left:0;right:0;top:0;height:64px;
-      display:flex;align-items:center;justify-content:center;
-      backdrop-filter:blur(6px);
-      background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));
-      z-index:40;
-    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:#061018;color:#e6eef6;font-family:Inter,system-ui,Arial}
+    .topnav{position:fixed;left:0;right:0;top:0;height:64px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);background:linear-gradient(180deg,rgba(3,8,10,0.6),rgba(3,8,10,0.3));z-index:40}
     .topnav .inner{width:1100px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
     .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
     .navlinks{display:flex;gap:8px;align-items:center}
@@ -27,9 +20,9 @@
     main{padding-top:64px}
     main > * {position:relative;z-index:5;}
 
-    /* HERO SECTION */
     .hero{
       width:100%;
+      max-width:none;
       margin:0 0 40px;
       display:flex;
       flex-direction:row;
@@ -39,39 +32,115 @@
       padding:28px 16px;
       position:relative;
       min-height:calc(100vh - 64px);
+      background:transparent;
     }
 
     .hero .hero-bg{
-      position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;
+      position:absolute;
+      inset:0;
+      z-index:0;
+      overflow:hidden;
+      pointer-events:none;
+      display:block;
+      background:transparent;
     }
 
     .hero .hero-bg .scroll-wrap{
-      position:absolute;left:0;top:0;height:100%;
-      display:flex;align-items:center;will-change:transform;
+      position:absolute;
+      left:0;
+      top:0;
+      height:100%;
+      display:flex;
+      align-items:center;
+      will-change:transform;
     }
 
     .hero .hero-bg img{
-      height:100%;width:auto;object-fit:cover;display:block;margin-right:0;
+      height:100%;
+      width:auto;
+      object-fit:cover;
+      display:block;
+      margin-right:0;
+      border-radius:0;
+      box-shadow:none;
+      position:relative;
+    }
+
+    .hero .hero-bg img::after{
+      content:'';
+      position:absolute;
+      right:0;
+      top:0;
+      bottom:0;
+      width:40px;
+      background:linear-gradient(to right, transparent, rgba(6,16,24,0.3));
+      pointer-events:none;
     }
 
     .social-icons{
-      order:2;display:flex;flex-direction:row;gap:24px;z-index:5;align-self:center;padding:0 14px;
+      order:2;
+      display:flex;
+      flex-direction:row;
+      gap:24px;
+      z-index:5;
+      align-self:center;
+      padding:0 14px;
     }
-    .social-icons a{display:block;transition:transform 0.3s ease,opacity 0.3s ease;opacity:0.9;}
-    .social-icons a:hover{transform:scale(1.15);opacity:1;}
-    .social-icons img{width:48px;height:48px;}
+
+    .social-icons a{
+      display:block;
+      transition:transform 0.3s ease, opacity 0.3s ease;
+      opacity:0.9;
+    }
+
+    .social-icons a:hover{
+      transform:scale(1.15);
+      opacity:1;
+    }
+
+    .social-icons img{
+      display:block;
+      width:48px;
+      height:48px;
+    }
 
     .hero .portrait{
-      order:3;flex:0 0 700px;width:100%;height:80vh;max-width:780px;
-      border-radius:12px;object-fit:cover;background:#122429;z-index:4;
+      order:3;
+      flex:0 0 700px;
+      width:100%;
+      height:80vh;
+      max-width:780px;
+      border-radius:12px;
+      object-fit:cover;
+      background:#122429;
+      z-index:4;
       box-shadow:0 18px 40px rgba(2,6,10,0.7);
+      border:1px solid rgba(255,255,255,0.03);
+      align-self:center;
+    }
+
+    .hero .portrait:hover{
+      opacity:0.82;
+      cursor:default;
     }
 
     .hero .hero-text{
-      order:1;flex:0 1 520px;padding:20px;z-index:5;background:rgba(0,0,0,0.95);
-      color:#fff;display:flex;flex-direction:column;justify-content:center;max-width:520px;
+      order:1;
+      flex:0 1 520px;
+      padding:20px;
+      z-index:5;
+      background:rgba(0,0,0,0.95);
+      border-radius:0;
       box-shadow:0 10px 30px rgba(0,0,0,0.6);
+      color:#fff;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      box-sizing:border-box;
+      max-width:520px;
+      margin:0;
     }
+
     .hero h1{font-family:'Playfair Display',serif;font-size:44px;margin:0 0 6px}
     .hero p.lead{color:var(--muted);margin:0 0 18px;font-size:18px}
     .hero .hero-cta{display:flex;gap:12px;flex-wrap:wrap}
@@ -79,113 +148,220 @@
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
 
-    .content-flex-wrap{
-      max-width:1100px;margin:36px auto;padding:0 16px;
-      display:flex;gap:24px;align-items:flex-start;flex-direction:column;
-    }
-
-    /* --- Upcoming Performances --- */
-    .shows-list{
+    .section{padding:32px}
+    .section.card{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
-      padding:20px;border-radius:12px;opacity:0;transform:translateY(40px);
-      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1),
-                 transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
-    }
-    .shows-list h2{
-      margin-top:0;text-align:center;color:#fff;font-size:32px;
-      font-family:'Cinzel',serif;letter-spacing:1px
-    }
-
-    .performances-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-      gap:30px;
-      justify-items:center;
-      margin-top:20px;
-    }
-
-    .card {
-      background-color:#000;
-      border:2px solid #d6bfa0;
-      padding:24px 26px;
-      width:320px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      height:auto;
-      min-height:280px;
+      border-radius:12px;
+      padding:28px;
       opacity:0;
       transform:translateY(40px);
-      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1),
-                 transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
+      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
+      flex:1;
+    }
+    
+    .tracks{display:flex;flex-direction:column;gap:18px}
+    .track{
+      display:flex;
+      align-items:center;
+      gap:20px;
+      padding:18px;
+      border-radius:10px;
+      background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);
+      opacity:0;
+      transform:translateX(-50px);
+      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
+    }
+    .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
+    .track .meta b{display:block;font-weight:700;font-size:18px}
+
+    .content-flex-wrap{
+      max-width:1100px;
+      margin:36px auto;
+      padding:0 16px;
+      display:flex;
+      gap:24px;
+      align-items:flex-start;
     }
 
-    .card .top{
-      display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:8px;
+    .shows-wrap{flex:1;display:block;}
+    .shows-list{
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+      padding:20px;
+      border-radius:12px;
+      opacity:0;
+      transform:translateY(40px);
+      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
     }
-
-    .card .year{
-      font-family:"Playfair Display",serif;
-      font-size:2.6rem;
-      font-weight:700;
-      color:#d6bfa0;
-      line-height:1;
-      margin:0;
-      align-self:flex-end;
-      transform:translateY(8px);
+    .show-item{
+      margin-bottom:20px;
+      padding:18px;
+      border-radius:10px;
+      background:#071217;
+      box-shadow:0 6px 18px rgba(2,6,10,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      opacity:0;
+      transform:translateX(50px);
+      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
     }
-
-    .card .date{text-align:right;}
-    .card .date h3{
-      font-size:0.9rem;letter-spacing:0.5px;margin:0;font-weight:400;color:#fff;line-height:1.2;
-    }
-    .card .date h2{
-      font-size:1.6rem;margin:4px 0 0;color:#fff;line-height:1;
-    }
-
-    .divider{border-top:1px dotted #d6bfa0;margin:8px 0 14px;}
-
-    .details{font-size:0.9rem;line-height:1.4;color:#ddd;flex-grow:1;}
-    .details .city{color:#8cb3e6;font-weight:700;margin:4px 0;}
-
-    .buy-btn{
-      background-color:#d6bfa0;color:#001f3f;
-      text-transform:uppercase;font-weight:700;text-align:center;
-      padding:10px;margin-top:16px;text-decoration:none;font-size:0.9rem;
-      transition:all 0.3s ease;border-radius:3px;
-    }
-    .buy-btn:hover{background-color:#8cb3e6;color:#000;}
-
-    /* --- Music Section --- */
-    #music{padding-top:12px;padding-bottom:12px;}
-    #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
-
-    .custom-audio-player{
-      background:#121212;border-radius:8px;padding:12px;margin-bottom:8px;
-      display:flex;align-items:center;gap:12px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.3);
-      opacity:0;transform:translateX(-50px);
-      transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1),
-                 transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
-    }
-    .custom-audio-player .album-art{
-      width:80px;height:80px;border-radius:4px;object-fit:cover;background:#1a1a1a;
-    }
-    .custom-audio-player .track-details{flex:1;min-width:0;}
-    .custom-audio-player .track-title{
-      font-weight:700;font-size:16px;color:#fff;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    }
-    .custom-audio-player .track-artist{font-size:14px;color:#b3b3b3;margin-bottom:8px;}
-    .custom-audio-player audio{width:100%;height:32px;}
+    .show-date{color:var(--muted);font-size:13px;margin-bottom:8px}
+    .show-title{font-family:'Playfair Display',serif;font-size:22px;margin:0}
+    .show-location{color:var(--muted);margin-top:8px}
+    .show-desc{margin-top:12px;color:var(--muted)}
+    .show-cta{margin-top:12px}
+    .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
 
     @media (max-width:1000px){
       .hero{flex-direction:column;padding:20px 16px;min-height:auto;}
-      .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;}
-      .hero .hero-text{align-self:stretch;max-width:none;padding:16px;}
+      .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
+      .hero .hero-text{align-self:stretch;max-width:none;flex:0 1 auto;border-radius:0;padding:16px;}
       .social-icons{flex-direction:row;order:3;margin-top:16px;}
+      .topnav .inner{width:calc(100% - 32px)}
+      .content-flex-wrap{flex-direction:column;}
     }
+
+    #music{padding-top:12px !important;padding-bottom:12px !important;}
+    #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
+    
+    .custom-audio-player{
+      background:#121212;
+      border-radius:8px;
+      padding:12px;
+      margin-bottom:8px;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.3);
+    }
+    .custom-audio-player .album-art{
+      width:80px;
+      height:80px;
+      border-radius:4px;
+      object-fit:cover;
+      background:#1a1a1a;
+      flex-shrink:0;
+    }
+    .custom-audio-player .track-details{
+      flex:1;
+      min-width:0;
+    }
+    .custom-audio-player .track-title{
+      font-weight:700;
+      font-size:16px;
+      color:#fff;
+      margin-bottom:4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .custom-audio-player .track-artist{
+      font-size:14px;
+      color:#b3b3b3;
+      margin-bottom:8px;
+    }
+    .custom-audio-player audio{
+      width:100%;
+      height:32px;
+    }
+    
+/* --- Upcoming Performances Card Grid (refined) --- */
+.performances-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  justify-items: center;
+  margin-top: 20px;
+}
+
+.card {
+  background-color: #000;
+  border: 2px solid #d6bfa0;
+  padding: 24px 26px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: auto;
+  min-height: 280px; /* shorter cards */
+}
+
+.card .top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; /* align year and date vertically */
+  margin-bottom: 8px;
+}
+
+.card .year {
+  font-family: "Playfair Display", serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #d6bfa0;
+  line-height: 1;
+  margin: 0;
+  align-self: flex-end; /* bring the year inline with the date */
+  transform: translateY(8px); /* visually nudge it down slightly */
+}
+
+.card .date {
+  text-align: right;
+}
+
+.card .date h3 {
+  font-size: 0.9rem;
+  letter-spacing: 0.5px;
+  margin: 0;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.card .date h2 {
+  font-size: 1.6rem;
+  margin: 4px 0 0;
+  color: #fff;
+  line-height: 1;
+}
+
+.divider {
+  border-top: 1px dotted #d6bfa0;
+  margin: 8px 0 14px;
+}
+
+.details {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #ddd;
+  flex-grow: 1;
+}
+
+.details .city {
+  color: #8cb3e6;
+  font-weight: 700;
+  margin: 4px 0;
+}
+
+.buy-btn {
+  background-color: #d6bfa0;
+  color: #001f3f;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px;
+  margin-top: 16px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-radius: 3px;
+}
+
+.buy-btn:hover {
+  background-color: #8cb3e6;
+  color: #000;
+}
+
+
   </style>
 </head>
 <body>
@@ -202,7 +378,6 @@
   </div>
 
   <main>
-    <!-- HERO -->
     <section class="hero" aria-label="Hero">
       <div class="hero-bg" aria-hidden="true">
         <div class="scroll-wrap" id="scrollWrap">
@@ -226,96 +401,108 @@
       </div>
 
       <div class="social-icons">
-        <a href="https://www.facebook.com/reeses7171" target="_blank"><img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook"></a>
-        <a href="https://www.instagram.com/jules.shively/?hl=en" target="_blank"><img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram"></a>
-        <a href="https://www.youtube.com/@julesshively" target="_blank"><img src="https://img.icons8.com/color/48/youtube-play.png" alt="YouTube"></a>
+        <a href="https://www.facebook.com/reeses7171" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <img src="https://img.icons8.com/color/48/facebook-new.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com/jules.shively/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <img src="https://img.icons8.com/fluency/48/instagram-new.png" alt="Instagram">
+        </a>
+        <a href="https://www.youtube.com/@julesshively" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <img src="https://img.icons8.com/color/48/youtube-play.png" alt="YouTube">
+        </a>
       </div>
 
       <img class="portrait" src="./avatar.jpeg" alt="Julian Shively portrait">
     </section>
 
-    <!-- UPCOMING PERFORMANCES -->
     <div class="content-flex-wrap">
       <div class="shows-wrap" id="shows">
         <div class="shows-list">
-          <h2>Upcoming Performances</h2>
-          <div class="performances-grid">
-            <!-- Card 1 -->
-            <div class="card">
-              <div class="top">
-                <div class="year">2025</div>
-                <div class="date">
-                  <h3>THURSDAY<br>NOVEMBER</h3>
-                  <h2>06</h2>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="details">
-                <div>The DelaOssa Quartet</div>
-                <div class="city">Brasserie Beaubien<br>73 Rue Beaubien E, Montreal QC</div>
-                <div>Showtime 7:30 PM</div>
-              </div>
-              <a href="https://thepointofsale.com/tickets/ninasimone" class="buy-btn" target="_blank">Buy Tickets</a>
-            </div>
+  <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;
+             font-family:'Cinzel',serif;letter-spacing:1px">
+    Upcoming Performances
+  </h2>
 
-            <!-- Card 2 -->
-            <div class="card">
-              <div class="top">
-                <div class="year">2025</div>
-                <div class="date">
-                  <h3>TUESDAY<br>NOVEMBER</h3>
-                  <h2>11</h2>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="details">
-                <div>Ingrid Li with Strings</div>
-                <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
-                <div>Showtime 7:00 PM</div>
-              </div>
-              <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings" class="buy-btn" target="_blank">Buy Tickets</a>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="card">
-              <div class="top">
-                <div class="year">2025</div>
-                <div class="date">
-                  <h3>MONDAY<br>NOVEMBER</h3>
-                  <h2>17</h2>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="details">
-                <div>Nick Baddelay Quartet</div>
-                <div class="city">Casa del Popolo<br>4873 St Laurent Blvd, Montreal QC</div>
-              </div>
-              <a href="#" class="buy-btn">Info Coming Soon</a>
-            </div>
-
-            <!-- Card 4 -->
-            <div class="card">
-              <div class="top">
-                <div class="year">2025</div>
-                <div class="date">
-                  <h3>THURSDAY<br>NOVEMBER</h3>
-                  <h2>20</h2>
-                </div>
-              </div>
-              <div class="divider"></div>
-              <div class="details">
-                <div>JOSA’s Atmosphere</div>
-                <div class="city">Petit Campus<br>57-b Rue Prince-Arthur E, Montreal QC</div>
-              </div>
-              <a href="#" class="buy-btn">Info Coming Soon</a>
-            </div>
-          </div>
+  <div class="performances-grid">
+    <!-- Performance Card 1 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>THURSDAY<br>NOVEMBER</h3>
+          <h2>06</h2>
         </div>
       </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>The DelaOssa Quartet</div>
+        <div class="city">Brasserie Beaubien<br>73 Rue Beaubien E, Montreal QC</div>
+        <div class="band">Showtime 7:30 PM</div>
+      </div>
+      <a href="https://thepointofsale.com/tickets/ninasimone?fbclid=PAZXh0bgNhZW0CMTEAAadKuAGzE6m7hFCqvtDFFUNe8DCx2E9r-jlqPz2w6fKQ-z52LQmK3ACcZ8yCLg_aem__HRntZrREZIhmNwxl8XiAg"
+         class="buy-btn" target="_blank">Buy Tickets</a>
+    </div>
 
-      <!-- MUSIC SECTION -->
+    <!-- Performance Card 2 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>TUESDAY<br>NOVEMBER</h3>
+          <h2>11</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>Ingrid Li with Strings</div>
+        <div class="city">La Sala Rossa<br>4848 St Laurent Blvd, Montreal QC</div>
+        <div class="band">Showtime 7:00 PM</div>
+      </div>
+      <a href="https://tickets.venuepilot.com/e/connexions-musicales-ingrid-li-with-strings-2025-11-11-la-sala-rossa-montreal-68bf08?fbclid=PAZXh0bgNhZW0CMTEAAae3ydPQiXogjBTBS5LBzFEbq_Uq0kAXWX3sLU0jW_icutuDiMYVcJ6EDO-bhA_aem_5VRbhR1itPdO4ASAa5LTEA"
+         class="buy-btn" target="_blank">Buy Tickets</a>
+    </div>
+
+    <!-- Performance Card 3 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>MONDAY<br>NOVEMBER</h3>
+          <h2>17</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>Nick Baddelay Quartet</div>
+        <div class="city">Casa del Popolo<br>4873 St Laurent Blvd, Montreal QC</div>
+      </div>
+      <a href="#" class="buy-btn">Info Coming Soon</a>
+    </div>
+
+    <!-- Performance Card 4 -->
+    <div class="card">
+      <div class="top">
+        <div class="year">2025</div>
+        <div class="date">
+          <h3>THURSDAY<br>NOVEMBER</h3>
+          <h2>20</h2>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="details">
+        <div>JOSA’s Atmosphere</div>
+        <div class="city">Petit Campus<br>57-b Rue Prince-Arthur E, Montreal QC</div>
+      </div>
+      <a href="#" class="buy-btn">Info Coming Soon</a>
+    </div>
+  </div>
+</div>
+
+      </div>
+
       <section class="section card" id="music">
         <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
+
         <div class="custom-audio-player">
           <img class="album-art" src="./avatar.jpeg" alt="Antitune">
           <div class="track-details">
@@ -327,57 +514,187 @@
             </audio>
           </div>
         </div>
-        <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+        <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+
+        <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
       </section>
     </div>
 
-    <footer>© <span id="year"></span> Julian Shively • All rights reserved.</footer>
+    <footer>
+      © <span id="year"></span> Julian Shively • All rights reserved.
+    </footer>
   </main>
 
   <script>
-  document.getElementById('year').textContent = new Date().getFullYear();
+document.getElementById('year').textContent = new Date().getFullYear();
 
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', e=>{
-      e.preventDefault();
-      const t = document.querySelector(a.getAttribute('href'));
-      if(!t) return;
-      const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
-      window.scrollTo({top:y,behavior:'smooth'});
-    });
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click', e=>{
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if(!t) return;
+    const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
+    window.scrollTo({top:y, behavior:'smooth'});
   });
+});
 
-  const heroImg=document.querySelector('.hero .portrait');
-  const heroText=document.querySelector('.hero .hero-text');
-  const socialIcons=document.querySelector('.social-icons');
-  const sections=document.querySelectorAll('.section.card, .shows-list, .custom-audio-player, .card');
+const heroImg = document.querySelector('.hero .portrait');
+const heroText = document.querySelector('.hero .hero-text');
+const socialIcons = document.querySelector('.social-icons');
+const tracks = document.querySelectorAll('.track');
+const shows = document.querySelectorAll('.show-item');
+const sections = document.querySelectorAll('.section.card, .shows-list');
 
-  function onScrollFade(){
-    const triggerBottom=window.innerHeight*0.9;
-    sections.forEach(el=>{
-      const boxTop=el.getBoundingClientRect().top;
-      if(boxTop<triggerBottom){
-        el.style.opacity='1';
-        el.style.transform='translateY(0)';
+function handleScroll() {
+  const scroll = window.scrollY;
+  
+  const easeOutQuad = t => 1 - (1 - t) * (1 - t);
+  let progress = Math.min(scroll / 400, 1);
+  let eased = easeOutQuad(progress);
+  const scale = 1 - 0.2 * eased;
+  const opacity = 1 - eased;
+  const textSlide = Math.min(scroll * 0.2, 50);
+
+  if (heroImg) {
+    heroImg.style.transform = `scale(${scale}) translateY(${scroll * 0.1}px)`;
+    heroImg.style.opacity = opacity;
+  }
+  if (heroText) {
+    heroText.style.transform = `scale(${scale}) translateY(${scroll * 0.2}px) translateX(${textSlide}px)`;
+    heroText.style.opacity = opacity;
+  }
+  if (socialIcons) {
+    socialIcons.style.transform = `scale(${scale}) translateY(${scroll * 0.15}px)`;
+    socialIcons.style.opacity = opacity;
+  }
+
+  const animateElements = (elements, offset) => {
+    elements.forEach((el, index) => {
+      const rect = el.getBoundingClientRect();
+      if(rect.top < window.innerHeight - offset){
+        el.style.transitionDelay = `${index * 0.1}s`;
+        el.style.opacity = 1;
+        el.style.transform = 'translateX(0) translateY(0)';
       }
     });
-  }
-  window.addEventListener('scroll',onScrollFade);
-  window.addEventListener('load',onScrollFade);
+  };
 
-  const scrollWrap=document.getElementById('scrollWrap');
-  let offset=0;
-  function scrollBackground(){
-    offset-=0.25;
-    scrollWrap.style.transform=`translateX(${offset}px)`;
-    if(Math.abs(offset)>scrollWrap.scrollWidth/2){offset=0;}
-    requestAnimationFrame(scrollBackground);
+  animateElements(tracks, 100);
+  animateElements(shows, 100);
+  animateElements(sections, 50);
+}
+
+window.addEventListener('scroll', handleScroll);
+window.addEventListener('load', handleScroll);
+
+(function seamlessCarousel(){
+  const scrollWrap = document.getElementById('scrollWrap');
+  if(!scrollWrap) return;
+
+  const initialImgs = Array.from(scrollWrap.querySelectorAll('img')).map(img => img.getAttribute('src')).filter(Boolean);
+  if(initialImgs.length === 0) return;
+
+  scrollWrap.innerHTML = '';
+  const makeImg = src => {
+    const i = document.createElement('img');
+    i.src = src;
+    i.alt = '';
+    return i;
+  };
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+  initialImgs.forEach(src => scrollWrap.appendChild(makeImg(src)));
+
+  function measure() {
+    const imgs = scrollWrap.querySelectorAll('img');
+    const half = imgs.length / 2;
+    let width = 0;
+    for(let i=0;i<half;i++){
+      const r = imgs[i].getBoundingClientRect();
+      const mr = parseFloat(getComputedStyle(imgs[i]).marginRight || 0);
+      width += r.width + mr;
+    }
+    return Math.round(width);
   }
-  scrollBackground();
+
+  let trackWidth = 0;
+  let rafId = null;
+  let lastTime = null;
+  let offset = 0;
+  const pxPerSecond = 80;
+
+  function step(ts){
+    if(!lastTime) lastTime = ts;
+    const dt = (ts - lastTime) / 1000;
+    lastTime = ts;
+    offset += pxPerSecond * dt;
+    if(offset >= trackWidth) offset = offset - trackWidth;
+    scrollWrap.style.transform = `translateX(${-offset}px)`;
+    rafId = requestAnimationFrame(step);
+  }
+
+  function startAnimation(){
+    if(rafId) cancelAnimationFrame(rafId);
+    lastTime = null;
+    offset = 0;
+    trackWidth = measure();
+    if(trackWidth <= 0) return;
+    scrollWrap.style.width = (trackWidth * 2) + 'px';
+    rafId = requestAnimationFrame(step);
+  }
+
+  const imgs = scrollWrap.querySelectorAll('img');
+  let loaded = 0;
+  const checkStart = () => {
+    loaded++;
+    if(loaded === imgs.length) startAnimation();
+  };
+  
+  imgs.forEach(img => {
+    if(img.complete) checkStart();
+    else img.addEventListener('load', checkStart);
+  });
+
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(startAnimation, 160);
+  });
+})();
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
