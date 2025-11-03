@@ -156,8 +156,7 @@
       opacity:0;
       transform:translateY(40px);
       transition:opacity 0.6s cubic-bezier(0.25,0.8,0.25,1), transform 0.6s cubic-bezier(0.25,0.8,0.25,1);
-      flex:1;
-      /* Border removed for general section cards, specific border on .card below */
+      /* flex:1; Removed default flex 1 for half-width logic below */
     }
     
     .tracks{display:flex;flex-direction:column;gap:18px}
@@ -175,16 +174,18 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
+    /* --- Primary Content Wrappers for Full Width & Columns --- */
     .content-flex-wrap{
       margin:36px auto;
       padding:0 16px;
       display:flex;
+      flex-direction: column; /* Stack sections (shows on top, music/bio below) */
       gap:24px;
-      align-items:flex-start;
-      flex-direction: column;
     }
 
-    .shows-wrap{flex:1;display:block; width: 100%;}
+    .shows-wrap{
+      width: 100%;
+    }
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -212,23 +213,63 @@
     .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
-
-    @media (max-width:1000px){
-      .hero{flex-direction:column;padding:20px 16px;min-height:auto;}
-      .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
-      .hero .hero-text{align-self:stretch;max-width:none;flex:0 1 auto;border-radius:0;padding:16px;}
-      .social-icons{flex-direction:row;order:3;margin-top:16px;}
-      .topnav .inner{width:calc(100% - 32px)}
-      .content-flex-wrap{flex-direction:column;}
-      /* Added for small screens */
-      .performances-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      }
+    
+    /* NEW FLEX CONTAINER for Music and Bio */
+    .music-bio-wrap {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      align-items: flex-start;
     }
 
-    #music{padding-top:12px !important;padding-bottom:12px !important; width: 100%;}
+    /* MUSIC SECTION (Left Half) */
+    .music-section {
+      flex: 1 1 50%;
+      min-width: 0; /* Allows content to shrink */
+    }
+    #music{
+      padding-top:12px !important;
+      padding-bottom:12px !important;
+      width: 100%;
+    }
     #music iframe{display:block;width:100%;height:200px;border:0;border-radius:3px;margin:2px 0;}
     
+    /* BIO SECTION (Right Half) */
+    .bio-section {
+      flex: 1 1 50%;
+      min-width: 0;
+      padding-top: 12px; /* Align with music title height */
+    }
+    .bio-section h2 {
+      margin-top: 0;
+      text-align: center;
+      color: #fff;
+      font-size: 32px;
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+    .bio-section img {
+      width: 100%;
+      max-width: 300px; /* Limit image size */
+      height: auto;
+      border-radius: 12px;
+      object-fit: cover;
+      display: block;
+      margin: 20px auto;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+    .bio-content {
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 400px;
+      margin: 0 auto 20px;
+      text-align: center;
+    }
+    .bio-content p {
+      margin-bottom: 1em;
+    }
+
+
     .custom-audio-player{
       background:#121212;
       border-radius:8px;
@@ -274,20 +315,30 @@
 .performances-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px; /* MODIFIED: Reduced gap for closer cards */
+  gap: 12px; /* MODIFIED: Reduced gap for closer cards (was 20px) */
   justify-items: center;
   margin-top: 20px;
 }
 
 @media (max-width: 1000px) {
+  .hero{flex-direction:column;padding:20px 16px;min-height:auto;}
+  .hero .portrait{height:320px;max-width:100%;margin-bottom:12px;flex:0 0 auto;}
+  .hero .hero-text{align-self:stretch;max-width:none;flex:0 1 auto;border-radius:0;padding:16px;}
+  .social-icons{flex-direction:row;order:3;margin-top:16px;}
+  .topnav .inner{width:calc(100% - 32px)}
+  
+  /* Stack Music and Bio vertically on small screens */
+  .music-bio-wrap{flex-direction: column;} 
+  
   .performances-grid {
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
   }
 }
 
 .card {
   background-color: #000;
-  border: 2px solid #d6bfa0; /* RE-ADDED: Gold border */
+  border: 2px solid #d6bfa0;
   padding: 24px 26px;
   width: 100%;
   max-width: 320px;
@@ -506,28 +557,44 @@
           </div>
         </div>
       </div>
+      
+      <div class="music-bio-wrap">
+        
+        <section class="section card music-section" id="music">
+          <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
 
-      <section class="section card" id="music">
-        <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
-
-        <div class="custom-audio-player">
-          <img class="album-art" src="./avatar.jpeg" alt="Antitune">
-          <div class="track-details">
-            <div class="track-title">Antitune</div>
-            <div class="track-artist">written by Julian Shively</div>
-            <audio controls>
-              <source src="./Antitune.mp3" type="audio/mpeg">
-              Your browser does not support the audio element.
-            </audio>
+          <div class="custom-audio-player">
+            <img class="album-art" src="./avatar.jpeg" alt="Antitune">
+            <div class="track-details">
+              <div class="track-title">Antitune</div>
+              <div class="track-artist">written by Julian Shively</div>
+              <audio controls>
+                <source src="./Antitune.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
           </div>
-        </div>
 
-        <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+          <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
-        <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-      </section>
+          <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+        </section>
+
+        <section class="section card bio-section" id="bio">
+          <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">About Julian</h2>
+          
+          <img src="./avatar.jpeg" alt="Julian Shively profile" class="bio-image">
+          
+          <div class="bio-content">
+            <p>Julian Shively is a versatile musician known for his proficiency on both the piano and cello, as well as his original compositions and arrangements.</p>
+            <p>Based in Montreal, Julian frequently collaborates with jazz and classical ensembles, bringing a unique blend of technical mastery and emotional depth to every performance.</p>
+          </div>
+          <a class="btn btn-primary" href="about.html" style="display: block; width: fit-content; margin: 0 auto; text-align: center;">Read Full Bio</a>
+        </section>
+        
+      </div>
     </div>
 
     <footer>
