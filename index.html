@@ -173,22 +173,24 @@
     .track img{width:96px;height:96px;object-fit:cover;border-radius:8px}
     .track .meta b{display:block;font-weight:700;font-size:18px}
 
-    /* --- Primary Content Wrappers for Full Width & Columns (FIXED) --- */
+    /* --- Primary Content Wrappers for Full Width & Columns (FIXED AGAIN) --- */
     .content-flex-wrap{
-      /* Removed max-width to allow for wider sections */
       width: 100%;      
       margin:36px auto; 
-      padding:0 16px;
+      padding:0; /* Removed padding here, moved to shows/music-bio wrap */
       display:flex;
       flex-direction: column; 
       gap:24px;
     }
 
-    .shows-wrap{
+    /* Set max width and center the major content blocks */
+    .shows-wrap, .music-bio-wrap {
       width: 100%;
-      max-width: 1400px; /* Optional: Set a max width for centering huge screens */
+      max-width: 1400px; /* NEW: Allows content to span up to 1400px wide */
       margin: 0 auto;
+      padding: 0 16px; /* Apply page padding here */
     }
+
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
       padding:20px;
@@ -215,15 +217,12 @@
     .show-cta{margin-top:12px}
     .pill{background:linear-gradient(90deg,var(--teal),#08b39e);color:#021615;padding:8px 12px;border-radius:8px;text-decoration:none;font-weight:700}
 
-    footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
+    footer{max-width:1400px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
     
     /* NEW FLEX CONTAINER for Music and Bio Columns */
     .music-bio-wrap {
       display: flex;
       gap: 24px;
-      width: 100%; 
-      max-width: 1400px; /* Match max width of shows-wrap */
-      margin: 0 auto;
       align-items: flex-start;
     }
 
