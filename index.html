@@ -175,9 +175,9 @@
 
     /* --- Primary Content Wrappers for Full Width & Columns (FIXED) --- */
     .content-flex-wrap{
-      max-width: 1100px; /* NEW: Use a max width to center content */
-      width: 100%;      /* Ensure it uses 100% of the max width */
-      margin:36px auto; /* Center the wrapper */
+      /* Removed max-width to allow for wider sections */
+      width: 100%;      
+      margin:36px auto; 
       padding:0 16px;
       display:flex;
       flex-direction: column; 
@@ -186,6 +186,8 @@
 
     .shows-wrap{
       width: 100%;
+      max-width: 1400px; /* Optional: Set a max width for centering huge screens */
+      margin: 0 auto;
     }
     .shows-list{
       background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
@@ -215,11 +217,13 @@
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
     
-    /* NEW FLEX CONTAINER for Music and Bio Columns (FIXED) */
+    /* NEW FLEX CONTAINER for Music and Bio Columns */
     .music-bio-wrap {
       display: flex;
       gap: 24px;
-      width: 100%; /* Important: Takes up 100% of the parent (.content-flex-wrap) */
+      width: 100%; 
+      max-width: 1400px; /* Match max width of shows-wrap */
+      margin: 0 auto;
       align-items: flex-start;
     }
 
@@ -311,7 +315,7 @@
       height:32px;
     }
     
-/* --- Upcoming Performances Card Grid (refined) --- */
+/* --- Upcoming Performances Card Grid --- */
 .performances-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
