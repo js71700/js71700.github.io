@@ -250,14 +250,20 @@
     }
     
     .bio-image {
-      width: 180px;
-      height: 180px;
+      width: 240px;
+      height: 360px;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 50%;
       flex-shrink: 0;
+      order: 2;
     }
     
     .bio-text-wrapper {
+      flex: 1;
+    }
+    
+    .bio-content {
+      order: 1;
       flex: 1;
     }
     
