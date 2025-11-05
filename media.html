@@ -368,12 +368,9 @@
     let userHasInteracted = false;
 
     // Check if user came from a link with autoplay parameter
-    // Check both window.location.search and window.location.hash for the parameter
-    const hashParts = window.location.hash.split('?');
-    const searchParams = hashParts[1] ? new URLSearchParams(hashParts[1]) : new URLSearchParams(window.location.search);
-    if (searchParams.get('autoplay') === 'unmuted') {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('autoplay') === 'unmuted') {
       userHasInteracted = true;
-      console.log('User came from homepage link - enabling unmuted autoplay');
     }
 
     function loadVideo(item, autoplay = false) {
@@ -429,7 +426,6 @@
         const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
         
         if (isVisible && !hasAutoPlayed) {
-          console.log('Video visible - userHasInteracted:', userHasInteracted);
           hasAutoPlayed = true;
           // Reload the center video with autoplay
           const centerItem = videoItems[currentIndex];
@@ -437,7 +433,6 @@
           const iframe = centerItem.querySelector('iframe');
           // If user has interacted, play unmuted; otherwise muted
           const muteParam = userHasInteracted ? '' : '&mute=1';
-          console.log('Loading video with mute param:', muteParam);
           iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1&autoplay=1${muteParam}`;
         }
       }, 150);
