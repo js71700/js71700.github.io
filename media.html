@@ -407,12 +407,19 @@
       if (hasAutoPlayed) return;
       
       const videoSection = document.getElementById('videos');
+      if (!videoSection) return;
+      
       const rect = videoSection.getBoundingClientRect();
       const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
       
+      console.log('Checking video scroll - visible:', isVisible, 'hasAutoPlayed:', hasAutoPlayed);
+      
       if (isVisible) {
+        console.log('Video section is visible, triggering autoplay');
         hasAutoPlayed = true;
-        updateCarousel(true);
+        // Reload the center video with autoplay
+        const centerItem = videoItems[currentIndex];
+        loadVideo(centerItem, true);
       }
     }
 
