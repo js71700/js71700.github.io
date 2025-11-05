@@ -367,6 +367,12 @@
     let hasAutoPlayed = false;
     let userHasInteracted = false;
 
+    // Check if user came from a link with autoplay parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('autoplay') === 'unmuted') {
+      userHasInteracted = true;
+    }
+
     function loadVideo(item, autoplay = false) {
       const iframe = item.querySelector('iframe');
       const videoId = item.getAttribute('data-video-id');
