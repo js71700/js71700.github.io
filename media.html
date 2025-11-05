@@ -474,7 +474,11 @@
     // Smooth scroll to hash on page load
 window.addEventListener('load', () => {
   if(window.location.hash) {
-    const target = document.querySelector(window.location.hash);
+    // Parse hash and query params from hash
+    const hashParts = window.location.hash.substring(1).split('?');
+    const targetId = hashParts[0];
+    const target = document.getElementById(targetId);
+    
     if(target) {
       // Small delay to ensure page is fully rendered
       setTimeout(() => {
