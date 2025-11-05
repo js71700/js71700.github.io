@@ -366,23 +366,28 @@
     const totalVideos = videoItems.length;
     let hasAutoPlayed = false;
     let players = {};
+    let playersReady = false;
 
     // Load YouTube IFrame API
-    const tag = document.createElement('script');
-    tag.src = 'https://www.youtube.com/iframe_api';
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    if (!window.YT) {
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
 
     // Initialize YouTube players when API is ready
     window.onYouTubeIframeAPIReady = function() {
       videoItems.forEach((item, index) => {
         const iframe = item.querySelector('iframe');
-        players[index] = new YT.Player(iframe, {
+        const iframeId = 'ytplayer-' + index;
+        iframe.id = iframeId;
+        
+        players[index] = new YT.Player(iframeId, {
           events: {
             'onReady': function(event) {
-              if (index === 0) {
-                checkVideoScroll();
-              }
+              playersReady = true;
+              checkVideoScroll();
             }
           }
         });
@@ -391,23 +396,35 @@
 
     function updateCarousel() {
       // Pause all videos
-      Object.values(players).forEach(player => {
-        if (player && player.pauseVideo) {
-          player.pauseVideo();
-        }
-      });
+      if (playersReady) {
+        Object.values(players).forEach(player => {
+          try {
+            if (player && player.pauseVideo) {
+              player.pauseVideo();
+            }
+          } catch(e) {
+            console.log('Pause error:', e);
+          }
+        });
+      }
 
       videoItems.forEach((item, index) => {
         item.classList.remove('center', 'left', 'right', 'hidden');
         
         if (index === currentIndex) {
           item.classList.add('center');
-          // Play the center video after a short delay for transition
-          setTimeout(() => {
-            if (players[currentIndex] && players[currentIndex].playVideo) {
-              players[currentIndex].playVideo();
-            }
-          }, 300);
+          // Play the center video after transition
+          if (playersReady) {
+            setTimeout(() => {
+              try {
+                if (players[currentIndex] && players[currentIndex].playVideo) {
+                  players[currentIndex].playVideo();
+                }
+              } catch(e) {
+                console.log('Play error:', e);
+              }
+            }, 650);
+          }
         } else if (index === (currentIndex - 1 + totalVideos) % totalVideos) {
           item.classList.add('left');
         } else if (index === (currentIndex + 1) % totalVideos) {
@@ -420,21 +437,28 @@
 
     // Check if video section is in viewport and autoplay
     function checkVideoScroll() {
-      if (hasAutoPlayed) return;
+      if (hasAutoPlayed || !playersReady) return;
       
       const videoSection = document.getElementById('videos');
       const rect = videoSection.getBoundingClientRect();
       const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
       
-      if (isVisible && players[0] && players[0].playVideo) {
-        players[0].playVideo();
-        hasAutoPlayed = true;
+      if (isVisible) {
+        setTimeout(() => {
+          try {
+            if (players[0] && players[0].playVideo) {
+              players[0].playVideo();
+              hasAutoPlayed = true;
+            }
+          } catch(e) {
+            console.log('Autoplay error:', e);
+          }
+        }, 500);
       }
     }
 
     // Listen for scroll events
     window.addEventListener('scroll', checkVideoScroll);
-    window.addEventListener('load', checkVideoScroll);
 
     prevBtn.addEventListener('click', () => {
       currentIndex = (currentIndex - 1 + totalVideos) % totalVideos;
@@ -448,6 +472,9 @@
 
     // Initialize carousel
     updateCarousel();
+    
+    // Check scroll position after page loads
+    setTimeout(checkVideoScroll, 1000);
 
     // Smooth scroll to hash on page load
     window.addEventListener('load', () => {
