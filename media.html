@@ -432,8 +432,10 @@
     // Initialize carousel without autoplay
     updateCarousel(false);
     
-    // Check scroll position after page loads
+    // Check scroll position immediately and after page loads
+    checkVideoScroll();
     setTimeout(checkVideoScroll, 500);
+    setTimeout(checkVideoScroll, 1000);
 
     // Smooth scroll to hash on page load
     window.addEventListener('load', () => {
