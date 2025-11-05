@@ -472,17 +472,18 @@
     setTimeout(checkVideoScroll, 1000);
 
     // Smooth scroll to hash on page load
-    window.addEventListener('load', () => {
-      if(window.location.hash) {
-        const target = document.querySelector(window.location.hash);
-        if(target) {
-          setTimeout(() => {
-            const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
-            window.scrollTo({top: y, behavior: 'smooth'});
-          }, 100);
-        }
-      }
-    });
+window.addEventListener('load', () => {
+  if(window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if(target) {
+      // Small delay to ensure page is fully rendered
+      setTimeout(() => {
+        const y = target.getBoundingClientRect().top + window.pageYOffset - 64; // 64px is your nav height
+        window.scrollTo({top: y, behavior: 'smooth'});
+      }, 200);
+    }
+  }
+});
 
     // Also handle hash clicks within the page
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
