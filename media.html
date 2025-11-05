@@ -305,25 +305,25 @@
       <div class="video-carousel-container">
         <button class="carousel-btn prev" id="prevBtn">‹</button>
         <div class="video-carousel">
-          <div class="video-item" data-index="0">
-            <iframe src="https://www.youtube.com/embed/Hxol81jbS5A?si=Xv01YbC6gFQIgRNZ&enablejsapi=1" 
-              title="YouTube video player" allowfullscreen></iframe>
+          <div class="video-item" data-index="0" data-video-id="Hxol81jbS5A">
+            <iframe src="" 
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
           </div>
-          <div class="video-item" data-index="1">
-            <iframe src="https://www.youtube.com/embed/5sRneIJE-lo?si=UOKMaZXeI5d1UQz-&enablejsapi=1" 
-              title="YouTube video player" allowfullscreen></iframe>
+          <div class="video-item" data-index="1" data-video-id="5sRneIJE-lo">
+            <iframe src="" 
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
           </div>
-          <div class="video-item" data-index="2">
-            <iframe src="https://www.youtube.com/embed/BKO7nR7IVIM?si=nEhuAWcXd_eqHF4J" 
-              title="YouTube video player" allowfullscreen></iframe>
+          <div class="video-item" data-index="2" data-video-id="dQw4w9WgXcQ">
+            <iframe src="" 
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
           </div>
-          <div class="video-item" data-index="3">
-            <iframe src="https://www.youtube.com/embed/wmCboXU5Y64?si=KEKPxYuNWpZaV9s5" 
-              title="YouTube video player" allowfullscreen></iframe>
+          <div class="video-item" data-index="3" data-video-id="jNQXAC9IVRw">
+            <iframe src="" 
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
           </div>
-          <div class="video-item" data-index="4">
-            <iframe src="https://www.youtube.com/embed/wmCboXU5Y64?si=KEKPxYuNWpZaV9s5" 
-              title="YouTube video player" allowfullscreen></iframe>
+          <div class="video-item" data-index="4" data-video-id="9bZkp7q19f0">
+            <iframe src="" 
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
           </div>
         </div>
         <button class="carousel-btn next" id="nextBtn">›</button>
@@ -365,94 +365,54 @@
     let currentIndex = 0;
     const totalVideos = videoItems.length;
     let hasAutoPlayed = false;
-    let players = {};
-    let playersReady = false;
 
-    // Load YouTube IFrame API
-    if (!window.YT) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    function loadVideo(item, autoplay = false) {
+      const iframe = item.querySelector('iframe');
+      const videoId = item.getAttribute('data-video-id');
+      const autoplayParam = autoplay ? '&autoplay=1&mute=1' : '';
+      iframe.src = `https://www.youtube.com/embed/${videoId}?enablejsapi=1${autoplayParam}`;
     }
 
-    // Initialize YouTube players when API is ready
-    window.onYouTubeIframeAPIReady = function() {
-      videoItems.forEach((item, index) => {
-        const iframe = item.querySelector('iframe');
-        const iframeId = 'ytplayer-' + index;
-        iframe.id = iframeId;
-        
-        players[index] = new YT.Player(iframeId, {
-          events: {
-            'onReady': function(event) {
-              if (index === totalVideos - 1) {
-                // All players are ready
-                playersReady = true;
-                checkVideoScroll();
-              }
-            }
-          }
-        });
-      });
-    };
+    function unloadVideo(item) {
+      const iframe = item.querySelector('iframe');
+      iframe.src = '';
+    }
 
-    function updateCarousel(shouldPlay = true) {
+    function updateCarousel(shouldAutoplay = false) {
       videoItems.forEach((item, index) => {
         item.classList.remove('center', 'left', 'right', 'hidden');
         
         if (index === currentIndex) {
           item.classList.add('center');
+          // Load and potentially autoplay the center video
+          loadVideo(item, shouldAutoplay);
         } else if (index === (currentIndex - 1 + totalVideos) % totalVideos) {
           item.classList.add('left');
+          // Load side videos without autoplay
+          loadVideo(item, false);
         } else if (index === (currentIndex + 1) % totalVideos) {
           item.classList.add('right');
+          // Load side videos without autoplay
+          loadVideo(item, false);
         } else {
           item.classList.add('hidden');
+          // Unload hidden videos to save resources
+          unloadVideo(item);
         }
       });
-
-      // Handle video playback only if players are ready and we should play
-      if (playersReady && shouldPlay) {
-        // Pause all videos first
-        Object.values(players).forEach(player => {
-          try {
-            if (player && player.pauseVideo) {
-              player.pauseVideo();
-            }
-          } catch(e) {}
-        });
-
-        // Play the center video after transition
-        setTimeout(() => {
-          try {
-            if (players[currentIndex] && players[currentIndex].playVideo) {
-              players[currentIndex].playVideo();
-            }
-          } catch(e) {
-            console.log('Play error:', e);
-          }
-        }, 650);
-      }
     }
 
     // Check if video section is in viewport and autoplay
     function checkVideoScroll() {
-      if (hasAutoPlayed || !playersReady) return;
+      if (hasAutoPlayed) return;
       
       const videoSection = document.getElementById('videos');
       const rect = videoSection.getBoundingClientRect();
       const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
       
       if (isVisible) {
-        try {
-          if (players[0] && players[0].playVideo) {
-            players[0].playVideo();
-            hasAutoPlayed = true;
-          }
-        } catch(e) {
-          console.log('Autoplay error:', e);
-        }
+        hasAutoPlayed = true;
+        updateCarousel(true);
       }
     }
 
@@ -469,11 +429,11 @@
       updateCarousel(true);
     });
 
-    // Initialize carousel WITHOUT playing
+    // Initialize carousel without autoplay
     updateCarousel(false);
     
     // Check scroll position after page loads
-    setTimeout(checkVideoScroll, 1000);
+    setTimeout(checkVideoScroll, 500);
 
     // Smooth scroll to hash on page load
     window.addEventListener('load', () => {
