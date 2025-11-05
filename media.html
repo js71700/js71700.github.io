@@ -306,19 +306,23 @@
         <button class="carousel-btn prev" id="prevBtn">‹</button>
         <div class="video-carousel">
           <div class="video-item" data-index="0">
-            <iframe src="https://www.youtube.com/embed/Hxol81jbS5A?si=Xv01YbC6gFQIgRNZ" 
+            <iframe src="https://www.youtube.com/embed/Hxol81jbS5A?si=Xv01YbC6gFQIgRNZ&enablejsapi=1" 
               title="YouTube video player" allowfullscreen></iframe>
           </div>
           <div class="video-item" data-index="1">
-            <iframe src="https://www.youtube.com/embed/5sRneIJE-lo?si=UOKMaZXeI5d1UQz-" 
+            <iframe src="https://www.youtube.com/embed/5sRneIJE-lo?si=UOKMaZXeI5d1UQz-&enablejsapi=1" 
               title="YouTube video player" allowfullscreen></iframe>
           </div>
           <div class="video-item" data-index="2">
-            <iframe src="https://www.youtube.com/embed/BKO7nR7IVIM?si=XLc9rPKK_h_YFMWK" 
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" 
               title="YouTube video player" allowfullscreen></iframe>
           </div>
           <div class="video-item" data-index="3">
-            <iframe src="https://www.youtube.com/embed/wmCboXU5Y64?si=Wg8RRfImLNxjSWzT" 
+            <iframe src="https://www.youtube.com/embed/jNQXAC9IVRw?enablejsapi=1" 
+              title="YouTube video player" allowfullscreen></iframe>
+          </div>
+          <div class="video-item" data-index="4">
+            <iframe src="https://www.youtube.com/embed/9bZkp7q19f0?enablejsapi=1" 
               title="YouTube video player" allowfullscreen></iframe>
           </div>
         </div>
@@ -354,19 +358,56 @@
       lightbox.classList.remove('show');
     });
 
-    // Video Carousel logic
+    // Video Carousel logic with autoplay
     const videoItems = document.querySelectorAll('.video-item');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     let currentIndex = 0;
     const totalVideos = videoItems.length;
+    let hasAutoPlayed = false;
+    let players = {};
+
+    // Load YouTube IFrame API
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // Initialize YouTube players when API is ready
+    window.onYouTubeIframeAPIReady = function() {
+      videoItems.forEach((item, index) => {
+        const iframe = item.querySelector('iframe');
+        players[index] = new YT.Player(iframe, {
+          events: {
+            'onReady': function(event) {
+              if (index === 0) {
+                checkVideoScroll();
+              }
+            }
+          }
+        });
+      });
+    };
 
     function updateCarousel() {
+      // Pause all videos
+      Object.values(players).forEach(player => {
+        if (player && player.pauseVideo) {
+          player.pauseVideo();
+        }
+      });
+
       videoItems.forEach((item, index) => {
         item.classList.remove('center', 'left', 'right', 'hidden');
         
         if (index === currentIndex) {
           item.classList.add('center');
+          // Play the center video after a short delay for transition
+          setTimeout(() => {
+            if (players[currentIndex] && players[currentIndex].playVideo) {
+              players[currentIndex].playVideo();
+            }
+          }, 300);
         } else if (index === (currentIndex - 1 + totalVideos) % totalVideos) {
           item.classList.add('left');
         } else if (index === (currentIndex + 1) % totalVideos) {
@@ -376,6 +417,24 @@
         }
       });
     }
+
+    // Check if video section is in viewport and autoplay
+    function checkVideoScroll() {
+      if (hasAutoPlayed) return;
+      
+      const videoSection = document.getElementById('videos');
+      const rect = videoSection.getBoundingClientRect();
+      const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
+      
+      if (isVisible && players[0] && players[0].playVideo) {
+        players[0].playVideo();
+        hasAutoPlayed = true;
+      }
+    }
+
+    // Listen for scroll events
+    window.addEventListener('scroll', checkVideoScroll);
+    window.addEventListener('load', checkVideoScroll);
 
     prevBtn.addEventListener('click', () => {
       currentIndex = (currentIndex - 1 + totalVideos) % totalVideos;
