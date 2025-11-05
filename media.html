@@ -368,10 +368,10 @@
     let userHasInteracted = false;
 
     // Check if user came from a link with autoplay parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get('autoplay') === 'unmuted') {
-      userHasInteracted = true;
-    }
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('autoplay') === 'unmuted') {
+  userHasInteracted = true;
+}
 
     function loadVideo(item, autoplay = false) {
       const iframe = item.querySelector('iframe');
@@ -474,17 +474,13 @@
     // Smooth scroll to hash on page load
 window.addEventListener('load', () => {
   if(window.location.hash) {
-    // Parse hash and query params from hash
-    const hashParts = window.location.hash.substring(1).split('?');
-    const targetId = hashParts[0];
-    const target = document.getElementById(targetId);
-    
+    const target = document.querySelector(window.location.hash);
     if(target) {
-      // Small delay to ensure page is fully rendered
+      // Delay to ensure page is fully rendered and allow smooth scroll animation
       setTimeout(() => {
         const y = target.getBoundingClientRect().top + window.pageYOffset - 64; // 64px is your nav height
         window.scrollTo({top: y, behavior: 'smooth'});
-      }, 200);
+      }, 300);
     }
   }
 });
