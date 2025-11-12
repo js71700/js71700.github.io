@@ -150,44 +150,44 @@
 
     .btn {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .btn::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: conic-gradient(from 0deg, transparent, white, transparent);
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  animation: rotate 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.btn:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+.btn::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  border: 2px solid transparent;
+  background: inherit;
   border-radius: 10px;
-  pointer-events: none;
+  z-index: -1;
 }
 
-.btn:hover::before {
-  border-top-color: white;
-  border-right-color: white;
-  border-bottom-color: white;
-  border-left-color: white;
-  animation: borderRotate 0.6s linear forwards;
-}
-
-@keyframes borderRotate {
-  0% {
-    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
-  }
-  25% {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-  }
-  50% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 0);
-  }
-  75% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
+@keyframes rotate {
   100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: rotate(360deg);
   }
 }
     
