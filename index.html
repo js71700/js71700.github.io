@@ -309,9 +309,60 @@
       margin-bottom:8px;
     }
     .custom-audio-player audio{
-      width:100%;
-      height:32px;
-    }
+  display: none;
+}
+
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.play-pause-btn {
+  background: #1db954;
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+.play-pause-btn:hover {
+  transform: scale(1.1);
+  background: #1ed760;
+}
+
+.progress-container {
+  flex: 1;
+  height: 6px;
+  background: #404040;
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #1db954;
+  width: 0%;
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+.time-display {
+  font-size: 12px;
+  color: #b3b3b3;
+  min-width: 80px;
+  text-align: right;
+}
     
 /* --- Upcoming Performances Card Grid (refined) --- */
 .performances-grid {
@@ -568,16 +619,25 @@
           <h2 style="margin-top:0;text-align:center;color:#fff;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">Music</h2>
 
           <div class="custom-audio-player">
-            <img class="album-art" src="./avatar.jpeg" alt="Antitune">
-            <div class="track-details">
-              <div class="track-title">Antitune</div>
-              <div class="track-artist">written by Julian Shively</div>
-              <audio controls>
-                <source src="./Antitune.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-              </audio>
-            </div>
-          </div>
+  <img class="album-art" src="./avatar.jpeg" alt="Antitune">
+  <div class="track-details">
+    <div class="track-title">Antitune</div>
+    <div class="track-artist">written by Julian Shively</div>
+    
+    <div class="audio-controls">
+      <button id="playPauseBtn" class="play-pause-btn">▶</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+    </div>
+    
+    <audio id="antituneAudio" controlsList="nodownload noplaybackrate">
+      <source src="./Antitune.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
 
           <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
@@ -742,6 +802,58 @@
         resizeTimeout = setTimeout(startAnimation, 160);
       });
     })();
+
+    // Custom audio player controls
+(function() {
+  const audio = document.getElementById('antituneAudio');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const progressBar = document.getElementById('progressBar');
+  const progressContainer = document.querySelector('.progress-container');
+  const timeDisplay = document.getElementById('timeDisplay');
+
+  if (!audio || !playPauseBtn) return;
+
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = progress + '%';
+    
+    const current = formatTime(audio.currentTime);
+    const duration = formatTime(audio.duration);
+    timeDisplay.textContent = `${current} / ${duration}`;
+  });
+
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = percent * audio.duration;
+  });
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  audio.addEventListener('ended', () => {
+    playPauseBtn.textContent = '▶';
+  });
+
+  audio.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+})();
+    
   </script>
 </body>
 </html>
