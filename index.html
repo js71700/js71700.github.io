@@ -148,7 +148,7 @@
     .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
     .btn-primary{background:linear-gradient(90deg,var(--teal),#059e89);color:#021615}
 
-    .btn {
+.btn {
   position: relative;
   overflow: visible;
   transition: transform 0.3s ease;
@@ -158,85 +158,36 @@
   transform: scale(1.08);
 }
 
-.btn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: 10px;
-  pointer-events: none;
-  background: none;
-  border: none;
-}
-
-.btn::after {
-  content: '';
+.btn svg {
   position: absolute;
   top: -2px;
   left: -2px;
-  right: -2px;
-  bottom: -2px;
-  border-radius: 10px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
   pointer-events: none;
   opacity: 0;
-  border: 2px solid white;
-  clip-path: inset(0 0 0 0 round 10px);
-  transform: rotate(0deg);
 }
 
-.btn:hover::after {
-  animation: borderRotate 0.9s linear forwards;
+.btn:hover svg {
+  opacity: 1;
 }
 
-@keyframes borderRotate {
-  0% {
-    opacity: 1;
-    clip-path: polygon(
-      50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%
-    );
-  }
-  12.5% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 0%, 100% 0%, 50% 0%
-    );
-  }
-  25% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 50%, 100% 50%, 50% 0%
-    );
-  }
-  37.5% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 100% 100%, 50% 0%
-    );
-  }
-  50% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 50% 100%, 50% 0%
-    );
-  }
-  62.5% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 0%
-    );
-  }
-  75% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%
-    );
-  }
-  87.5% {
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%
-    );
-  }
-  100% {
-    opacity: 1;
-    clip-path: polygon(
-      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%
-    );
+.btn svg rect {
+  fill: none;
+  stroke: white;
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  stroke-linecap: square;
+}
+
+.btn:hover svg rect {
+  animation: drawBorder 1.2s linear forwards;
+}
+
+@keyframes drawBorder {
+  to {
+    stroke-dashoffset: 0;
   }
 }
     
@@ -601,11 +552,37 @@
         <h1>Julian Shively</h1>
         <p class="lead">Pianist • Cellist • Composer/Arranger</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="#shows">Upcoming Performances</a>
-          <a class="btn btn-primary" href="#music">Listen</a>
-          <a class="btn btn-primary" href="#bio">About Me</a>
+          <a class="btn btn-primary" href="#shows">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="10" ry="10"/>
+  </svg>
+  Upcoming Performances
+</a>
+          <a class="btn btn-primary" href="#music">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="10" ry="10"/>
+  </svg>
+  Listen
+</a>
+          <a class="btn btn-primary" href="#bio">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="10" ry="10"/>
+  </svg>
+  About Me
+</a>
           <a class="btn btn-ghost" href="media.html?autoplay=unmuted#videos">Watch</a>
-          <a class="btn btn-ghost" href="contact.html">Book & Contact</a>
+          <a class="btn btn-ghost" href="media.html?autoplay=unmuted#videos">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="10" ry="10"/>
+  </svg>
+  Watch
+</a>
+          <a class="btn btn-ghost" href="contact.html">
+  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="10" ry="10"/>
+  </svg>
+  Book & Contact
+</a>
         </div>
       </div>
 
