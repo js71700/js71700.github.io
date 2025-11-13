@@ -15,7 +15,7 @@
     .brand{font-family:'Playfair Display',serif;font-size:20px;color:#fff}
     .navlinks{display:flex;gap:8px;align-items:center}
     .navlinks a{color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:8px;font-weight:600}
-    .navlinks a.contact{background: linear-gradient(90deg, var(--teal),color:#08c9b5}
+    .navlinks a.contact{background:#d6bfa0;color:#04201d}
 
     main{padding-top:64px}
     main > * {position:relative;z-index:5;}
@@ -672,27 +672,8 @@
       <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
     </div>
     
-    <audio id="AloneT4Audio" controlsList="nodownload noplaybackrate">
-      <source src="./Alone T4.mp3" type="audio/mpeg">
-      Your browser does not support the audio element.
-    </audio>
-  </div>
-          <div class="custom-audio-player">
-  <img class="album-art" src="./avatar.jpeg" alt="Antitune">
-  <div class="track-details">
-    <div class="track-title">Alone Together</div>
-    <div class="track-artist">arranged by Julian Shively</div>
-    
-    <div class="audio-controls">
-      <button id="playPauseBtn" class="play-pause-btn">▶</button>
-      <div class="progress-container">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
-      <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
-    </div>
-    
-    <audio id="AloneT4Audio" controlsList="nodownload noplaybackrate">
-      <source src="./Alone T4.mp3" type="audio/mpeg">
+    <audio id="antituneAudio" controlsList="nodownload noplaybackrate">
+      <source src="./Antitune.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
   </div>
@@ -916,6 +897,7 @@
   </script>
 </body>
 </html>
+
 
 
 
