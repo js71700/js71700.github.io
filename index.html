@@ -150,10 +150,23 @@
 
     .btn {
   position: relative;
-  overflow: visible; /* Changed from hidden */
+  overflow: visible;
 }
 
 .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  pointer-events: none;
+  background: none;
+  border: none;
+}
+
+.btn::after {
   content: '';
   position: absolute;
   top: -2px;
@@ -161,32 +174,64 @@
   right: -2px;
   bottom: -2px;
   border-radius: 10px;
-  padding: 2px;
-  background: linear-gradient(0deg, white, white);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  pointer-events: none;
   opacity: 0;
+  border: 2px solid white;
+  clip-path: inset(0 0 0 0 round 10px);
+  transform: rotate(0deg);
 }
 
-.btn:hover::before {
-  animation: borderRotate 1.2s ease-in-out forwards;
+.btn:hover::after {
+  animation: borderRotate 1.2s linear forwards;
 }
 
 @keyframes borderRotate {
   0% {
-    background: conic-gradient(from 0deg at 50% 50%, 
-      white 0deg, 
-      transparent 0deg, 
-      transparent 360deg);
     opacity: 1;
+    clip-path: polygon(
+      50% 0%, 50% 0%, 50% 0%, 50% 0%, 50% 0%
+    );
+  }
+  12.5% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 0%, 100% 0%, 50% 0%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 50%, 100% 50%, 50% 0%
+    );
+  }
+  37.5% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 100% 100%, 50% 0%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 50% 100%, 50% 0%
+    );
+  }
+  62.5% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 0% 100%, 50% 0%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%
+    );
+  }
+  87.5% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%
+    );
   }
   100% {
-    background: conic-gradient(from 0deg at 50% 50%, 
-      white 0deg, 
-      white 360deg, 
-      transparent 360deg);
     opacity: 1;
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 50% 0%
+    );
   }
 }
     
