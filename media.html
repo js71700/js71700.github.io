@@ -73,6 +73,9 @@
       background: linear-gradient(90deg, var(--teal), #08c9b5);
       color: #04201d;
     }
+    .navlinks a svg {display: none;}
+    .navlinks a {transition: transform 0.3s ease;}
+    .navlinks a:hover {transform: scale(1.08);}
 
     main {
       padding-top: 96px;
@@ -277,11 +280,31 @@
     <div class="inner">
       <div class="brand">Julian Shively</div>
       <div class="navlinks">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="media.html">Media</a>
-        <a class="contact" href="contact.html">Contact</a>
-      </div>
+  <a href="index.html" class="btn">
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+    </svg>
+    Home
+  </a>
+  <a href="about.html" class="btn">
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+    </svg>
+    About
+  </a>
+  <a class="btn" href="media.html">
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+    </svg>
+    Media
+  </a>
+  <a class="btn contact" href="contact.html">
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+    </svg>
+    Contact
+  </a>
+</div>
     </div>
   </div>
 
