@@ -409,6 +409,18 @@
   min-width: 80px;
   text-align: right;
 }
+
+.play-pause-btn-alt {
+  background: #8cb3e6;
+}
+
+.play-pause-btn-alt:hover {
+  background: #a8c5eb;
+}
+
+.progress-bar-alt {
+  background: #8cb3e6;
+}
     
 /* --- Upcoming Performances Card Grid (refined) --- */
 .performances-grid {
@@ -697,6 +709,27 @@
   </div>
 </div>
 
+          <div class="custom-audio-player">
+  <img class="album-art" src="./images/photo11.jpg" alt="Alone Together">
+  <div class="track-details">
+    <div class="track-title">Alone Together</div>
+    <div class="track-artist">written by Julian Shively</div>
+    
+    <div class="audio-controls">
+      <button id="playPauseBtn2" class="play-pause-btn play-pause-btn-alt">▶</button>
+      <div class="progress-container">
+        <div class="progress-bar progress-bar-alt" id="progressBar2"></div>
+      </div>
+      <span class="time-display" id="timeDisplay2">0:00 / 0:00</span>
+    </div>
+    
+    <audio id="aloneAudio" controlsList="nodownload noplaybackrate">
+      <source src="./Alone T4.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
+
           <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
 
@@ -873,6 +906,57 @@
   const progressBar = document.getElementById('progressBar');
   const progressContainer = document.querySelector('.progress-container');
   const timeDisplay = document.getElementById('timeDisplay');
+
+  if (!audio || !playPauseBtn) return;
+
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = progress + '%';
+    
+    const current = formatTime(audio.currentTime);
+    const duration = formatTime(audio.duration);
+    timeDisplay.textContent = `${current} / ${duration}`;
+  });
+
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = percent * audio.duration;
+  });
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  audio.addEventListener('ended', () => {
+    playPauseBtn.textContent = '▶';
+  });
+
+  audio.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+})();
+
+    // Second audio player controls for Alone Together
+(function() {
+  const audio = document.getElementById('aloneAudio');
+  const playPauseBtn = document.getElementById('playPauseBtn2');
+  const progressBar = document.getElementById('progressBar2');
+  const progressContainer = playPauseBtn ? playPauseBtn.closest('.audio-controls').querySelector('.progress-container') : null;
+  const timeDisplay = document.getElementById('timeDisplay2');
 
   if (!audio || !playPauseBtn) return;
 
