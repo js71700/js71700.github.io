@@ -761,7 +761,7 @@
   <img class="album-art" src="./avatar.jpeg" alt="Antitune">
   <div class="track-details">
     <div class="track-title">Antitune</div>
-    <div class="track-artist">written by Julian Shively</div>
+    <div class="track-artist">by Julian Shively</div>
     
     <div class="audio-controls">
       <button id="playPauseBtn" class="play-pause-btn">▶</button>
@@ -782,7 +782,7 @@
   <img class="album-art" src="./images/photo11.jpg" alt="Alone Together">
   <div class="track-details">
     <div class="track-title">Alone Together</div>
-    <div class="track-artist">written by Julian Shively</div>
+    <div class="track-artist">arr. Julian Shively</div>
     
     <div class="audio-controls">
       <button id="playPauseBtn2" class="play-pause-btn play-pause-btn-alt">▶</button>
@@ -799,12 +799,49 @@
   </div>
 </div>
 
-          <iframe src="https://open.spotify.com/embed/track/4TDe5jwrHBTsLqM4H5BMi3"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+<div class="custom-audio-player">
+  <img class="album-art" src="./serenade cover.jpeg" alt="Serenade">
+  <div class="track-details">
+    <div class="track-title">Serenade</div>
+    <div class="track-artist">by Cône Orange</div>
+    
+    <div class="audio-controls">
+      <button id="playPauseBtn3" class="play-pause-btn" style="background: #e67e22;">▶</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar3" style="background: #e67e22;"></div>
+      </div>
+      <span class="time-display" id="timeDisplay3">0:00 / 0:00</span>
+    </div>
+    
+    <audio id="serenadeAudio" controlsList="nodownload noplaybackrate">
+      <source src="./Serenade.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
 
-          <iframe src="https://open.spotify.com/embed/track/4kPcYgHkSasA51p3UF3hQC"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-        </section>
+<div class="custom-audio-player">
+  <img class="album-art" src="./blind bird cover.jpeg" alt="Blind bird">
+  <div class="track-details">
+    <div class="track-title">Blind Bird</div>
+    <div class="track-artist">by Cône Orange</div>
+    
+    <div class="audio-controls">
+      <button id="playPauseBtn4" class="play-pause-btn" style="background: #9b59b6;">▶</button>
+      <div class="progress-container">
+        <div class="progress-bar" id="progressBar4" style="background: #9b59b6;"></div>
+      </div>
+      <span class="time-display" id="timeDisplay4">0:00 / 0:00</span>
+    </div>
+    
+    <audio id="blindbirdAudio" controlsList="nodownload noplaybackrate">
+      <source src="./Blind bird.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+</div>
+          
+</section>
 
         <section class="section bio-section" id="bio">
           <h2 style="margin-top:0;text-align:center;color:#001f3f;font-size:32px;font-family:'Cinzel',serif;letter-spacing:1px">About Julian</h2>
@@ -1026,6 +1063,108 @@
   const progressBar = document.getElementById('progressBar2');
   const progressContainer = playPauseBtn ? playPauseBtn.closest('.audio-controls').querySelector('.progress-container') : null;
   const timeDisplay = document.getElementById('timeDisplay2');
+
+  if (!audio || !playPauseBtn) return;
+
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = progress + '%';
+    
+    const current = formatTime(audio.currentTime);
+    const duration = formatTime(audio.duration);
+    timeDisplay.textContent = `${current} / ${duration}`;
+  });
+
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = percent * audio.duration;
+  });
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  audio.addEventListener('ended', () => {
+    playPauseBtn.textContent = '▶';
+  });
+
+  audio.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+})();
+
+  // Third audio player - Serenade
+(function() {
+  const audio = document.getElementById('serenadeAudio');
+  const playPauseBtn = document.getElementById('playPauseBtn3');
+  const progressBar = document.getElementById('progressBar3');
+  const progressContainer = playPauseBtn ? playPauseBtn.closest('.audio-controls').querySelector('.progress-container') : null;
+  const timeDisplay = document.getElementById('timeDisplay3');
+
+  if (!audio || !playPauseBtn) return;
+
+  playPauseBtn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.play();
+      playPauseBtn.textContent = '⏸';
+    } else {
+      audio.pause();
+      playPauseBtn.textContent = '▶';
+    }
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    const progress = (audio.currentTime / audio.duration) * 100;
+    progressBar.style.width = progress + '%';
+    
+    const current = formatTime(audio.currentTime);
+    const duration = formatTime(audio.duration);
+    timeDisplay.textContent = `${current} / ${duration}`;
+  });
+
+  progressContainer.addEventListener('click', (e) => {
+    const rect = progressContainer.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = percent * audio.duration;
+  });
+
+  function formatTime(seconds) {
+    if (isNaN(seconds)) return '0:00';
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  }
+
+  audio.addEventListener('ended', () => {
+    playPauseBtn.textContent = '▶';
+  });
+
+  audio.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+})();
+
+// Fourth audio player - Blind bird
+(function() {
+  const audio = document.getElementById('blindbirdAudio');
+  const playPauseBtn = document.getElementById('playPauseBtn4');
+  const progressBar = document.getElementById('progressBar4');
+  const progressContainer = playPauseBtn ? playPauseBtn.closest('.audio-controls').querySelector('.progress-container') : null;
+  const timeDisplay = document.getElementById('timeDisplay4');
 
   if (!audio || !playPauseBtn) return;
 
