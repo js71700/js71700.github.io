@@ -391,11 +391,30 @@
   height: 40px;
   border-radius: 50%;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;
+  position: relative;
+}
+
+.play-pause-btn::before {
+  content: '';
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 0 8px 14px;
+  border-color: transparent transparent transparent white;
+  margin-left: 2px;
+}
+
+.play-pause-btn.playing::before {
+  border: none;
+  width: 4px;
+  height: 16px;
+  box-shadow: 6px 0 0 white, -6px 0 0 white;
+  margin-left: 0;
 }
 
 .play-pause-btn:hover {
@@ -1005,12 +1024,12 @@
       });
     })();
 
-    // Custom audio player controls
+// Custom audio player controls - Antitune
 (function() {
   const audio = document.getElementById('antituneAudio');
   const playPauseBtn = document.getElementById('playPauseBtn');
   const progressBar = document.getElementById('progressBar');
-  const progressContainer = document.querySelector('.progress-container');
+  const progressContainer = progressBar.parentElement;
   const timeDisplay = document.getElementById('timeDisplay');
 
   if (!audio || !playPauseBtn) return;
@@ -1018,10 +1037,10 @@
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸';
+      playPauseBtn.classList.add('playing');
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶';
+      playPauseBtn.classList.remove('playing');
     }
   });
 
@@ -1048,7 +1067,7 @@
   }
 
   audio.addEventListener('ended', () => {
-    playPauseBtn.textContent = '▶';
+    playPauseBtn.classList.remove('playing');
   });
 
   audio.addEventListener('contextmenu', (e) => {
@@ -1056,12 +1075,12 @@
   });
 })();
 
-    // Second audio player controls for Alone Together
+// Second audio player controls - Alone Together
 (function() {
   const audio = document.getElementById('aloneAudio');
   const playPauseBtn = document.getElementById('playPauseBtn2');
   const progressBar = document.getElementById('progressBar2');
-  const progressContainer = playPauseBtn ? playPauseBtn.closest('.audio-controls').querySelector('.progress-container') : null;
+  const progressContainer = progressBar.parentElement;
   const timeDisplay = document.getElementById('timeDisplay2');
 
   if (!audio || !playPauseBtn) return;
@@ -1069,10 +1088,10 @@
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸';
+      playPauseBtn.classList.add('playing');
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶';
+      playPauseBtn.classList.remove('playing');
     }
   });
 
@@ -1099,7 +1118,7 @@
   }
 
   audio.addEventListener('ended', () => {
-    playPauseBtn.textContent = '▶';
+    playPauseBtn.classList.remove('playing');
   });
 
   audio.addEventListener('contextmenu', (e) => {
@@ -1120,10 +1139,10 @@
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸';
+      playPauseBtn.classList.add('playing');
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶';
+      playPauseBtn.classList.remove('playing');
     }
   });
 
@@ -1150,7 +1169,7 @@
   }
 
   audio.addEventListener('ended', () => {
-    playPauseBtn.textContent = '▶';
+    playPauseBtn.classList.remove('playing');
   });
 
   audio.addEventListener('contextmenu', (e) => {
@@ -1171,10 +1190,10 @@
   playPauseBtn.addEventListener('click', () => {
     if (audio.paused) {
       audio.play();
-      playPauseBtn.textContent = '⏸';
+      playPauseBtn.classList.add('playing');
     } else {
       audio.pause();
-      playPauseBtn.textContent = '▶';
+      playPauseBtn.classList.remove('playing');
     }
   });
 
@@ -1201,7 +1220,7 @@
   }
 
   audio.addEventListener('ended', () => {
-    playPauseBtn.textContent = '▶';
+    playPauseBtn.classList.remove('playing');
   });
 
   audio.addEventListener('contextmenu', (e) => {
