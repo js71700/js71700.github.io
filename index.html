@@ -889,6 +889,34 @@
   </main>
 
   <script>
+
+    // Temporary debug code - remove after testing
+console.log('Testing audio files...');
+const testAudio3 = document.getElementById('serenadeAudio');
+const testAudio4 = document.getElementById('blindbirdAudio');
+console.log('Serenade audio element:', testAudio3);
+console.log('Blind bird audio element:', testAudio4);
+
+if (testAudio3) {
+  testAudio3.addEventListener('error', (e) => {
+    console.error('Serenade audio error:', e);
+    console.error('Error details:', testAudio3.error);
+  });
+  testAudio3.addEventListener('loadeddata', () => {
+    console.log('Serenade audio loaded successfully');
+  });
+}
+
+if (testAudio4) {
+  testAudio4.addEventListener('error', (e) => {
+    console.error('Blind bird audio error:', e);
+    console.error('Error details:', testAudio4.error);
+  });
+  testAudio4.addEventListener('loadeddata', () => {
+    console.log('Blind bird audio loaded successfully');
+  });
+}
+    
     document.getElementById('year').textContent = new Date().getFullYear();
 
     document.querySelectorAll('a[href^="#"]').forEach(a=>{
