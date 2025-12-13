@@ -113,6 +113,12 @@
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .album-card:hover img {
+      filter: brightness(0.3);
+      transform: scale(1.05);
     }
 
     .album-overlay {
@@ -121,14 +127,14 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.85);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       padding: 24px;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
     }
 
     .album-card:hover .album-overlay {
@@ -137,17 +143,32 @@
 
     .album-title {
       font-family: 'Playfair Display', serif;
-      font-size: 24px;
+      font-size: 22px;
       color: #fff;
-      margin: 0 0 12px 0;
+      margin: 0 0 8px 0;
       text-align: center;
+      font-weight: 700;
     }
 
     .album-description {
-      font-size: 14px;
+      font-size: 13px;
+      color: #e0e0e0;
+      text-align: center;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .album-personnel {
+      font-size: 12px;
       color: var(--muted);
       text-align: center;
       line-height: 1.6;
+    }
+
+    .album-personnel strong {
+      color: #fff;
+      display: block;
+      margin-top: 8px;
     }
 
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
@@ -160,6 +181,14 @@
       
       .page-header h1 {
         font-size: 36px;
+      }
+      
+      .album-title {
+        font-size: 20px;
+      }
+      
+      .album-description {
+        font-size: 12px;
       }
     }
 
@@ -232,22 +261,79 @@
     <div class="albums-container">
       <div class="albums-grid">
         <div class="album-card">
-          <img src="Seasons of Change.jpg" alt="Album 1">
+          <img src="Seasons of Change.jpg" alt="Seasons of Change">
+          <div class="album-overlay">
+            <h3 class="album-title">Seasons of Change</h3>
+            <p class="album-description">Singer Emma McDonald's debut EP featuring her original music</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Emma McDonald - voice
+              Ricardo Picanco - guitar
+              Julian Shively - piano/keys, cello
+              Ryan Bennett - drums
+              Benjamin Renert - electric bass
+            </div>
+          </div>
         </div>
+        
         <div class="album-card">
-          <img src="La Groovin' Machine.jpg" alt="Album 2">
+          <img src="La Groovin' Machine.jpg" alt="La Groovin' Machine">
+          <div class="album-overlay">
+            <h3 class="album-title">La Groovin' Machine</h3>
+            <p class="album-description">Funky fusion project with infectious rhythms and grooves</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Hammond B3 Organ, Keyboards
+            </div>
+          </div>
         </div>
+        
         <div class="album-card">
-          <img src="serenade cover.jpeg" alt="Album 3">
+          <img src="serenade cover.jpeg" alt="Serenade">
+          <div class="album-overlay">
+            <h3 class="album-title">Serenade</h3>
+            <p class="album-description">Intimate ballads and melodic interpretations</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Piano, Musical Direction
+            </div>
+          </div>
         </div>
+        
         <div class="album-card">
-          <img src="blind bird cover.jpeg" alt="Album 4">
+          <img src="blind bird cover.jpeg" alt="Blind Bird">
+          <div class="album-overlay">
+            <h3 class="album-title">Blind Bird</h3>
+            <p class="album-description">Tribute to the bebop tradition with modern sensibility</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Piano, Arrangements
+            </div>
+          </div>
         </div>
+        
         <div class="album-card">
-          <img src="adrenaline.jpg" alt="Album 5">
+          <img src="adrenaline.jpg" alt="Adrenaline">
+          <div class="album-overlay">
+            <h3 class="album-title">Adrenaline</h3>
+            <p class="album-description">High-energy jazz fusion with contemporary edge</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Cello
+            </div>
+          </div>
         </div>
+        
         <div class="album-card">
-          <img src="gem club breakers.jpg" alt="Album 6">
+          <img src="gem club breakers.jpg" alt="Gem Club Breakers">
+          <div class="album-overlay">
+            <h3 class="album-title">Gem Club Breakers</h3>
+            <p class="album-description">Experimental sounds blending jazz and electronic elements</p>
+            <div class="album-personnel">
+              <strong>Personnel:</strong>
+              Cello
+            </div>
+          </div>
         </div>
       </div>
     </div>
