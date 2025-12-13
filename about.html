@@ -24,6 +24,31 @@
     .section{max-width:1100px;margin:36px auto;padding:32px}
     .section.card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:28px}
     footer{max-width:1100px;margin:40px auto;color:var(--muted);text-align:center;padding:40px 16px}
+    
+    /* Image styling */
+    .bio-image {
+      float: right;
+      width: 300px;
+      margin: 0 0 20px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    /* Clear float after content */
+    .section.card::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+      .bio-image {
+        float: none;
+        width: 100%;
+        margin: 0 0 20px 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -62,20 +87,21 @@
   <main>
     <section class="section card">
       <h1>About Julian Shively</h1>
+      <img src="model shot.jpg" alt="Julian Shively" class="bio-image">
       <p style="color:var(--muted);font-size:18px;line-height:1.6">
         A virtuosic, creative and versatile musician, Julian performs in multiple ensembles throughout Québec, Ontario and northeast U.S. in jazz and rock while maintaining his proficiency in classical music on both piano and cello. He is also a composer and arranger of music in a variety of genres. Julian has recorded for various independent labels and appears in notable jazz venues in Québec such as Upstairs Jazz Bar, Diese Onze in Montreal, and Bar Ste-Angèle in Québec City. He has made appearances in many of the jazz and pop festivals around the area, performing at Studio TD as part of the Montreal International Jazz Festival as well as with his band Cône Orange at Festi Jazz International de Rimouski among others.
       </p>
       <p style="color:var(--muted);font-size:18px;line-height:1.6">
-        A native of Trumbull, Connecticut, Julian’s musical studies began with piano lessons at age four. The following year, he started cello. He played both instruments equally throughout his childhood and won multiple awards and competitions on both. During his high school years, he switched from classical piano to jazz and subsequently graduated from the Schulich School of Music at McGill University in Montreal as a double major in cello and jazz piano performance.
+        A native of Trumbull, Connecticut, Julian's musical studies began with piano lessons at age four. The following year, he started cello. He played both instruments equally throughout his childhood and won multiple awards and competitions on both. During his high school years, he switched from classical piano to jazz and subsequently graduated from the Schulich School of Music at McGill University in Montreal as a double major in cello and jazz piano performance.
       </p>
       <p style="color:var(--muted);font-size:18px;line-height:1.6">
-        The highlights of Julian’s musical achievements include solo performances with the Danbury Symphony (2012, 2014, 2022, 2025), Greater New Haven Youth Ensembles (2013), Greater Bridgeport Youth Orchestras (2016), Greater Bridgeport Symphony (2016), Hamden Symphony (2017), American Chamber Orchestra (2017), Wallingford Symphony Orchestra (2018) and New York Sessions Orchestra (2019). He is also the recipient of the 2018 Marianne Liberatore Scholarship from Music for Youth, the Steven A. Merrihew Performing Arts Scholarship from The Parker Project and the entrance scholarship to McGill University’s Schulich School of Music among others.
+        The highlights of Julian's musical achievements include solo performances with the Danbury Symphony (2012, 2014, 2022, 2025), Greater New Haven Youth Ensembles (2013), Greater Bridgeport Youth Orchestras (2016), Greater Bridgeport Symphony (2016), Hamden Symphony (2017), American Chamber Orchestra (2017), Wallingford Symphony Orchestra (2018) and New York Sessions Orchestra (2019). He is also the recipient of the 2018 Marianne Liberatore Scholarship from Music for Youth, the Steven A. Merrihew Performing Arts Scholarship from The Parker Project and the entrance scholarship to McGill University's Schulich School of Music among others.
       </p>
       <p style="color:var(--muted);font-size:18px;line-height:1.6">
         Julian has participated in master classes and workshops given by such celebrated musicians as cellists Hai-Ye Ni, Narek Hakhnazaryan, Nicholas Cannellakis and Pieter Wispelwey, pianists Andrew Tyson, Andrew Armstrong, and Vadym Kholodenko, as well as the Carducci, Harlem, Ying, and Miro Quartets to name a few. Julian is especially passionate about chamber music and small ensembles. His summers are typically filled with a variety of music festivals and institutes to further develop his musicianship as well as performances and teaching or coaching opportunities.
       </p>
       <p style="color:var(--muted);font-size:18px;line-height:1.6">
-        During Julian’s time at McGill, he co-founded a jazz/R&B fusion band called Cône Orange with Montreal area musicians. The group made their debut in summer 2022. Post graduation, Julian continues to reside in Montreal where he actively engages in and appreciates the vibrant music scene. He is also taking the opportunity to study French.
+        During Julian's time at McGill, he co-founded a jazz/R&B fusion band called Cône Orange with Montreal area musicians. The group made their debut in summer 2022. Post graduation, Julian continues to reside in Montreal where he actively engages in and appreciates the vibrant music scene. He is also taking the opportunity to study French.
       </p>
     </section>
 
