@@ -27,7 +27,7 @@
      }
 
     .timeslot {
-      font-size: 0.9rem;
+      font-size: 1.2rem;
       line-height: 1;
       letter-spacing: 0.05em;
       white-space: nowrap;
@@ -35,6 +35,52 @@
       color: #d6bfa0;
       margin-left: 0.5rem; /* extra space to the right of the year */
     }
+
+    .private-events {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px dotted rgba(214, 191, 160, 0.4);
+  text-align: center;
+}
+
+.private-events-header {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #d6bfa0;
+  margin: 0 0 6px;
+}
+
+.private-events-sub {
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 0 0 16px;
+}
+
+.private-events-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.private-events-list li {
+  font-size: 0.9rem;
+  color: #ddd;
+  padding: 4px 0;
+}
+
+.private-events-list .pe-date {
+  color: #d6bfa0;
+  margin-right: 8px;
+}
+
+.private-events-list .pe-type::before {
+  content: "·";
+  margin-right: 8px;
+  color: var(--muted);
+}
 
     main{padding-top:64px}
     main > * {position:relative;z-index:5;}
@@ -807,7 +853,7 @@
                 <div class="city">Macallan's Pub<br>2362 Boul Hymus, Dorval, QC</div>
               </div>
               <a href="https://residencesoinspalliatifs.ca/en/2026/11/07/concertforcatherine/"
-                  class="buy-btn" target="_blank">=Tickets Here</a>
+                  class="buy-btn" target="_blank">Tickets Here</a>
             </div>
 
             <div class="card">
