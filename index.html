@@ -20,17 +20,19 @@
     .navlinks a {transition: transform 0.3s ease;}
     .navlinks a:hover {transform: scale(1.08);}
     .year-time {
-  display: flex;
-  align-items: baseline; /* lines the text up on the same baseline */
-  gap: 0.75rem;          /* space between year and time */
-}
+      display: flex;
+      align-items: baseline;      /* bottoms of year and time line up */
+      gap: 0.75rem;
+      transform: translateY(8px); /* moves both down together, toward the divider */
+     }
 
-.timeslot {
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  opacity: 0.85;
-}
+    .timeslot {
+      font-size: 0.9rem;
+      line-height: 1;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+      opacity: 0.85;
+    }
 
     main{padding-top:64px}
     main > * {position:relative;z-index:5;}
@@ -523,8 +525,6 @@
   color: #d6bfa0;
   line-height: 1;
   margin: 0;
-  align-self: flex-end;
-  transform: translateY(8px);
 }
 
 .card .date {
