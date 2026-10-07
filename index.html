@@ -19,10 +19,15 @@
     .navlinks a svg {display: none;}
     .navlinks a {transition: transform 0.3s ease;}
     .navlinks a:hover {transform: scale(1.08);}
-    .timeslot {
+    .year-time {
+  display: flex;
+  align-items: baseline; /* lines the text up on the same baseline */
+  gap: 0.75rem;          /* space between year and time */
+}
+
+.timeslot {
   font-size: 0.9rem;
   letter-spacing: 0.05em;
-  text-align: center;
   white-space: nowrap;
   opacity: 0.85;
 }
