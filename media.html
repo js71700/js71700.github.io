@@ -142,7 +142,7 @@
     .video-carousel-container {
       position: relative;
       max-width: 1200px;
-      margin: 60px auto;
+      margin: 20px auto 40px;
       padding: 0 80px;
       overflow: hidden;
     }
@@ -280,41 +280,84 @@
     <div class="inner">
       <div class="brand">Julian Shively</div>
       <div class="navlinks">
-  <a href="index.html" class="btn">
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
-    </svg>
-    Home
-  </a>
-  <a href="about.html" class="btn">
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
-    </svg>
-    About
-  </a>
-  <a class="btn" href="media.html">
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
-    </svg>
-    Media
-  </a>
-  <a class="btn" href="records.html">
-  <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
-  </svg>
-  Recording Credits
-</a>
-  <a class="btn contact" href="contact.html">
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
-    </svg>
-    Contact
-  </a>
-</div>
+        <a href="index.html" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+          </svg>
+          Home
+        </a>
+        <a href="about.html" class="btn">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+          </svg>
+          About
+        </a>
+        <a class="btn" href="media.html">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+          </svg>
+          Media
+        </a>
+        <a class="btn" href="records.html">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+          </svg>
+          Recording Credits
+        </a>
+        <a class="btn contact" href="contact.html">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)" rx="8" ry="8"/>
+          </svg>
+          Contact
+        </a>
+      </div>
     </div>
   </div>
 
   <main>
+    <!-- Videos now come first -->
+    <section id="videos">
+      <div class="video-carousel-container">
+        <button class="carousel-btn prev" id="prevBtn">‹</button>
+        <div class="video-carousel">
+          <div class="video-item" data-index="0" data-video-id="Hxol81jbS5A">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="1" data-video-id="5sRneIJE-lo">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="2" data-video-id="mctTE69dnkI">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="3" data-video-id="BKO7nR7IVIM">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="4" data-video-id="FAPTDCg3DMU">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="5" data-video-id="dMUpa2xt2o4">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="6" data-video-id="9Epb5XxeUVQ">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+          <div class="video-item" data-index="7" data-video-id="bnmi2DbiX6I">
+            <iframe src=""
+              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
+          </div>
+        </div>
+        <button class="carousel-btn next" id="nextBtn">›</button>
+      </div>
+    </section>
+
+    <!-- Photo gallery now sits underneath -->
     <div class="gallery">
       <img src="./images/photo1.jpg" alt="Performance photo 1">
       <img src="./images/photo2.jpg" alt="Performance photo 2">
@@ -335,47 +378,6 @@
       <img src="./images/photo12.jpg" alt="Performance photo 12">
     </div>
 
-    <section id="videos">
-      <div class="video-carousel-container">
-        <button class="carousel-btn prev" id="prevBtn">‹</button>
-        <div class="video-carousel">
-          <div class="video-item" data-index="0" data-video-id="Hxol81jbS5A">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="1" data-video-id="5sRneIJE-lo">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="2" data-video-id="mctTE69dnkI">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="3" data-video-id="BKO7nR7IVIM">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="4" data-video-id="FAPTDCg3DMU">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="5" data-video-id="dMUpa2xt2o4">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="6" data-video-id="9Epb5XxeUVQ">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-          <div class="video-item" data-index="2" data-video-id="bnmi2DbiX6I">
-            <iframe src="" 
-              title="YouTube video player" allowfullscreen allow="autoplay"></iframe>
-          </div>
-        </div>
-        <button class="carousel-btn next" id="nextBtn">›</button>
-      </div>
-    </section>
-    
     <footer>
       © <span id="year"></span> Julian Shively • All rights reserved.
     </footer>
@@ -414,10 +416,10 @@
     let userHasInteracted = false;
 
     // Check if user came from a link with autoplay parameter
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('autoplay') === 'unmuted') {
-  userHasInteracted = true;
-}
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('autoplay') === 'unmuted') {
+      userHasInteracted = true;
+    }
 
     function loadVideo(item, autoplay = false) {
       const iframe = item.querySelector('iframe');
@@ -436,7 +438,7 @@ if (urlParams.get('autoplay') === 'unmuted') {
     function updateCarousel(shouldAutoplay = false) {
       videoItems.forEach((item, index) => {
         item.classList.remove('center', 'left', 'right', 'hidden');
-        
+
         if (index === currentIndex) {
           item.classList.add('center');
           // Load and potentially autoplay the center video
@@ -461,16 +463,16 @@ if (urlParams.get('autoplay') === 'unmuted') {
     let scrollCheckTimeout;
     function checkVideoScroll() {
       if (hasAutoPlayed) return;
-      
+
       // Debounce scroll checks to prevent multiple triggers
       clearTimeout(scrollCheckTimeout);
       scrollCheckTimeout = setTimeout(() => {
         const videoSection = document.getElementById('videos');
         if (!videoSection) return;
-        
+
         const rect = videoSection.getBoundingClientRect();
         const isVisible = (rect.top <= window.innerHeight * 0.75 && rect.bottom >= 0);
-        
+
         if (isVisible && !hasAutoPlayed) {
           hasAutoPlayed = true;
           // Reload the center video with autoplay
@@ -511,34 +513,34 @@ if (urlParams.get('autoplay') === 'unmuted') {
 
     // Initialize carousel without autoplay
     updateCarousel(false);
-    
+
     // Check scroll position immediately and after page loads
     checkVideoScroll();
     setTimeout(checkVideoScroll, 500);
     setTimeout(checkVideoScroll, 1000);
 
     // Smooth scroll to hash on page load
-window.addEventListener('load', () => {
-  if(window.location.hash) {
-    const target = document.querySelector(window.location.hash);
-    if(target) {
-      // Delay to ensure page is fully rendered and allow smooth scroll animation
-      setTimeout(() => {
-        const y = target.getBoundingClientRect().top + window.pageYOffset - 64; // 64px is your nav height
-        window.scrollTo({top: y, behavior: 'smooth'});
-      }, 300);
-    }
-  }
-});
+    window.addEventListener('load', () => {
+      if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          // Delay to ensure page is fully rendered and allow smooth scroll animation
+          setTimeout(() => {
+            const y = target.getBoundingClientRect().top + window.pageYOffset - 64; // 64px is your nav height
+            window.scrollTo({top: y, behavior: 'smooth'});
+          }, 300);
+        }
+      }
+    });
 
     // Also handle hash clicks within the page
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
         e.preventDefault();
         const t = document.querySelector(a.getAttribute('href'));
-        if(!t) return;
+        if (!t) return;
         const y = t.getBoundingClientRect().top + window.pageYOffset - 80;
-        window.scrollTo({top:y, behavior:'smooth'});
+        window.scrollTo({top: y, behavior: 'smooth'});
       });
     });
   </script>
