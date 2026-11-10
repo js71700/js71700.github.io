@@ -98,10 +98,47 @@
       cursor: pointer;
     }
 
-    .gallery img:hover {
+    .gallery > img:hover,
+    .gallery .video-thumb:hover {
       transform: scale(1.05);
       box-shadow: 0 10px 20px rgba(0,0,0,0.4);
       z-index: 10;
+    }
+
+    /* --- Video thumbnails inside the gallery --- */
+    .gallery .video-thumb {
+      position: relative;
+      display: block;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      cursor: pointer;
+      break-inside: avoid;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .gallery .video-thumb img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      border-radius: 0;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .gallery .video-thumb::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 68px;
+      height: 48px;
+      transform: translate(-50%, -50%);
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 68 48'%3E%3Cpath fill='%23f00' d='M66.5 7.7c-.8-2.9-2.5-5.4-5.4-6.2C55.8.1 34 0 34 0S12.2.1 6.9 1.6C4 2.4 2.3 4.9 1.5 7.7.1 13 0 24 0 24s.1 11 1.5 16.3c.8 2.9 2.5 5.4 5.4 6.2C12.2 47.9 34 48 34 48s21.8-.1 27.1-1.6c2.9-.8 4.6-3.3 5.4-6.2C67.9 35 68 24 68 24s-.1-11-1.5-16.3z'/%3E%3Cpath fill='white' d='M45 24 27 14v20z'/%3E%3C/svg%3E")
+        center / contain no-repeat;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.5));
+      pointer-events: none;
     }
 
     @media (max-width: 1000px) {
@@ -134,6 +171,15 @@
       border-radius: 12px;
     }
 
+    .lightbox iframe {
+      display: none;
+      width: min(90vw, 1000px);
+      aspect-ratio: 16 / 9;
+      height: auto;
+      border: none;
+      border-radius: 12px;
+    }
+
     .lightbox.show {
       display: flex;
     }
@@ -149,7 +195,7 @@
 
     .video-carousel {
       position: relative;
-      height: 400px;
+      height: 500px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -360,18 +406,22 @@
     <!-- Photo gallery now sits underneath -->
     <div class="gallery">
       <img src="./images/photo1.jpg" alt="Performance photo 1">
-      <div class="video-thumb" data-video-id="wmCboXU5Y64">
-  <img src="https://i.ytimg.com/vi/wmCboXU5Y64/hqdefault.jpg" alt="Video thumbnail">
-</div>
       <img src="./images/photo2.jpg" alt="Performance photo 2">
       <img src="./cello portrait.jpg" alt="Performance photo 13">
       <img src="./tree pose.jpg" alt="Performance photo 17">
+      <!-- Video thumbnail: replace the ID in BOTH places with your YouTube video ID -->
+      <div class="video-thumb" data-video-id="Hxol81jbS5A">
+        <img src="https://i.ytimg.com/vi/Hxol81jbS5A/hqdefault.jpg" alt="Video thumbnail">
+      </div>
       <img src="./images/photo3.jpeg" alt="Performance photo 3">
       <img src="./images/photo4.png" alt="Performance photo 4">
       <img src="./images/photo5.jpg" alt="Performance photo 5">
       <img src="./bench pose.jpg" alt="Performance photo 15">
       <img src="./images/photo6.jpg" alt="Performance photo 6">
       <img src="./images/photo8.jpg" alt="Performance photo 8">
+      <div class="video-thumb" data-video-id="5sRneIJE-lo">
+        <img src="https://i.ytimg.com/vi/5sRneIJE-lo/hqdefault.jpg" alt="Video thumbnail">
+      </div>
       <img src="./images/photo9.jpg" alt="Performance photo 9">
       <img src="./both instru sit 3.jpg" alt="Performance photo 13">
       <img src="./images/photo10.jpg" alt="Performance photo 10">
@@ -388,6 +438,7 @@
 
   <div class="lightbox" id="lightbox">
     <img src="" alt="Expanded view">
+    <iframe src="" title="YouTube video player" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe>
   </div>
 
   <script>
@@ -396,17 +447,42 @@
     // Lightbox logic
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = lightbox.querySelector('img');
-    const galleryImgs = document.querySelectorAll('.gallery img');
+    const lightboxVideo = lightbox.querySelector('iframe');
+    const gallery = document.querySelector('.gallery');
 
-    galleryImgs.forEach(img => {
-      img.addEventListener('click', () => {
+    // One click handler for the whole gallery: videos play, photos enlarge
+    gallery.addEventListener('click', e => {
+      const thumb = e.target.closest('.video-thumb');
+      if (thumb) {
+        // Video: show the player in the lightbox and start playing right away
+        const videoId = thumb.getAttribute('data-video-id');
+        lightboxImg.style.display = 'none';
+        lightboxVideo.style.display = 'block';
+        lightboxVideo.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+        lightbox.classList.add('show');
+        return;
+      }
+
+      const img = e.target.closest('img');
+      if (img) {
+        // Photo: show the image in the lightbox
+        lightboxVideo.style.display = 'none';
+        lightboxVideo.src = '';
+        lightboxImg.style.display = 'block';
         lightboxImg.src = img.src;
         lightbox.classList.add('show');
-      });
+      }
     });
 
-    lightbox.addEventListener('click', () => {
+    // Close the lightbox and stop any playing video
+    function closeLightbox() {
       lightbox.classList.remove('show');
+      lightboxVideo.src = '';
+    }
+
+    lightbox.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
     });
 
     // Video Carousel logic with autoplay
